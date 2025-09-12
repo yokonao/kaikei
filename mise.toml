@@ -1,0 +1,34 @@
+[tools]
+ruby = "3.4"
+
+[tasks.fmt]
+run = """
+bin/rubocop -A
+"""
+
+[tasks.update-gem]
+run = """
+gem install bundler
+bundle update --bundler
+bundle update
+"""
+
+[tasks."test.unit"]
+run = "bin/rails test"
+
+[tasks."test.system"]
+run = "bin/rails test test/system"
+
+[tasks."test.acceptance"]
+run = """
+bin/rubocop
+bin/bundle-audit
+bin/brakeman -q --no-summary
+bin/rails test
+bin/rails test test/system
+"""
+
+[tasks.deploy]
+run = """
+bin/kamal deploy
+"""
