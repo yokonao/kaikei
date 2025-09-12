@@ -1,24 +1,39 @@
-# README
+# kaikei
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+シンプルな会計システム
 
-Things you may want to cover:
+## 機能一覧
 
-* Ruby version
+TODO: 実装しながら追記していく
 
-* System dependencies
+## 開発環境構築
 
-* Configuration
+本プロジェクトでは開発環境を構成するツールとして [mise](https://github.com/jdx/mise) を利用を推奨しています。
 
-* Database creation
+開発を始めるために必要なコマンドは全て `bin/setup` にまとめられています。
+`bin/setup` を実行してもよいし、スクリプトの内容を確認しながら手動で実行しても構いません。
+スクリプトは step by step で実行しやすいように記述しています。
 
-* Database initialization
+セットアップが完了したら以下のコマンドで開発用サーバーを立ち上げて下さい
 
-* How to run the test suite
+```
+bin/dev
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+http://localhost:3002 からアプリケーションにアクセスできます。
 
-* Deployment instructions
+## コーディングガイドライン
 
-* ...
+- [素の Rails は十分に豊かである（翻訳）](https://techracho.bpsinc.jp/hachi8833/2023_01_12/124378)
+  - Rails 標準の機能を大いに活用し、独自のアーキテクチャや抽象化をなるべく回避する
+  - アプリケーションとドメイン層を区別しない
+  - コントローラはドメインモデルに直接アクセスする
+- [🛤 Rails 8 は SQLite で大幅に強化された「個人が扱えるフレームワーク」（翻訳）](https://note.com/yasslab/n/n89d6850e296d)
+  - SQLite3 で本番環境のアプリケーション運用できるよという話
+  - シンプル・軽量を保つことで SQLite3 のメリットを最大限活かす
+
+## デプロイ
+
+```
+bin/kamal deploy
+```
