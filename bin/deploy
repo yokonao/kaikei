@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -euo pipefail
+
+IMAGE_NAME="$(yq .image <config/deploy.yml)"
+COMMIT_HASH="$(git rev-parse HEAD)"
+LOCAL_REGISTRY_SERVER_NAME="kamal-local-registry-server"
+LOCAL_REGISTRY_SERVER_PORT=50000
+LOCAL_REGISTRY_SERVER_URL="localhost:${LOCAL_REGISTRY_SERVER_PORT}"
+SSH_FORWARDER_PIDS=()
+SSH_REMOTE_SERVERS=()
+SSH_USER="$(yq '.ssh.user // "root"' <config/deploy.yml)"
+
+while read -r server; do
+    SSH_REMOTE_SERVERS+=("$server")
+done < <(yq '.servers.web[]' < config/deploy.yml)
+
+cleanup() {
+    echo "Cleaning up..."
+
+    if docker ps -q -f name="$LOCAL_REGISTRY_SERVER_NAME" | grep -q .; then
+        echo "Stopping and removing docker container: $LOCAL_REGISTRY_SERVER_NAME"
+        docker rm -f "$LOCAL_REGISTRY_SERVER_NAME"
+    fi
+
+    for pid in "${SSH_FORWARDER_PIDS[@]}"; do
+        if kill -0 "$pid" 2>/dev/null; then
+            echo "Killing SSH forwarder process: $pid"
+            kill "$pid"
+        fi
+    done
+}
+
+trap cleanup EXIT INT TERM
+
+# launch local registry server
+echo "Launching local registry server..."
+docker run -d -p "$LOCAL_REGISTRY_SERVER_PORT:5000" --name $LOCAL_REGISTRY_SERVER_NAME \
+    -v "${LOCAL_REGISTRY_SERVER_NAME}-data:/var/lib/registry" \
+    registry:3
+
+# allowing remote servers to access the local registry server
+for server in "${SSH_REMOTE_SERVERS[@]}"; do
+    ssh -N -R "$LOCAL_REGISTRY_SERVER_PORT:$LOCAL_REGISTRY_SERVER_URL" "${SSH_USER}@${server}" &
+    SSH_FORWARDER_PIDS+=($!)
+done
+
+# 1. build image and push it to the local registry server
+# 2. pull image on the remote server
+# 3. rollout docker container
+bin/kamal deploy
