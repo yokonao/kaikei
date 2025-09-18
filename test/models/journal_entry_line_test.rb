@@ -48,6 +48,17 @@ class JournalEntryLineTest < ActiveSupport::TestCase
     assert_includes entry_line.errors.full_messages, "金額は0より大きい値にしてください"
   end
 
+  test "should be invalid with amount exceeding maximum" do
+    entry_line = JournalEntryLine.new(
+      amount: 1_000_000_000_000,
+      side: :credit,
+      journal_entry: @journal_entry,
+      account: @cash_account
+    )
+    assert_not entry_line.valid?
+    assert_includes entry_line.errors.full_messages, "金額は999999999999以下の値にしてください"
+  end
+
   test "should be invalid with invalid side" do
     entry_line = JournalEntryLine.new(
       amount: 1000,
