@@ -82,4 +82,22 @@ class AccountTest < ActiveSupport::TestCase
     assert_equal "expense", account.category
     assert_equal 5, Account.categories["expense"]
   end
+
+  test "should raise ArgumentError for invalid category value" do
+    assert_raises(ArgumentError) do
+      Account.new(name: "現金", category: :invalid_category, is_standard: true)
+    end
+  end
+
+  test "should raise ArgumentError for category value not in defined enum" do
+    assert_raises(ArgumentError) do
+      Account.new(name: "現金", category: "unknown", is_standard: true)
+    end
+  end
+
+  test "should raise ArgumentError for numeric category value outside enum range" do
+    assert_raises(ArgumentError) do
+      Account.new(name: "現金", category: 999, is_standard: true)
+    end
+  end
 end
