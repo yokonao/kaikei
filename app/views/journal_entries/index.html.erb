@@ -2,7 +2,7 @@
   <div class="bg-white rounded-lg shadow-lg">
     <div class="bg-blue-600 text-white px-6 py-4 rounded-t-lg flex justify-between items-center">
       <h1 class="text-2xl font-bold">仕訳一覧</h1>
-      <%= link_to "新規仕訳", "/", class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
+      <%= link_to "新規仕訳", new_journal_entry_path, class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
     </div>
 
     <div class="overflow-x-auto">
@@ -44,7 +44,7 @@
                   <%= number_to_currency(amount, unit: "¥", precision: 0, delimiter: ",") %>
                 </td>
                 <td class="flex px-6 py-4 text-sm font-medium space-x-2">
-                  <%= link_to "編集", "/", class: "text-green-600 hover:text-green-900" %>
+                  <%= link_to "編集", edit_journal_entry_path(entry), class: "text-green-600 hover:text-green-900" %>
                   <%= button_to "削除", journal_entry_path(entry), method: :delete,
                                 data: { turbo_confirm: "本当に削除しますか？" },
                                 class: "text-red-600 hover:text-red-900 bg-transparent border-0" %>
