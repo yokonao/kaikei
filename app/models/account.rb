@@ -12,5 +12,5 @@ class Account < ApplicationRecord
             length: { maximum: 50 },
             uniqueness: { message: "が重複しています" }
   validates :category, presence: { message: "を指定してください" }
-  validates :is_standard, inclusion: { in: [true, false], message: "は真偽値で指定してください" }
+  validates :is_standard, inclusion: { in: [ true, false ], message: "は真偽値で指定してください" }
 end
