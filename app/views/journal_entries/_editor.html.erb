@@ -1,1 +1,152 @@
-DUMMY
+<div class="max-w-6xl mx-auto min-h-screen">
+  <div class="bg-white border-4 border-black shadow-2xl">
+    <div class="bg-gray-100 px-8 py-6 border-b-4 border-black">
+      <h1 class="text-3xl font-mono tracking-wide">仕訳入力</h1>
+    </div>
+
+    <%= form_with model: @journal_entry, local: true, data: { controller: "journal-entry" }, class: "p-8" do |form| %>
+      <% if @journal_entry.errors.any? %>
+        <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6 font-mono">
+          <strong>エラーが発生しました:</strong>
+          <ul class="list-disc list-inside">
+            <% @journal_entry.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="border-2 border-black mb-8">
+        <div class="grid grid-cols-2 gap-0">
+          <%= form.label :entry_date, "仕訳日", class: "border-[0.5] border-black bg-gray-100 py-2 text-center font-mono" %>
+          <%= form.date_field :entry_date, class: "w-full px-2 py-2 border-l-[0.5] border-b-[0.5] font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
+        </div>
+        <div class="grid grid-cols-2 gap-0">
+          <%= form.label :summary, "摘要", class: "border-[0.5] border-black bg-gray-100 py-2 text-center font-mono" %>
+          <%= form.text_field :summary, placeholder: "取引の内容を入力してください", class: "w-full px-2 py-2 border-l-[0.5] border-y-[0.5] font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
+        </div>
+
+        <!-- 左右分割レイアウト -->
+        <div class="grid grid-cols-2 gap-0">
+
+          <!-- 借方側 -->
+          <div>
+            <!-- 借方ヘッダー -->
+            <div class="bg-gray-100 py-2 text-center font-mono border-[0.5] border-black">
+              借方
+            </div>
+
+            <!-- 借方列ヘッダー -->
+            <div class="grid grid-cols-12 border-[0.5] bg-gray-100">
+              <div class="col-span-6 border-[0.5] border-black py-2 text-center font-mono text-sm">勘定科目</div>
+              <div class="col-span-4 border-[0.5] border-black py-2 text-center font-mono text-sm">金額</div>
+              <div class="col-span-2 border-[0.5] border-black py-2 text-center font-mono text-sm">削除</div>
+            </div>
+
+            <!-- 借方明細行 -->
+            <div data-journal-entry-target="debitContainer">
+              <%= form.fields_for :journal_entry_lines do |line_form| %>
+                <% if line_form.object.side == "debit" %>
+                  <%= render "line",
+                      field_name: line_form.object_name,
+                      side: "debit",
+                      accounts: @accounts,
+                      selected_account_id: line_form.object.account_id,
+                      amount_value: line_form.object.formatted_amount_for_input,
+                      is_persisted: line_form.object.persisted?,
+                      line_id: line_form.object.persisted? ? line_form.object.id : nil %>
+                <% end %>
+              <% end %>
+            </div>
+
+            <!-- 借方行追加ボタン -->
+            <div class="py-2">
+              <div class="text-center">
+                <button type="button"
+                        class="bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white px-4 py-2 font-mono text-sm border border-gray-400"
+                        data-action="click->journal-entry#addDebitLine">
+                  + 借方行追加
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 貸方側 -->
+          <div>
+            <!-- 貸方ヘッダー -->
+            <div class="bg-gray-100 py-2 text-center font-mono border-[0.5] border-black">
+              貸方
+            </div>
+
+            <!-- 貸方列ヘッダー -->
+            <div class="grid grid-cols-12 border-y-[0.5] bg-gray-100">
+              <div class="col-span-6 border-[0.5] border-black py-2 text-center font-mono text-sm">勘定科目</div>
+              <div class="col-span-4 border-[0.5] border-black py-2 text-center font-mono text-sm">金額</div>
+              <div class="col-span-2 border-[0.5] border-black py-2 text-center font-mono text-sm">削除</div>
+            </div>
+
+            <!-- 貸方明細行 -->
+            <div data-journal-entry-target="creditContainer">
+              <%= form.fields_for :journal_entry_lines do |line_form| %>
+                <% if line_form.object.side == "credit" %>
+                  <%= render "line",
+                      field_name: line_form.object_name,
+                      side: "credit",
+                      accounts: @accounts,
+                      selected_account_id: line_form.object.account_id,
+                      amount_value: line_form.object.formatted_amount_for_input,
+                      is_persisted: line_form.object.persisted?,
+                      line_id: line_form.object.persisted? ? line_form.object.id : nil %>
+                <% end %>
+              <% end %>
+            </div>
+
+            <!-- 貸方行追加ボタン -->
+            <div class="py-2">
+              <div class="text-center">
+                <button type="button"
+                        class="bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white px-4 py-2 font-mono text-sm border border-gray-400"
+                        data-action="click->journal-entry#addCreditLine">
+                  + 貸方行追加
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <div class="bg-gray-100 text-black px-8 py-6 border border-black">
+      <div class="flex justify-center items-center">
+        <div class="flex space-x-12 text-lg font-mono">
+          <div class="text-black">
+            借方合計: <span data-journal-entry-target="debitTotal" class= text-xl">0</span>円
+          </div>
+          <div class="text-black">
+            貸方合計: <span data-journal-entry-target="creditTotal" class= text-xl">0</span>円
+          </div>
+          <div class="text-black">
+            差額: <span data-journal-entry-target="difference" class= text-xl">0</span>円
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <div class="flex justify-center mt-8">
+        <%= form.submit "保存", class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest" %>
+      </div>
+    <% end %>
+
+    <!-- JavaScript用の隠しテンプレート -->
+    <template id="journal-entry-line-template">
+      <%= render "line",
+          field_name: "__FIELD_NAME_PLACEHOLDER__",
+          side: "__SIDE_PLACEHOLDER__",
+          accounts: @accounts,
+          selected_account_id: nil,
+          amount_value: nil,
+          is_persisted: false,
+          line_id: nil %>
+    </template>
+  </div>
+</div>
