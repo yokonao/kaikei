@@ -1,0 +1,12 @@
+ja:
+  time:
+    formats:
+      full_date: "%Y年%m月%d日 (%a) %H:%M"
+  activerecord:
+    models:
+      account: 勘定科目
+    attributes:
+      account:
+        name: 勘定科目名
+        category: 区分（資産・負債・資本・収益・費用）
+        is_standard: デフォルト勘定科目かどうか
