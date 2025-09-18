@@ -26,7 +26,7 @@ class AccountTest < ActiveSupport::TestCase
   test "should require category" do
     account = Account.new(name: "現金")
     assert_not account.valid?
-    assert_includes account.errors.full_messages, "区分（資産・負債・資本・収益・費用）を指定してください"
+    assert_includes account.errors.full_messages, "区分（資産・負債・純資産・収益・費用）を指定してください"
   end
 
   test "should enforce maximum length of name" do

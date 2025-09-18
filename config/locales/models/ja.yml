@@ -18,7 +18,7 @@ ja:
     attributes:
       account:
         name: 勘定科目名
-        category: 区分（資産・負債・資本・収益・費用）
+        category: 区分（資産・負債・純資産・収益・費用）
         is_standard: デフォルト勘定科目かどうか
       journal_entry:
         entry_date: 仕訳日

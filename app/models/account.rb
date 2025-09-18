@@ -2,7 +2,7 @@ class Account < ApplicationRecord
   enum :category, {
     asset: 1, # 資産
     liability: 2, # 負債
-    equity: 3, # 資本
+    equity: 3, # 純資産
     revenue: 4, # 収益
     expense: 5 # 費用
   }
