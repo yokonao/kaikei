@@ -2,11 +2,11 @@ require "test_helper"
 
 class AccountTest < ActiveSupport::TestCase
   [
-    { name: "現金", category: :asset, is_standard: true },
-    { name: "買掛金", category: :liability, is_standard: true },
-    { name: "資本金", category: :equity, is_standard: true },
-    { name: "売上高", category: :revenue, is_standard: true },
-    { name: "仕入高", category: :expense, is_standard: true },
+    { name: "普通用金", category: :asset, is_standard: true },
+    { name: "支払手形", category: :liability, is_standard: true },
+    { name: "その他有価証券評価差額金", category: :equity, is_standard: true },
+    { name: "受取利息", category: :revenue, is_standard: true },
+    { name: "給料", category: :expense, is_standard: true },
     { name: "  現金  ", category: :asset, is_standard: false },
     { name: "Cash", category: :asset, is_standard: false },
     { name: "売掛金・商品券", category: :asset, is_standard: false }
@@ -36,8 +36,8 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   test "should enforce uniqueness of name" do
-    Account.create!(name: "現金", category: :asset, is_standard: true)
-    duplicate_account = Account.new(name: "現金", category: :liability, is_standard: true)
+    Account.create!(name: "テスト勘定科目_UNIQUE", category: :asset, is_standard: true)
+    duplicate_account = Account.new(name: "テスト勘定科目_UNIQUE", category: :liability, is_standard: true)
     assert_not duplicate_account.valid?
     assert_includes duplicate_account.errors.full_messages, "勘定科目名が重複しています"
   end

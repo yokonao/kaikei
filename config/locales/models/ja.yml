@@ -3,10 +3,28 @@ ja:
     formats:
       full_date: "%Y年%m月%d日 (%a) %H:%M"
   activerecord:
+    errors:
+      models:
+        journal_entry_line:
+          attributes:
+            journal_entry:
+              required: "を指定してください"
+            account:
+              required: "を指定してください"
     models:
       account: 勘定科目
+      journal_entry: 仕訳
+      journal_entry_line: 仕訳明細
     attributes:
       account:
         name: 勘定科目名
         category: 区分（資産・負債・資本・収益・費用）
         is_standard: デフォルト勘定科目かどうか
+      journal_entry:
+        entry_date: 仕訳日
+        summary: 摘要
+      journal_entry_line:
+        amount: 金額
+        side: 借方・貸方
+        journal_entry: 仕訳
+        account: 勘定科目

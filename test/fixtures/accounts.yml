@@ -1,0 +1,26 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+cash:
+  name: "現金"
+  category: 1
+  is_standard: true
+
+payable:
+  name: "買掛金"
+  category: 2
+  is_standard: true
+
+capital_stock:
+  name: "資本金"
+  category: 3
+  is_standard: true
+
+sales:
+  name: "売上高"
+  category: 4
+  is_standard: true
+
+cogs: # Cost of Goods Sold
+  name: "仕入高"
+  category: 5
+  is_standard: true
