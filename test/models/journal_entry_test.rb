@@ -9,8 +9,22 @@ class JournalEntryTest < ActiveSupport::TestCase
   ].each do |tc|
     test "should be valid with valid attributes #{tc}" do
       journal_entry = JournalEntry.new(**tc)
-      assert journal_entry.valid?
+      assert_nothing_raised { journal_entry.valid? }
     end
+  end
+
+  test "should be valid with balanced lines" do
+    cash_account = accounts(:cash)
+    capital_stock_account = accounts(:capital_stock)
+    journal_entry = JournalEntry.new(
+      entry_date: Date.today,
+      summary: "貸借が一致していない仕訳",
+      journal_entry_lines_attributes: [
+        { amount: 1000, side: :debit, account: cash_account },
+        { amount: 1000, side: :credit, account: capital_stock_account }
+      ]
+    )
+    assert_nothing_raised { journal_entry.valid? }
   end
 
   test "should save valid journal entry" do
@@ -29,5 +43,20 @@ class JournalEntryTest < ActiveSupport::TestCase
     journal_entry = JournalEntry.new(entry_date: Date.today, summary: "a" * 201)
     assert_not journal_entry.valid?
     assert_includes journal_entry.errors.full_messages, "摘要は200文字以内で入力してください"
+  end
+
+  test "should enforce balanced" do
+    cash_account = accounts(:cash)
+    capital_stock_account = accounts(:capital_stock)
+    journal_entry = JournalEntry.new(
+      entry_date: Date.today,
+      summary: "貸借が一致していない仕訳",
+      journal_entry_lines_attributes: [
+        { amount: 1000, side: :debit, account: cash_account },
+        { amount: 2000, side: :credit, account: capital_stock_account }
+      ]
+    )
+    assert_not journal_entry.valid?
+    assert_includes journal_entry.errors.full_messages, "借方と貸方の金額が一致していません"
   end
 end
