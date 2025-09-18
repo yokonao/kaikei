@@ -14,6 +14,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_17_075422) do
   create_table "accounts", force: :cascade do |t|
     t.string "name", null: false
     t.integer "category", default: 0, null: false
+    t.boolean "is_standard", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_accounts_on_name", unique: true
