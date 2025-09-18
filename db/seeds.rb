@@ -53,7 +53,7 @@ JournalEntry.create!(
   summary: "会社設立",
   journal_entry_lines_attributes: [
     { amount: 3000, side: :debit, account: Account.find_by(name: "現金") },
-    { amount: 3000, side: :credit, account: Account.find_by(name: "資本金") },
+    { amount: 3000, side: :credit, account: Account.find_by(name: "資本金") }
   ]
 )
 JournalEntry.create!(
@@ -62,7 +62,7 @@ JournalEntry.create!(
   journal_entry_lines_attributes: [
     { amount: 700, side: :debit, account: Account.find_by(name: "建物") },
     { amount: 1700, side: :credit, account: Account.find_by(name: "資本金") },
-    { amount: 1000, side: :debit, account: Account.find_by(name: "土地") },
+    { amount: 1000, side: :debit, account: Account.find_by(name: "土地") }
   ]
 )
 
