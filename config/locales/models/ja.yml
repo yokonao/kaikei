@@ -11,6 +11,8 @@ ja:
               required: "を指定してください"
             account:
               required: "を指定してください"
+            amount:
+              not_a_number: "を入力してください"
     models:
       account: 勘定科目
       journal_entry: 仕訳
@@ -23,6 +25,9 @@ ja:
       journal_entry:
         entry_date: 仕訳日
         summary: 摘要
+      journal_entry/journal_entry_lines:
+        amount: 明細行の金額
+        account: 明細行の勘定科目
       journal_entry_line:
         amount: 金額
         side: 借方・貸方

@@ -36,8 +36,8 @@ class JournalEntry < ApplicationRecord
   def balance_check
     return if journal_entry_lines.empty?
 
-    debit_total = journal_entry_lines.select { |line| line.side == "debit" }.sum(&:amount)
-    credit_total = journal_entry_lines.select { |line| line.side == "credit" }.sum(&:amount)
+    debit_total = journal_entry_lines.select { |line| line.side == "debit" && line.amount.present? }.sum(&:amount)
+    credit_total = journal_entry_lines.select { |line| line.side == "credit" && line.amount.present? }.sum(&:amount)
 
     if debit_total != credit_total
       errors.add(:base, "借方と貸方の金額が一致していません")

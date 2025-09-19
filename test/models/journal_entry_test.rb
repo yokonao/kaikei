@@ -60,6 +60,22 @@ class JournalEntryTest < ActiveSupport::TestCase
     assert_includes journal_entry.errors.full_messages, "借方と貸方の金額が一致していません"
   end
 
+  test "should disallow empty lines" do
+    cash_account = accounts(:cash)
+    capital_stock_account = accounts(:capital_stock)
+    journal_entry = JournalEntry.new(
+      entry_date: Date.today,
+      summary: "金額と勘定科目が空の仕訳",
+      journal_entry_lines_attributes: [
+        { side: :debit },
+        { side: :credit }
+      ]
+    )
+    assert_not journal_entry.valid?
+    assert_includes journal_entry.errors.full_messages, "明細行の金額を入力してください"
+    assert_includes journal_entry.errors.full_messages, "明細行の勘定科目を指定してください"
+  end
+
   class EnsureEqualLineCountTest < ActiveSupport::TestCase
     test "should add missing lines when debit has more lines" do
       journal_entry = JournalEntry.new(entry_date: Date.today, summary: "テスト仕訳")
