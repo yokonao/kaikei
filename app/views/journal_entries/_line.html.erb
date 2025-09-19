@@ -17,7 +17,7 @@
   </div>
 
   <!-- 金額 -->
-  <div class="col-span-4 border-[0.5] border-black p-0">
+  <div class="col-span-6 border-[0.5] border-black p-0">
     <%= number_field_tag "#{field_name}[amount]",
         amount_value,
         placeholder: "0",
@@ -26,22 +26,5 @@
         step: "0.01",
         class: "w-full h-full px-2 py-2 border-0 font-mono text-sm text-right focus:outline-none focus:bg-yellow-100",
         data: { action: "input->journal-entry#updateTotals" } %>
-  </div>
-
-  <!-- 削除 -->
-  <div class="col-span-2 border-[0.5] border-black p-0 flex justify-center items-center">
-    <% if defined?(is_persisted) && is_persisted %>
-      <%= check_box_tag "#{field_name}[_destroy]", "1", false,
-          { data: { action: "change->journal-entry#markForDestroy" }, class: "w-4 h-4" } %>
-    <% else %>
-      <button type="button"
-              class="w-full h-full font-mono text-xs cursor-pointer flex justify-center items-center"
-              data-action="click->journal-entry#removeLine"
-              aria-label="削除">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-        </svg>
-      </button>
-    <% end %>
   </div>
 </div>

@@ -46,8 +46,7 @@
             <!-- 借方列ヘッダー -->
             <div class="grid grid-cols-12">
               <div class="col-span-6 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">勘定科目</div>
-              <div class="col-span-4 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">金額</div>
-              <div class="col-span-2 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">削除</div>
+              <div class="col-span-6 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">金額</div>
             </div>
 
             <!-- 借方明細行 -->
@@ -65,17 +64,6 @@
                 <% end %>
               <% end %>
             </div>
-
-            <!-- 借方行追加ボタン -->
-            <div class="py-2">
-              <div class="text-center">
-                <button type="button"
-                        class="bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white px-4 py-2 font-mono text-sm border border-gray-400"
-                        data-action="click->journal-entry#addDebitLine">
-                  + 借方行追加
-                </button>
-              </div>
-            </div>
           </div>
 
           <!-- 貸方側 -->
@@ -88,8 +76,7 @@
             <!-- 貸方列ヘッダー -->
             <div class="grid grid-cols-12">
               <div class="col-span-6 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">勘定科目</div>
-              <div class="col-span-4 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">金額</div>
-              <div class="col-span-2 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">削除</div>
+              <div class="col-span-6 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">金額</div>
             </div>
 
             <!-- 貸方明細行 -->
@@ -106,17 +93,6 @@
                       line_id: line_form.object.persisted? ? line_form.object.id : nil %>
                 <% end %>
               <% end %>
-            </div>
-
-            <!-- 貸方行追加ボタン -->
-            <div class="py-2">
-              <div class="text-center">
-                <button type="button"
-                        class="bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white px-4 py-2 font-mono text-sm border border-gray-400"
-                        data-action="click->journal-entry#addCreditLine">
-                  + 貸方行追加
-                </button>
-              </div>
             </div>
           </div>
         </div>
