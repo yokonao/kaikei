@@ -89,4 +89,17 @@ class JournalEntryLineTest < ActiveSupport::TestCase
     assert_not entry_line.valid?
     assert_includes entry_line.errors.full_messages, "勘定科目を指定してください"
   end
+
+
+  # JournalEntryLine#formatted_amount_for_input
+  [
+    { amount: "100", result: "100" },
+    { amount: "100.0", result: "100" },
+    { amount: "100.1", result: "100.1" }
+  ].each do |tc|
+    test "formatted_amount_for_input should convert #{tc[:amount]} to #{tc[:result]}" do
+      journal_entry = JournalEntryLine.new(amount: tc[:amount])
+      assert_equal tc[:result], journal_entry.formatted_amount_for_input
+    end
+  end
 end
