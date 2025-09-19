@@ -1,3 +1,10 @@
+<!-- 勘定科目の一覧定義 -->
+<datalist id="accounts_datalist">
+  <% @accounts.each do |account| %>
+    <option value="<%= account.name %>" data-account-id="<%= account.id %>"></option>
+  <% end %>
+</datalist>
+
 <div class="max-w-6xl mx-auto min-h-screen">
   <div class="bg-white border-4 border-black shadow-2xl">
     <div class="bg-gray-100 px-8 py-6 border-b-4 border-black">

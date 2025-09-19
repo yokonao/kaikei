@@ -9,16 +9,11 @@
     <%= text_field_tag "#{field_name}[account_name]",
         (accounts.find { |a| a.id == selected_account_id }&.name if selected_account_id),
         { placeholder: "勘定科目を入力または選択",
-          list: "#{field_name.gsub(/[\[\]]/, '_')}_accounts_datalist",
+          list: "accounts_datalist",
           class: "w-full h-full px-2 py-2 border-0 font-mono text-sm focus:outline-none focus:bg-yellow-100",
           autocomplete: "off",
           data: { action: "input->journal-entry#updateAccountId" } } %>
     <%= hidden_field_tag "#{field_name}[account_id]", selected_account_id %>
-    <datalist id="<%= "#{field_name.gsub(/[\[\]]/, '_')}_accounts_datalist" %>">
-      <% accounts.each do |account| %>
-        <option value="<%= account.name %>" data-account-id="<%= account.id %>"></option>
-      <% end %>
-    </datalist>
   </div>
 
   <!-- 金額 -->
