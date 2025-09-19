@@ -33,7 +33,7 @@ class JournalEntriesController < ApplicationController
     @journal_entry = JournalEntry.find(params[:id])
 
     if @journal_entry.update(journal_entry_params)
-      redirect_to @journal_entry, notice: "仕訳が正常に更新されました。"
+      redirect_to edit_journal_entry_path(@journal_entry), notice: "仕訳が正常に更新されました。"
     else
       load_accounts
       render :edit, status: :unprocessable_entity
