@@ -3,22 +3,16 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["container", "line", "debitContainer", "creditContainer", "debitTotal", "creditTotal", "difference"]
 
-  connect() {
-    this.updateTotals()
-  }
-
   addDebitLine(event) {
     event.preventDefault()
     const template = this.getLineTemplate('debit')
     this.debitContainerTarget.insertAdjacentHTML('beforeend', template)
-    this.updateTotals()
   }
 
   addCreditLine(event) {
     event.preventDefault()
     const template = this.getLineTemplate('credit')
     this.creditContainerTarget.insertAdjacentHTML('beforeend', template)
-    this.updateTotals()
   }
 
   getLineTemplate(side) {
@@ -43,7 +37,6 @@ export default class extends Controller {
     const line = event.target.closest('[data-journal-entry-target="line"]')
     if (line) {
       line.remove()
-      this.updateTotals()
     }
   }
 
@@ -54,42 +47,6 @@ export default class extends Controller {
     } else {
       line.style.opacity = '1'
     }
-    this.updateTotals()
-  }
-
-  updateTotals() {
-    let debitTotal = 0
-    let creditTotal = 0
-
-    this.lineTargets.forEach(line => {
-      const destroyCheckbox = line.querySelector('input[name*="_destroy"]')
-      if (destroyCheckbox && destroyCheckbox.checked) {
-        return
-      }
-
-      const sideInput = line.querySelector('input[name*="[side]"]')
-      const amountInput = line.querySelector('input[name*="[amount]"]')
-
-      if (sideInput && amountInput && amountInput.value) {
-        const amount = parseFloat(amountInput.value) || 0
-
-        if (sideInput.value === 'debit') {
-          debitTotal += amount
-        } else if (sideInput.value === 'credit') {
-          creditTotal += amount
-        }
-      }
-    })
-
-    const difference = debitTotal - creditTotal
-
-    this.debitTotalTarget.textContent = this.formatNumber(debitTotal)
-    this.creditTotalTarget.textContent = this.formatNumber(creditTotal)
-    this.differenceTarget.textContent = this.formatNumber(difference)
-  }
-
-  formatNumber(number) {
-    return new Intl.NumberFormat('ja-JP').format(number)
   }
 
   updateAccountId(event) {
