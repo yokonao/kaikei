@@ -1,13 +1,14 @@
 class JournalEntriesController < ApplicationController
+  DEFAULT_LINES_PARAMS = 5
+  MAX_LINES_PARAMS = 1000
+
   def index
     @journal_entries = JournalEntry.includes(:journal_entry_lines).order(entry_date: :desc, id: :desc)
   end
 
   def new
-    @journal_entry = JournalEntry.new(entry_date: Date.current).tap do |ent|
-      ent.journal_entry_lines.build(side: "debit")
-      ent.journal_entry_lines.build(side: "credit")
-    end
+    @journal_entry = JournalEntry.new(entry_date: Date.current)
+                                 .ensure_equal_line_count(lines_params)
     load_accounts
   end
 
@@ -24,6 +25,7 @@ class JournalEntriesController < ApplicationController
 
   def edit
     @journal_entry = JournalEntry.find(params[:id])
+                                 .ensure_equal_line_count(lines_params)
     load_accounts
   end
 
@@ -53,6 +55,13 @@ class JournalEntriesController < ApplicationController
       :summary,
       journal_entry_lines_attributes: [ :id, :account_id, :amount, :side, :_destroy ]
     )
+  end
+
+  def lines_params
+    p = params[:lines].try(:to_i)
+    return DEFAULT_LINES_PARAMS if !p.is_a?(Integer) || p <= 0
+    return MAX_LINES_PARAMS if p >= MAX_LINES_PARAMS
+    p
   end
 
   def load_accounts

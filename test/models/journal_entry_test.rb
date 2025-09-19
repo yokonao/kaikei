@@ -59,4 +59,74 @@ class JournalEntryTest < ActiveSupport::TestCase
     assert_not journal_entry.valid?
     assert_includes journal_entry.errors.full_messages, "借方と貸方の金額が一致していません"
   end
+
+  class EnsureEqualLineCountTest < ActiveSupport::TestCase
+    test "should add missing lines when debit has more lines" do
+      journal_entry = JournalEntry.new(entry_date: Date.today, summary: "テスト仕訳")
+      journal_entry.journal_entry_lines.build(side: "debit")
+      journal_entry.journal_entry_lines.build(side: "debit")
+      journal_entry.journal_entry_lines.build(side: "credit")
+
+      journal_entry.ensure_equal_line_count
+
+      debit_count = journal_entry.journal_entry_lines.count { |line| line.side == "debit" }
+      credit_count = journal_entry.journal_entry_lines.count { |line| line.side == "credit" }
+
+      assert_equal 2, debit_count
+      assert_equal 2, credit_count
+    end
+
+    test "should add missing lines when credit has more lines" do
+      journal_entry = JournalEntry.new(entry_date: Date.today, summary: "テスト仕訳")
+      journal_entry.journal_entry_lines.build(side: "debit")
+      journal_entry.journal_entry_lines.build(side: "credit")
+      journal_entry.journal_entry_lines.build(side: "credit")
+
+      journal_entry.ensure_equal_line_count
+
+      debit_count = journal_entry.journal_entry_lines.count { |line| line.side == "debit" }
+      credit_count = journal_entry.journal_entry_lines.count { |line| line.side == "credit" }
+
+      assert_equal 2, debit_count
+      assert_equal 2, credit_count
+    end
+
+    test "should not add lines when both sides are equal" do
+      journal_entry = JournalEntry.new(entry_date: Date.today, summary: "テスト仕訳")
+      journal_entry.journal_entry_lines.build(side: "debit")
+      journal_entry.journal_entry_lines.build(side: "credit")
+
+      initial_count = journal_entry.journal_entry_lines.count
+      journal_entry.ensure_equal_line_count
+
+      assert_equal initial_count, journal_entry.journal_entry_lines.count
+      assert_equal 1, journal_entry.journal_entry_lines.count { |line| line.side == "debit" }
+      assert_equal 1, journal_entry.journal_entry_lines.count { |line| line.side == "credit" }
+    end
+
+    test "should respect minimum_lines parameter" do
+      journal_entry = JournalEntry.new(entry_date: Date.today, summary: "テスト仕訳")
+      journal_entry.journal_entry_lines.build(side: "debit")
+
+      journal_entry.ensure_equal_line_count(3)
+
+      debit_count = journal_entry.journal_entry_lines.count { |line| line.side == "debit" }
+      credit_count = journal_entry.journal_entry_lines.count { |line| line.side == "credit" }
+
+      assert_equal 3, debit_count
+      assert_equal 3, credit_count
+    end
+
+    test "should handle empty journal entry with minimum_lines" do
+      journal_entry = JournalEntry.new(entry_date: Date.today, summary: "テスト仕訳")
+
+      journal_entry.ensure_equal_line_count(2)
+
+      debit_count = journal_entry.journal_entry_lines.count { |line| line.side == "debit" }
+      credit_count = journal_entry.journal_entry_lines.count { |line| line.side == "credit" }
+
+      assert_equal 2, debit_count
+      assert_equal 2, credit_count
+    end
+  end
 end
