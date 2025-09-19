@@ -50,7 +50,7 @@
             </div>
 
             <!-- 借方明細行 -->
-            <div data-journal-entry-target="debitContainer">
+            <div>
               <%= form.fields_for :journal_entry_lines do |line_form| %>
                 <% if line_form.object.side == "debit" %>
                   <%= render "line",
@@ -80,7 +80,7 @@
             </div>
 
             <!-- 貸方明細行 -->
-            <div data-journal-entry-target="creditContainer">
+            <div>
               <%= form.fields_for :journal_entry_lines do |line_form| %>
                 <% if line_form.object.side == "credit" %>
                   <%= render "line",
@@ -102,17 +102,5 @@
         <%= form.submit "保存", class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest" %>
       </div>
     <% end %>
-
-    <!-- JavaScript用の隠しテンプレート -->
-    <template id="journal-entry-line-template">
-      <%= render "line",
-          field_name: "__FIELD_NAME_PLACEHOLDER__",
-          side: "__SIDE_PLACEHOLDER__",
-          accounts: @accounts,
-          selected_account_id: nil,
-          amount_value: nil,
-          is_persisted: false,
-          line_id: nil %>
-    </template>
   </div>
 </div>
