@@ -25,12 +25,12 @@
 
       <div class="border-2 border-black mb-8">
         <div class="grid grid-cols-2 gap-0">
-          <%= form.label :entry_date, "仕訳日", class: "border-[0.5] border-black bg-gray-100 py-2 text-center font-mono" %>
-          <%= form.date_field :entry_date, class: "w-full px-2 py-2 border-l-[0.5] border-b-[0.5] font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
+          <%= form.label :entry_date, "仕訳日", class: "block w-full h-full border-[0.5] border-black bg-gray-100 py-2 text-center font-mono" %>
+          <%= form.date_field :entry_date, class: "w-full h-full px-2 py-2 border-l-[0.5] border-b-[0.5] font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
         </div>
         <div class="grid grid-cols-2 gap-0">
-          <%= form.label :summary, "摘要", class: "border-[0.5] border-black bg-gray-100 py-2 text-center font-mono" %>
-          <%= form.text_field :summary, placeholder: "取引の内容を入力してください", class: "w-full px-2 py-2 border-l-[0.5] border-y-[0.5] font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
+          <%= form.label :summary, "摘要", class: "block w-full h-full border-[0.5] border-black bg-gray-100 py-2 text-center font-mono" %>
+          <%= form.text_field :summary, placeholder: "取引の内容を入力してください", class: "w-full h-full px-2 py-2 border-l-[0.5] border-y-[0.5] font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
         </div>
 
         <!-- 左右分割レイアウト -->

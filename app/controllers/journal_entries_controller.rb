@@ -54,7 +54,12 @@ class JournalEntriesController < ApplicationController
       :entry_date,
       :summary,
       journal_entry_lines_attributes: [ :id, :account_id, :amount, :side, :_destroy ]
-    )
+    ).tap do |p|
+      p[:journal_entry_lines_attributes].reject! { |k, v| v["id"].blank? && v["account_id"].blank? && v["amount"].blank? }
+      p[:journal_entry_lines_attributes].each do |k, v|
+        v["_destroy"] = "1" if v["account_id"].blank? && v["amount"].blank?
+      end
+    end
   end
 
   def lines_params
