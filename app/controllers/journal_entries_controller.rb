@@ -8,8 +8,7 @@ class JournalEntriesController < ApplicationController
 
   def new
     @journal_entry = JournalEntry.new(entry_date: Date.current)
-                                 .ensure_equal_line_count(lines_params)
-    load_accounts
+    prepare_journal_entry_detail
   end
 
   def create
@@ -18,16 +17,14 @@ class JournalEntriesController < ApplicationController
     if @journal_entry.save
       redirect_to edit_journal_entry_path(@journal_entry), notice: "仕訳が正常に作成されました。"
     else
-      @journal_entry.ensure_equal_line_count(lines_params)
-      load_accounts
+      prepare_journal_entry_detail
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
     @journal_entry = JournalEntry.find(params[:id])
-                                 .ensure_equal_line_count(lines_params)
-    load_accounts
+    prepare_journal_entry_detail
   end
 
   def update
@@ -36,8 +33,7 @@ class JournalEntriesController < ApplicationController
     if @journal_entry.update(journal_entry_params)
       redirect_to edit_journal_entry_path(@journal_entry), notice: "仕訳が正常に更新されました。"
     else
-      @journal_entry.ensure_equal_line_count(lines_params)
-      load_accounts
+      prepare_journal_entry_detail
       render :edit, status: :unprocessable_entity
     end
   end
@@ -63,6 +59,15 @@ class JournalEntriesController < ApplicationController
     end
   end
 
+  # 仕訳詳細画面を描画するのに必要なセットアップを全てまとめて行う
+  def prepare_journal_entry_detail
+    raise "@journal_entry must be set" if @journal_entry.blank?
+    @journal_entry.ensure_equal_line_count(lines_params)
+    @journal_entry = @journal_entry
+    @journal_entry_lines = organize_journal_entry_lines(@journal_entry)
+    @accounts = Account.order(:name)
+  end
+
   def lines_params
     p = params[:lines].try(:to_i)
     return DEFAULT_LINES_PARAMS if !p.is_a?(Integer) || p <= 0
@@ -70,7 +75,12 @@ class JournalEntriesController < ApplicationController
     p
   end
 
-  def load_accounts
-    @accounts = Account.order(:name)
+  # 仕訳の明細行を借方行 → 貸方行 → 借方行 → 貸方行 ... という順番に並び替える
+  #
+  # @note 貸借の明細行を一致させてからこのメソッドを呼び出すこと
+  def organize_journal_entry_lines(journal_entry)
+    debit_lines = journal_entry.journal_entry_lines.select { |line| line.side == "debit" }
+    credit_lines = journal_entry.journal_entry_lines.select { |line| line.side == "credit" }
+    debit_lines.zip(credit_lines).flatten
   end
 end

@@ -41,68 +41,33 @@
           <%= form.text_field :summary, placeholder: "取引の内容を入力してください", class: "w-full h-full px-2 py-2 border-l-[0.5] border-y-[0.5] font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
         </div>
 
-        <!-- 左右分割レイアウト -->
-        <div class="grid grid-cols-2 gap-0">
-
-          <!-- 借方側 -->
-          <div>
-            <!-- 借方ヘッダー -->
-            <div class="bg-gray-100 py-2 text-center font-mono border-[0.5] border-black">
-              借方
-            </div>
-
-            <!-- 借方列ヘッダー -->
-            <div class="grid grid-cols-12">
-              <div class="col-span-6 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">勘定科目</div>
-              <div class="col-span-6 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">金額</div>
-            </div>
-
-            <!-- 借方明細行 -->
-            <div>
-              <%= form.fields_for :journal_entry_lines do |line_form| %>
-                <% if line_form.object.side == "debit" %>
-                  <%= render "line",
-                      field_name: line_form.object_name,
-                      side: "debit",
-                      accounts: @accounts,
-                      selected_account_name: line_form.object.account_name,
-                      amount_value: line_form.object.formatted_amount_for_input,
-                      is_persisted: line_form.object.persisted?,
-                      line_id: line_form.object.persisted? ? line_form.object.id : nil %>
-                <% end %>
-              <% end %>
-            </div>
+        <div class="grid grid-cols-12">
+          <!-- 借方ヘッダー -->
+          <div class="col-span-6 bg-gray-100 py-2 text-center font-mono border-[0.5] border-black">
+            借方
           </div>
-
-          <!-- 貸方側 -->
-          <div>
-            <!-- 貸方ヘッダー -->
-            <div class="bg-gray-100 py-2 text-center font-mono border-[0.5] border-black">
-              貸方
-            </div>
-
+          <!-- 貸方ヘッダー -->
+          <div class="col-span-6 bg-gray-100 py-2 text-center font-mono border-[0.5] border-black">
+            貸方
+          </div>
+          <!-- 借方列ヘッダー -->
+          <div class="col-span-3 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">勘定科目</div>
+          <div class="col-span-3 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">金額</div>
             <!-- 貸方列ヘッダー -->
-            <div class="grid grid-cols-12">
-              <div class="col-span-6 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">勘定科目</div>
-              <div class="col-span-6 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">金額</div>
-            </div>
+          <div class="col-span-3 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">勘定科目</div>
+          <div class="col-span-3 border-[0.5] border-black bg-gray-100 py-2 text-center font-mono text-sm">金額</div>
 
-            <!-- 貸方明細行 -->
-            <div>
-              <%= form.fields_for :journal_entry_lines do |line_form| %>
-                <% if line_form.object.side == "credit" %>
-                  <%= render "line",
-                      field_name: line_form.object_name,
-                      side: "credit",
-                      accounts: @accounts,
-                      selected_account_name: line_form.object.account_name,
-                      amount_value: line_form.object.formatted_amount_for_input,
-                      is_persisted: line_form.object.persisted?,
-                      line_id: line_form.object.persisted? ? line_form.object.id : nil %>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
+          <!-- 明細行 -->
+          <% @journal_entry_lines.each_with_index do |line, idx| %>
+            <%= render "line",
+                field_name: "journal_entry[journal_entry_lines_attributes][#{idx}]",
+                side: line.side,
+                accounts: @accounts,
+                selected_account_name: line.account_name,
+                amount_value: line.formatted_amount_for_input,
+                is_persisted: line.persisted?,
+                line_id: line.persisted? ? line.id : nil %>
+          <% end %>
         </div>
       </div>
 
