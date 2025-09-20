@@ -17,7 +17,7 @@ bundle update
 run = "bin/rails test"
 
 [tasks."test.system"]
-run = "bin/rails test test/system"
+run = "bin/rails test:system"
 
 [tasks."test.acceptance"]
 run = """
@@ -25,7 +25,7 @@ bin/rubocop
 bin/bundle-audit
 bin/brakeman -q --no-summary
 bin/rails test
-bin/rails test test/system
+bin/rails test:system
 """
 
 [tasks.deploy]
