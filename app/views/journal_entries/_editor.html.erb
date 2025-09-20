@@ -12,6 +12,8 @@
     </div>
 
     <%= form_with model: @journal_entry, local: true, class: "p-8" do |form| %>
+      <%= hidden_field_tag :lines, params[:lines] if params[:lines].present? %>
+
       <% if @journal_entry.errors.any? %>
         <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6 font-mono">
           <strong>エラーが発生しました:</strong>

@@ -18,6 +18,7 @@ class JournalEntriesController < ApplicationController
     if @journal_entry.save
       redirect_to edit_journal_entry_path(@journal_entry), notice: "仕訳が正常に作成されました。"
     else
+      @journal_entry.ensure_equal_line_count(lines_params)
       load_accounts
       render :new, status: :unprocessable_entity
     end
@@ -35,6 +36,7 @@ class JournalEntriesController < ApplicationController
     if @journal_entry.update(journal_entry_params)
       redirect_to edit_journal_entry_path(@journal_entry), notice: "仕訳が正常に更新されました。"
     else
+      @journal_entry.ensure_equal_line_count(lines_params)
       load_accounts
       render :edit, status: :unprocessable_entity
     end
