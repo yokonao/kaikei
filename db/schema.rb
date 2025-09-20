@@ -11,13 +11,11 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.0].define(version: 2025_09_17_075422) do
-  create_table "accounts", force: :cascade do |t|
-    t.string "name", null: false
+  create_table "accounts", primary_key: "name", id: :string, force: :cascade do |t|
     t.integer "category", default: 0, null: false
     t.boolean "is_standard", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_accounts_on_name", unique: true
   end
 
   create_table "journal_entries", force: :cascade do |t|
@@ -31,13 +29,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_17_075422) do
     t.decimal "amount", precision: 18, scale: 4, null: false
     t.string "side", null: false
     t.integer "journal_entry_id", null: false
-    t.integer "account_id", null: false
+    t.string "account_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_journal_entry_lines_on_account_id"
+    t.index ["account_name"], name: "index_journal_entry_lines_on_account_name"
     t.index ["journal_entry_id"], name: "index_journal_entry_lines_on_journal_entry_id"
   end
 
-  add_foreign_key "journal_entry_lines", "accounts"
+  add_foreign_key "journal_entry_lines", "accounts", column: "account_name", primary_key: "name"
   add_foreign_key "journal_entry_lines", "journal_entries", on_delete: :cascade
 end
