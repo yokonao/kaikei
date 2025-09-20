@@ -1,4 +1,4 @@
-<div class="grid grid-cols-12 hover:bg-gray-50" data-journal-entry-target="line">
+<div class="grid grid-cols-12 hover:bg-gray-50">
   <%= hidden_field_tag "#{field_name}[side]", side %>
   <% if defined?(line_id) && line_id %>
     <%= hidden_field_tag "#{field_name}[id]", line_id %>
@@ -6,14 +6,12 @@
 
   <!-- 勘定科目 -->
   <div class="col-span-6 border-[0.5] border-black p-0">
-    <%= text_field_tag "#{field_name}__readonly__account_name",
-        (accounts.find { |a| a.id == selected_account_id }&.name if selected_account_id),
+    <%= text_field_tag "#{field_name}[account_name]",
+        (accounts.find { |a| a.name == selected_account_name }&.name if selected_account_name),
         { placeholder: "勘定科目を入力または選択",
           list: "accounts_datalist",
           class: "w-full h-full px-2 py-2 border-0 font-mono text-sm focus:outline-none focus:bg-yellow-100",
-          autocomplete: "off",
-          data: { action: "input->journal-entry#updateAccountId" } } %>
-    <%= hidden_field_tag "#{field_name}[account_id]", selected_account_id %>
+          autocomplete: "off" } %>
   </div>
 
   <!-- 金額 -->

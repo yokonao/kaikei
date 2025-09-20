@@ -11,7 +11,7 @@
       <h1 class="text-3xl font-mono tracking-wide">仕訳入力</h1>
     </div>
 
-    <%= form_with model: @journal_entry, local: true, data: { controller: "journal-entry" }, class: "p-8" do |form| %>
+    <%= form_with model: @journal_entry, local: true, class: "p-8" do |form| %>
       <% if @journal_entry.errors.any? %>
         <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6 font-mono">
           <strong>エラーが発生しました:</strong>
@@ -57,7 +57,7 @@
                       field_name: line_form.object_name,
                       side: "debit",
                       accounts: @accounts,
-                      selected_account_id: line_form.object.account_id,
+                      selected_account_name: line_form.object.account_name,
                       amount_value: line_form.object.formatted_amount_for_input,
                       is_persisted: line_form.object.persisted?,
                       line_id: line_form.object.persisted? ? line_form.object.id : nil %>
@@ -87,7 +87,7 @@
                       field_name: line_form.object_name,
                       side: "credit",
                       accounts: @accounts,
-                      selected_account_id: line_form.object.account_id,
+                      selected_account_name: line_form.object.account_name,
                       amount_value: line_form.object.formatted_amount_for_input,
                       is_persisted: line_form.object.persisted?,
                       line_id: line_form.object.persisted? ? line_form.object.id : nil %>

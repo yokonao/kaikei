@@ -16,7 +16,7 @@ class JournalEntriesController < ApplicationController
     @journal_entry = JournalEntry.new(journal_entry_params)
 
     if @journal_entry.save
-      redirect_to @journal_entry, notice: "仕訳が正常に作成されました。"
+      redirect_to edit_journal_entry_path(@journal_entry), notice: "仕訳が正常に作成されました。"
     else
       load_accounts
       render :new, status: :unprocessable_entity
@@ -46,18 +46,17 @@ class JournalEntriesController < ApplicationController
     redirect_to journal_entries_path, notice: "仕訳が削除されました。"
   end
 
-
   private
 
   def journal_entry_params
     params.require(:journal_entry).permit(
       :entry_date,
       :summary,
-      journal_entry_lines_attributes: [ :id, :account_id, :amount, :side, :_destroy ]
+      journal_entry_lines_attributes: [ :id, :account_name, :amount, :side, :_destroy ]
     ).tap do |p|
-      p[:journal_entry_lines_attributes].reject! { |k, v| v["id"].blank? && v["account_id"].blank? && v["amount"].blank? }
+      p[:journal_entry_lines_attributes].reject! { |k, v| v["id"].blank? && v["account_name"].blank? && v["amount"].blank? }
       p[:journal_entry_lines_attributes].each do |k, v|
-        v["_destroy"] = "1" if v["account_id"].blank? && v["amount"].blank?
+        v["_destroy"] = "1" if v["account_name"].blank? && v["amount"].blank?
       end
     end
   end
