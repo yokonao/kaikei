@@ -23,6 +23,12 @@
         </div>
       <% end %>
 
+      <% if flash[:notice].present? %>
+        <div class="bg-gray-50 border-2 px-6 py-4 mb-6 font-mono">
+          <p><%= flash[:notice] %></p>
+        </div>
+      <% end %>
+
       <div class="border-2 border-black mb-8">
         <div class="grid grid-cols-2 gap-0">
           <%= form.label :entry_date, "仕訳日", class: "block w-full h-full border-[0.5] border-black bg-gray-100 py-2 text-center font-mono" %>
