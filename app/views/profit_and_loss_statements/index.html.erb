@@ -18,9 +18,9 @@
           <tbody class="bg-white">
             <% @revenue_accounts.each do |account| %>
               <tr>
-                <td class="px-4 py-3 border border-black font-mono text-sm"><%= account[:name] %></td>
+                <td class="px-4 py-3 border border-black font-mono text-sm"><%= account.name %></td>
                 <td class="px-4 py-3 border border-black font-mono text-sm text-right">
-                  <%= number_to_currency(account[:amount], unit: "¥", precision: 0, delimiter: ",") %>
+                  <%= number_to_currency(account.amount, unit: "¥", precision: 0, delimiter: ",") %>
                 </td>
               </tr>
             <% end %>
@@ -47,9 +47,9 @@
           <tbody class="bg-white">
             <% @expense_accounts.each do |account| %>
               <tr>
-                <td class="px-4 py-3 border border-black font-mono text-sm"><%= account[:name] %></td>
+                <td class="px-4 py-3 border border-black font-mono text-sm"><%= account.name %></td>
                 <td class="px-4 py-3 border border-black font-mono text-sm text-right">
-                  <%= number_to_currency(account[:amount], unit: "¥", precision: 0, delimiter: ",") %>
+                  <%= number_to_currency(account.amount, unit: "¥", precision: 0, delimiter: ",") %>
                 </td>
               </tr>
             <% end %>
