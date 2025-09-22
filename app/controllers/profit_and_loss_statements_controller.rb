@@ -1,5 +1,6 @@
 class ProfitAndLossStatementsController < ApplicationController
   def index
+    # TODO: パース失敗時にエラーにならないようにする
     @from = params[:from].present? ? Date.parse(params[:from]) : nil
     @to = params[:to].present? ? Date.parse(params[:to]) : nil
 
@@ -24,6 +25,7 @@ class ProfitAndLossStatementsController < ApplicationController
 
   private
 
+  # TODO: 将来的には会計年度の開始月をカスタマイズできるようにする
   def fiscal_year_start(today = Date.current)
     if today.month < 4
       Date.new(today.year - 1, 4, 1)
