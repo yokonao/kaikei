@@ -5,35 +5,6 @@
     </div>
 
     <div class="p-8 grid grid-cols-1 sm:grid-cols-2 gap-8">
-      <!-- 収益の部 -->
-      <div>
-        <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2 text-center">収益の部</h2>
-        <table class="w-full border-collapse mb-4">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="px-4 py-3 border border-black text-center font-mono text-sm tracking-wider w-3/4">科目名</th>
-              <th class="px-4 py-3 border border-black text-center font-mono text-sm tracking-wider w-1/4">金額</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white">
-            <% @revenu_lines.each do |account| %>
-              <tr>
-                <td class="px-4 py-3 border border-black font-mono text-sm"><%= account.name %></td>
-                <td class="px-4 py-3 border border-black font-mono text-sm text-right">
-                  <%= number_to_currency(account.amount, unit: "¥", precision: 0, delimiter: ",") %>
-                </td>
-              </tr>
-            <% end %>
-            <tr class="font-bold">
-              <td class="px-4 py-3 border-2 border-black font-mono text-sm">収益合計</td>
-              <td class="px-4 py-3 border-2 border-black font-mono text-sm text-right">
-                <%= number_to_currency(@total_revenue, unit: "¥", precision: 0, delimiter: ",") %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
       <!-- 費用の部 -->
       <div>
         <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2 text-center">費用の部</h2>
@@ -45,11 +16,11 @@
             </tr>
           </thead>
           <tbody class="bg-white">
-            <% @expense_lines.each do |account| %>
+            <% @expense_lines.each do |line| %>
               <tr>
-                <td class="px-4 py-3 border border-black font-mono text-sm"><%= account.name %></td>
+                <td class="px-4 py-3 border border-black font-mono text-sm"><%= line.name %></td>
                 <td class="px-4 py-3 border border-black font-mono text-sm text-right">
-                  <%= number_to_currency(account.amount, unit: "¥", precision: 0, delimiter: ",") %>
+                  <%= number_to_currency(line.amount, unit: "¥", precision: 0, delimiter: ",") %>
                 </td>
               </tr>
             <% end %>
@@ -57,6 +28,35 @@
               <td class="px-4 py-3 border-2 border-black font-mono text-sm">費用合計</td>
               <td class="px-4 py-3 border-2 border-black font-mono text-sm text-right">
                 <%= number_to_currency(@total_expenses, unit: "¥", precision: 0, delimiter: ",") %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 収益の部 -->
+      <div>
+        <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2 text-center">収益の部</h2>
+        <table class="w-full border-collapse mb-4">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="px-4 py-3 border border-black text-center font-mono text-sm tracking-wider w-3/4">科目名</th>
+              <th class="px-4 py-3 border border-black text-center font-mono text-sm tracking-wider w-1/4">金額</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <% @revenue_lines.each do |line| %>
+              <tr>
+                <td class="px-4 py-3 border border-black font-mono text-sm"><%= line.name %></td>
+                <td class="px-4 py-3 border border-black font-mono text-sm text-right">
+                  <%= number_to_currency(line.amount, unit: "¥", precision: 0, delimiter: ",") %>
+                </td>
+              </tr>
+            <% end %>
+            <tr class="font-bold">
+              <td class="px-4 py-3 border-2 border-black font-mono text-sm">収益合計</td>
+              <td class="px-4 py-3 border-2 border-black font-mono text-sm text-right">
+                <%= number_to_currency(@total_revenue, unit: "¥", precision: 0, delimiter: ",") %>
               </td>
             </tr>
           </tbody>

@@ -1,14 +1,14 @@
 class ProfitAndLoss
   Line = Data.define(:name, :amount)
 
-  attr_reader :revenu_lines, :expense_lines
+  attr_reader :revenue_lines, :expense_lines
 
   def initialize(start_date, end_date)
     raise ArgumentError, "start_date must be a Date" unless start_date.is_a?(Date)
     raise ArgumentError, "end_date must be a Date" unless end_date.is_a?(Date)
     @start_date = start_date
     @end_date = end_date
-    @revenu_lines = []
+    @revenue_lines = []
     @expense_lines = []
   end
 
