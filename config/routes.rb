@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   resources :journal_entries, only: [ :index, :new, :create, :edit, :update, :destroy ]
 
-  get "profit_and_loss_statement", to: "profit_and_loss_statements#index"
+  resource :profit_and_loss, only: [ :show ]
 
   # Defines the root path route ("/")
   root "journal_entries#index"

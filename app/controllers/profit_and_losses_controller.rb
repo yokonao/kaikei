@@ -1,5 +1,5 @@
-class ProfitAndLossStatementsController < ApplicationController
-  def index
+class ProfitAndLossesController < ApplicationController
+  def show
     # TODO: パース失敗時にエラーにならないようにする
     @from = params[:from].present? ? Date.parse(params[:from]) : nil
     @to = params[:to].present? ? Date.parse(params[:to]) : nil
