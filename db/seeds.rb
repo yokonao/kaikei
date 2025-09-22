@@ -16,11 +16,13 @@ standard_accounts = [
   { name: "商品", category: :asset, is_standard: true },
   { name: "建物", category: :asset, is_standard: true },
   { name: "土地", category: :asset, is_standard: true },
+  { name: "貸付金", category: :asset, is_standard: true },
 
   # 負債科目
   { name: "買掛金", category: :liability, is_standard: true },
   { name: "短期借入金", category: :liability, is_standard: true },
   { name: "未払金", category: :liability, is_standard: true },
+  { name: "借入金", category: :liability, is_standard: true },
 
   # 純資産科目
   { name: "資本金", category: :equity, is_standard: true },
@@ -57,12 +59,52 @@ JournalEntry.create!(
   ]
 )
 JournalEntry.create!(
+  entry_date: Date.new(2025, 3, 2),
+  summary: "銀行から借り入れ",
+  journal_entry_lines_attributes: [
+    { amount: 2000, side: :debit, account: Account.find("現金") },
+    { amount: 2000, side: :credit, account: Account.find("借入金") }
+  ]
+)
+JournalEntry.create!(
   entry_date: Date.new(2025, 3, 13),
   summary: "建物・土地の購入",
   journal_entry_lines_attributes: [
     { amount: 700, side: :debit, account: Account.find("建物") },
     { amount: 1700, side: :credit, account: Account.find("資本金") },
     { amount: 1000, side: :debit, account: Account.find("土地") }
+  ]
+)
+JournalEntry.create!(
+  entry_date: Date.new(2025, 3, 14),
+  summary: "取引先への貸し付け",
+  journal_entry_lines_attributes: [
+    { amount: 1000, side: :debit, account: Account.find("貸付金") },
+    { amount: 1000, side: :credit, account: Account.find("現金") }
+  ]
+)
+JournalEntry.create!(
+  entry_date: Date.new(2025, 3, 16),
+  summary: "商品の仕入れ",
+  journal_entry_lines_attributes: [
+    { amount: 2700, side: :debit, account: Account.find("仕入高") },
+    { amount: 2700, side: :credit, account: Account.find("現金") }
+  ]
+)
+JournalEntry.create!(
+  entry_date: Date.new(2025, 3, 17),
+  summary: "商品の売却",
+  journal_entry_lines_attributes: [
+    { amount: 4000, side: :debit, account: Account.find("現金") },
+    { amount: 4000, side: :credit, account: Account.find("売上高") }
+  ]
+)
+JournalEntry.create!(
+  entry_date: Date.new(2025, 3, 25),
+  summary: "従業員への給与支払い",
+  journal_entry_lines_attributes: [
+    { amount: 800, side: :debit, account: Account.find("給料手当") },
+    { amount: 800, side: :credit, account: Account.find("現金") }
   ]
 )
 

@@ -1,26 +1,32 @@
 class ProfitAndLoss
   Line = Data.define(:name, :amount)
 
+  attr_reader :revenu_lines, :expense_lines
+
   def initialize(start_date, end_date)
+    raise ArgumentError, "start_date must be a Date" unless start_date.is_a?(Date)
+    raise ArgumentError, "end_date must be a Date" unless end_date.is_a?(Date)
     @start_date = start_date
     @end_date = end_date
+    @revenu_lines = []
+    @expense_lines = []
   end
 
-  def revenue_accounts
-    [
-      Line.new(name: "売上高", amount: 10000000),
-      Line.new(name: "受取利息", amount: 50000)
-    ]
-  end
-
-  def expense_accounts
-    [
-      Line.new(name: "売上原価", amount: 6000000),
-      Line.new(name: "給料手当", amount: 2000000),
-      Line.new(name: "地代家賃", amount: 500000),
-      Line.new(name: "水道光熱費", amount: 200000),
-      Line.new(name: "通信費", amount: 100000),
-      Line.new(name: "減価償却費", amount: 300000)
-    ]
+  def load!
+    pl_lines = JournalEntryLine.joins(:journal_entry).
+                                includes(:account).
+                                where("journal_entry.entry_date": @start_date..@end_date).
+                                where("account.category": [ :revenue, :expense ])
+    @revenue_lines = pl_lines.
+                          filter { |line| line.account.revenue? }.
+                          group_by { |line| line.account_name }.
+                          transform_values { |lines| lines.sum { |line| line.side == "credit" ? line.amount : -line.amount } }.
+                          map { |k, v| Line.new(name: k, amount: v) }
+    @expense_lines = pl_lines.
+                          filter { |line| line.account.expense? }.
+                          group_by { |line| line.account_name }.
+                          transform_values { |lines| lines.sum { |line| line.side == "debit" ? line.amount : -line.amount } }.
+                          map { |k, v| Line.new(name: k, amount: v) }
+    nil
   end
 end
