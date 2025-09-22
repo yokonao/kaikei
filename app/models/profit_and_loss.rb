@@ -29,4 +29,16 @@ class ProfitAndLoss
                           map { |k, v| Line.new(name: k, amount: v) }
     nil
   end
+
+  def total_revenue
+    @revenue_lines.sum { |line| line.amount }
+  end
+
+  def total_expenses
+    @expense_lines.sum { |line| line.amount }
+  end
+
+  def net_income
+    total_revenue - total_expenses
+  end
 end

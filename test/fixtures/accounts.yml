@@ -20,7 +20,17 @@ sales:
   category: 4
   is_standard: true
 
+commision:
+  name: "受取手数料"
+  category: 4
+  is_standard: true
+
 cogs: # Cost of Goods Sold
   name: "仕入高"
+  category: 5
+  is_standard: true
+
+salaries:
+  name: 給与手当
   category: 5
   is_standard: true
