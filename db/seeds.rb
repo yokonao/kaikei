@@ -8,7 +8,8 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-user1 = User.create!(email_address: "test@example.com", password: "demodemo")
+user1 = User.create!(email_address: "test@example.com")
+user1.create_user_basic_password!(password: "demodemo")
 
 standard_accounts = [
   # 資産科目

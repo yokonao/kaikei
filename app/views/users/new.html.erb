@@ -16,20 +16,16 @@
         </div>
       <% end %>
 
-      <div class="border-2 border-black mb-8">
+      <div class="border-2 border-black mb-4">
         <div class="grid grid-cols-3 gap-0">
-          <%= form.label :email_address, "メールアドレス", class: "col-span-1 block w-full h-full border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 py-3 text-center font-mono" %>
+          <%= form.label :email_address, "メールアドレス", class: "col-span-1 block w-full h-full border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 px-2 py-3 text-center font-mono" %>
           <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email", class: "col-span-2 w-full h-full px-2 py-3 border-b-[0.5px] border-black font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
         </div>
-        <div class="grid grid-cols-3 gap-0">
-          <%= form.label :password, "パスワード", class: "col-span-1 block w-full h-full border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 py-3 text-center font-mono" %>
-          <%= form.password_field :password, required: true, autocomplete: "new-password", maxlength: 72, class: "col-span-2 w-full h-full px-2 py-3 border-b-[0.5px] border-black font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
-        </div>
-        <div class="grid grid-cols-3 gap-0">
-          <%= form.label :password_confirmation, "パスワード（確認）", class: "col-span-1 block w-full h-full border-r-[0.5px] border-black bg-gray-100 py-3 text-center font-mono" %>
-          <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", maxlength: 72, class: "col-span-2 w-full h-full px-2 py-3 font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
-        </div>
       </div>
+
+      <p class="font-mono mb-8">
+        入力したメールアドレスにワンタイムパスワードを送信します。
+      </p>
 
       <div class="flex justify-center">
         <%= form.submit "アカウント登録", class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer" %>
