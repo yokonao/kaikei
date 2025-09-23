@@ -23,7 +23,9 @@
   </head>
 
   <body class="bg-gray-50">
-    <%= render 'shared/header' %>
+    <% if authenticated? %>
+      <%= render 'shared/header' %>
+    <% end %>
 
     <main class="container mx-auto my-12 flex">
       <%= yield %>
