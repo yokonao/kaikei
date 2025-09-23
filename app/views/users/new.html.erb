@@ -1,0 +1,43 @@
+<div class="max-w-xl mx-auto">
+  <div class="bg-white border-4 border-black shadow-2xl mt-12">
+    <div class="bg-gray-100 px-8 py-6 border-b-4 border-black flex items-center space-x-2">
+      <%= image_tag "/icon.svg", class: "w-12 h-12", alt: "ロゴ" %>
+      <h1 class="text-3xl font-mono tracking-wide">KAIKEI</h1>
+    </div>
+
+    <%= form_with model: @user, url: users_path, class: "p-8" do |form| %>
+      <% if @user.errors.any? %>
+        <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6 font-mono">
+          <ul>
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="border-2 border-black mb-8">
+        <div class="grid grid-cols-3 gap-0">
+          <%= form.label :email_address, "メールアドレス", class: "col-span-1 block w-full h-full border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 py-3 text-center font-mono" %>
+          <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email", class: "col-span-2 w-full h-full px-2 py-3 border-b-[0.5px] border-black font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
+        </div>
+        <div class="grid grid-cols-3 gap-0">
+          <%= form.label :password, "パスワード", class: "col-span-1 block w-full h-full border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 py-3 text-center font-mono" %>
+          <%= form.password_field :password, required: true, autocomplete: "new-password", maxlength: 72, class: "col-span-2 w-full h-full px-2 py-3 border-b-[0.5px] border-black font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
+        </div>
+        <div class="grid grid-cols-3 gap-0">
+          <%= form.label :password_confirmation, "パスワード（確認）", class: "col-span-1 block w-full h-full border-r-[0.5px] border-black bg-gray-100 py-3 text-center font-mono" %>
+          <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", maxlength: 72, class: "col-span-2 w-full h-full px-2 py-3 font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
+        </div>
+      </div>
+
+      <div class="flex justify-center">
+        <%= form.submit "アカウント登録", class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer" %>
+      </div>
+
+      <div class="text-center mt-6">
+        <%= link_to "ログインはこちら", new_session_path, class: "font-mono text-sm underline hover:text-blue-600" %>
+      </div>
+    <% end %>
+  </div>
+</div>
