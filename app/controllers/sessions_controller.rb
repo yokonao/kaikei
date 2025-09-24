@@ -23,8 +23,7 @@ class SessionsController < ApplicationController
       fail_login and return unless user_id and user
 
       if UserOneTimePassword.authenticate_otp(user_id, params[:otp])
-        start_new_session_for user
-        redirect_to after_authentication_url
+        success_login user
       else
         fail_login
       end
@@ -33,8 +32,7 @@ class SessionsController < ApplicationController
       fail_login and return unless user
 
       if UserBasicPassword.authenticate_by(user_id: user.id, password: params[:password])
-        start_new_session_for user
-        redirect_to after_authentication_url
+        success_login user
       else
         fail_login
       end
@@ -47,6 +45,11 @@ class SessionsController < ApplicationController
   end
 
   private
+
+  def success_login(user)
+    start_new_session_for user
+    redirect_to after_authentication_url
+  end
 
   def fail_login
     redirect_to new_session_path, alert: "ログインに失敗しました"
