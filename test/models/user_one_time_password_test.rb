@@ -56,6 +56,24 @@ class UserOneTimePasswordTest < ActiveSupport::TestCase
       assert_not UserOneTimePassword.authenticate_otp(user.id, otp) # The second time the authentication fails
     end
 
+    test "the last OTP should be priotized" do
+      user = users(:one)
+      otps = [ "123456", "654321", "111111" ]
+      otps.each do |otp|
+        one_time_password = user.user_one_time_passwords.create!(
+          password: otp,
+          expires_at: 1.hour.from_now
+        )
+      end
+
+      assert_not UserOneTimePassword.authenticate_otp(user.id, otps[0])
+      assert_not UserOneTimePassword.authenticate_otp(user.id, otps[1])
+      assert UserOneTimePassword.authenticate_otp(user.id, otps[2])
+      assert_not UserOneTimePassword.authenticate_otp(user.id, otps[0])
+      assert UserOneTimePassword.authenticate_otp(user.id, otps[1])
+      assert UserOneTimePassword.authenticate_otp(user.id, otps[0])
+    end
+
     test "should return false for a non-existent OTP" do
       user = users(:one)
       assert_not UserOneTimePassword.authenticate_otp(user.id, "123456")
