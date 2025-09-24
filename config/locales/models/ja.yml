@@ -17,6 +17,7 @@ ja:
       account: 勘定科目
       journal_entry: 仕訳
       journal_entry_line: 仕訳明細
+      user: ユーザー
     attributes:
       account:
         name: 勘定科目名
@@ -33,3 +34,5 @@ ja:
         side: 借方・貸方
         journal_entry: 仕訳
         account: 勘定科目
+      user:
+        email_address: メールアドレス
