@@ -46,8 +46,6 @@ class SessionsController < ApplicationController
     else
       fail_login
     end
-  ensure
-    session.delete(:otp_user_id)
   end
 
   def basic_auth
@@ -64,6 +62,8 @@ class SessionsController < ApplicationController
   def success_login(user)
     start_new_session_for user
     redirect_to after_authentication_url
+  ensure
+    session.delete(:otp_user_id)
   end
 
   def fail_login
