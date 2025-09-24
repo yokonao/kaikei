@@ -5,7 +5,7 @@
       <h1 class="text-3xl font-mono tracking-wide">KAIKEI</h1>
     </div>
 
-    <%= form_with url: session_url, class: "p-8" do |form| %>
+    <div class="p-8">
       <% if alert = flash[:alert] %>
         <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6 font-mono">
           <%= alert %>
@@ -18,26 +18,78 @@
         </div>
       <% end %>
 
-      <div class="border-2 border-black mb-8">
-        <div class="grid grid-cols-3 gap-0">
-          <%= form.label :email_address, "メールアドレス", class: "col-span-1 block w-full h-full border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 py-3 text-center font-mono" %>
-          <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", value: params[:email_address], class: "col-span-2 w-full h-full px-2 py-3 border-b-[0.5px] border-black font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
-        </div>
-        <div class="grid grid-cols-3 gap-0">
-          <%= form.label :password, "パスワード", class: "col-span-1 block w-full h-full border-r-[0.5px] border-black bg-gray-100 py-3 text-center font-mono" %>
-          <%= form.password_field :password, required: true, autocomplete: "current-password", maxlength: 72, class: "col-span-2 w-full h-full px-2 py-3 font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
-        </div>
-      </div>
+      <% case @login_method %>
+      <% when "otp" %>
+        <%= form_with url: session_url do |form| %>
+          <%= form.hidden_field :login_method, value: "otp" %>
+          <div class="border-2 border-black mb-8">
+            <div class="grid grid-cols-3 gap-0">
+              <div class="col-span-1">
+                <%= form.label :email_address, "メールアドレス", class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center font-mono" %>
+              </div>
+              <div class="col-span-2">
+                <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email", class: "block w-full h-full border-b-[0.5px] border-black p-4 font-mono focus:outline-none focus:bg-yellow-100" %>
+              </div>
+            </div>
+          </div>
 
-      <div class="flex justify-center">
-        <%= form.submit "ログイン", class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer" %>
-      </div>
+          <div class="flex justify-center">
+            <%= form.submit "ワンタイムパスワードを送信", class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer" %>
+          </div>
+        <% end %>
+      <% when "otp_verification" %>
+        <%= form_with url: session_url do |form| %>
+          <%= form.hidden_field :login_method, value: "otp_verification" %>
+          <%= form.hidden_field :email_address, value: "" %>
+          <div class="border-2 border-black mb-8">
+            <div class="grid grid-cols-2 gap-0">
+              <div class="col-span-1">
+                <%= form.label :otp, "ワンタイムパスワード", class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center font-mono" %>
+              </div>
+              <div class="col-span-1">
+                <%= form.text_field :otp, required: true, autocomplete: "one-time-code", maxlength: 8, class: "block w-full h-full border-b-[0.5px] border-black p-4 font-mono focus:outline-none focus:bg-yellow-100" %>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-center">
+            <%= form.submit "ログイン", class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer" %>
+          </div>
+        <% end %>
+      <% else %>
+        <%= form_with url: session_url do |form| %>
+          <%= form.hidden_field :login_method, value: "basic" %>
+          <div class="border-2 border-black mb-8">
+            <div class="grid grid-cols-3 gap-0">
+              <div class="col-span-1">
+                <%= form.label :email_address, "メールアドレス", class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center font-mono" %>
+              </div>
+              <div class="col-span-2">
+                <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email", class: "block w-full h-full border-b-[0.5px] border-black p-4 font-mono focus:outline-none focus:bg-yellow-100" %>
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-0">
+              <div class="col-span-1">
+                <%= form.label :password, "パスワード", class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center font-mono" %>
+              </div>
+              <div class="col-span-2">
+                <%= form.password_field :password, required: true, autocomplete: "current-password", maxlength: 72, class: "block w-full h-full border-b-[0.5px] border-black p-4 font-mono focus:outline-none focus:bg-yellow-100" %>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-center">
+            <%= form.submit "ログイン", class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer" %>
+          </div>
+        <% end %>
+      <% end %>
+
 
       <div class="text-center mt-6">
-        <%= link_to "アカウント登録はこちら", signup_path, class: "font-mono text-sm underline hover:text-blue-600" %>
+        <%= link_to "アカウント登録", signup_path, class: "font-mono text-sm underline hover:text-blue-600" %>
         <span class="font-mono text-sm">/</span>
         <%= link_to "パスワードをお忘れの方", new_password_path, class: "font-mono text-sm underline hover:text-blue-600" %>
       </div>
-    <% end %>
+    </div>
   </div>
 </div>

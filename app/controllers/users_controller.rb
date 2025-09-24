@@ -6,14 +6,10 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
-    if @user.save
-      Current.session = @user.sessions.create!
-      session[:session_token] = Current.session.token
-      redirect_to root_path, notice: "アカウント登録が完了しました"
-    else
-      render :new, status: :unprocessable_entity
-    end
+    user = User.find_or_create_by(user_params)
+    user.user_one_time_passwords.create!(password: "123456", expires_at: Time.zone.now + 10.minutes)
+    # TODO: メール送信
+    redirect_to new_session_path
   end
 
   private
