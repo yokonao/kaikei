@@ -16,10 +16,12 @@
         </div>
       <% end %>
 
-      <div class="border-2 border-black mb-4">
-        <div class="grid grid-cols-3 gap-0">
-          <%= form.label :email_address, "メールアドレス", class: "col-span-1 block w-full h-full border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 px-2 py-3 text-center font-mono" %>
-          <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email", class: "col-span-2 w-full h-full px-2 py-3 border-b-[0.5px] border-black font-mono text-sm focus:outline-none focus:bg-yellow-100" %>
+      <div class="grid grid-cols-3 gap-0 border-2 border-black mb-4">
+        <div class="col-span-1">
+          <%= form.label :email_address, "メールアドレス", class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center font-mono" %>
+        </div>
+        <div class="col-span-2">
+          <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email", class: "block w-full h-full border-b-[0.5px] border-black p-4 font-mono focus:outline-none focus:bg-yellow-100" %>
         </div>
       </div>
 
