@@ -40,6 +40,9 @@ gem "turbo-rails"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 # Parse and Compare HTTP User Agents
 gem "useragent"
+# Makes your Ruby/Rails web server become a functional WebAuthn Relying Party.
+# https://www.w3.org/TR/webauthn/#webauthn-relying-party
+gem "webauthn"
 
 group :development, :test do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
