@@ -8,7 +8,8 @@ class SessionsController < ApplicationController
   end
 
   def create
-    case params[:login_method]
+    @login_method = params[:login_method]
+    case @login_method
     when "otp"
       init_otp
     when "otp_verification"
@@ -66,6 +67,6 @@ class SessionsController < ApplicationController
   end
 
   def fail_login
-    redirect_to new_session_path, alert: "ログインに失敗しました"
+    redirect_to new_session_path(login_method: @login_method), alert: "ログインに失敗しました"
   end
 end
