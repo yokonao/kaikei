@@ -14,6 +14,8 @@ class SessionsController < ApplicationController
       init_otp
     when "otp_verification"
       verify_otp
+    when "passkey"
+      passkey_auth
     else
       basic_auth
     end
@@ -45,6 +47,53 @@ class SessionsController < ApplicationController
       success_login user
     else
       fail_login
+    end
+  end
+
+  def passkey_auth
+    phase = params[:phase]
+    raise "phase must be initiation or verification" unless phase == "initiation" || phase == "verification"
+
+    case phase
+    when "initiation"
+      passkey_auth_init
+    when "verification"
+      passkey_auth_verify
+    end
+  end
+
+  def passkey_auth_init
+    options = WebAuthn::Credential.options_for_get
+
+    session[:authentication_challenge] = options.challenge
+
+    render json: options
+  end
+
+  def passkey_auth_verify
+    webauthn_credential = WebAuthn::Credential.from_get(params)
+
+    passkey = UserPasskey.find_by(id: webauthn_credential.id)
+    if passkey.nil?
+      render json: { error: "Passkey not found" }, status: :not_found
+      return
+    end
+
+    begin
+      webauthn_credential.verify(
+        session[:authentication_challenge],
+        public_key: passkey.public_key,
+        sign_count: passkey.sign_count
+      )
+
+      passkey.update!(sign_count: webauthn_credential.sign_count)
+      start_new_session_for(passkey.user)
+
+      render json: { status: "ok", redirect_url: after_authentication_url }, status: :ok
+    rescue WebAuthn::Error => e
+      render json: { error: e.message }, status: :unprocessable_content
+    ensure
+      session.delete(:authentication_challenge)
     end
   end
 
