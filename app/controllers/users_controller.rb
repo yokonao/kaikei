@@ -7,9 +7,9 @@ class UsersController < ApplicationController
 
   def create
     user = User.find_or_create_by(user_params)
-    user.user_one_time_passwords.create!(password: "123456", expires_at: Time.zone.now + 10.minutes)
-    # TODO: メール送信
-    redirect_to new_session_path
+    session[:otp_user_id] = user.id
+    user.create_otp!
+    redirect_to new_session_path(login_method: "otp_verification"), notice: "ワンタイムパスワードを #{user.email_address} に送信しました。"
   end
 
   private

@@ -8,4 +8,11 @@ class User < ApplicationRecord
             length: { maximum: 254 }, # @see https://www.rfc-editor.org/errata/eid1690
             format: { with: URI::MailTo::EMAIL_REGEXP, message: "の形式が正しくありません" }
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+
+  def create_otp!
+    otp = SecureRandom.alphanumeric(8)
+    # TODO: OTP をメールで送信する
+    Rails.logger.debug "otp: #{otp}"
+    user_one_time_passwords.create!(password: otp, expires_at: Time.current + 5.minutes)
+  end
 end

@@ -12,11 +12,9 @@ class SessionsController < ApplicationController
     when "otp"
       user = User.find_by(email_address: params[:email_address])
       fail_login and return unless user
-      session[:otp_user_id] = user.id
 
-      otp = SecureRandom.alphanumeric(8)
-      Rails.logger.debug "otp: #{otp}"
-      user.user_one_time_passwords.create!(password: otp, expires_at: Time.current + 5.minutes)
+      session[:otp_user_id] = user.id
+      user.create_otp!
 
       redirect_to new_session_path(login_method: "otp_verification"), notice: "ワンタイムパスワードを #{user.email_address} に送信しました。"
     when "otp_verification"
