@@ -20,8 +20,7 @@
               <% @user.user_passkeys.each do |passkey| %>
                 <li class="font-mono p-4 border border-black">
                   <div class="flex justify-between items-center">
-                    <span><%= passkey.external_id %></span>
-                    <span><%= button_to "削除", passkey_path(passkey.id), method: :delete, class: "text-red-500 hover:underline" %></span>
+                    <span><%= passkey.id %></span>
                   </div>
                 </li>
               <% end %>
