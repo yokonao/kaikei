@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_one :user_basic_password, dependent: :destroy
   has_many :user_one_time_passwords, dependent: :destroy
+  has_many :user_passkeys, dependent: :destroy
   has_many :sessions, dependent: :destroy
 
   validates :email_address, presence: true,
