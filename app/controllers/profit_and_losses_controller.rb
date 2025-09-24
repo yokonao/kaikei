@@ -1,8 +1,7 @@
 class ProfitAndLossesController < ApplicationController
   def show
-    # TODO: パース失敗時にエラーにならないようにする
-    @from = params[:from].present? ? Date.parse(params[:from]) : nil
-    @to = params[:to].present? ? Date.parse(params[:to]) : nil
+    @from = (Date.parse(params[:from]) rescue nil)
+    @to = (Date.parse(params[:to]) rescue nil)
 
     if @from.nil? && @to.nil?
       @from = fiscal_year_start
