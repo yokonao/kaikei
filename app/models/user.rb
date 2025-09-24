@@ -11,8 +11,9 @@ class User < ApplicationRecord
 
   def create_otp!
     otp = SecureRandom.alphanumeric(8)
-    # TODO: OTP をメールで送信する
-    Rails.logger.debug "otp: #{otp}"
+    # NOTE: 開発環境では OTP を確認しやすいようにデバッグログに出力
+    Rails.logger.debug "otp: #{otp}" if Rails.env.development?
+    OtpMailer.otp_login(self, otp).deliver_later
     user_one_time_passwords.create!(password: otp, expires_at: Time.current + 5.minutes)
   end
 end
