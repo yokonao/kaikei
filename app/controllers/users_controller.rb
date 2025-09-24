@@ -5,6 +5,10 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
+  def show
+    @user = Current.user
+  end
+
   def create
     user = User.find_or_create_by(user_params)
     session[:otp_user_id] = user.id

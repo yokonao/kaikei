@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   get "signup", to: "users#new"
   resources :users, only: [ :create ]
+  resource :user, only: [ :show ]
 
   resource :session
   resources :passwords, param: :token
