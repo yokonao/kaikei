@@ -17,6 +17,7 @@ ja:
       account: 勘定科目
       journal_entry: 仕訳
       journal_entry_line: 仕訳明細
+      user_one_time_password: ワンタイムパスワード
       user: ユーザー
     attributes:
       account:
@@ -34,5 +35,9 @@ ja:
         side: 借方・貸方
         journal_entry: 仕訳
         account: 勘定科目
+      user_one_time_password:
+        user: ユーザー
+        password: パスワード
+        expires_at: 有効期限
       user:
         email_address: メールアドレス
