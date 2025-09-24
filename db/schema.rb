@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_24_013255) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_24_054026) do
   create_table "accounts", primary_key: "name", id: :string, force: :cascade do |t|
     t.integer "category", default: 0, null: false
     t.boolean "is_standard", null: false
@@ -62,6 +62,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_013255) do
     t.index ["user_id"], name: "index_user_one_time_passwords_on_user_id"
   end
 
+  create_table "user_passkeys", id: :string, force: :cascade do |t|
+    t.string "public_key", null: false
+    t.integer "sign_count", null: false
+    t.datetime "last_used_at"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_passkeys_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email_address", null: false
     t.datetime "created_at", null: false
@@ -74,4 +84,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_24_013255) do
   add_foreign_key "sessions", "users"
   add_foreign_key "user_basic_passwords", "users"
   add_foreign_key "user_one_time_passwords", "users"
+  add_foreign_key "user_passkeys", "users"
 end
