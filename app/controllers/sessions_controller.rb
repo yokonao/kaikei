@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
     when "otp"
       init_otp
     when "otp_verification"
-      verfiy_otp
+      verify_otp
     else
       basic_auth
     end
