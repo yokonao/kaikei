@@ -10,7 +10,7 @@
         <p class="font-mono"><%= @user.email_address %></p>
       </div>
 
-      <div data-controller="passkeys">
+      <div data-controller="passkeys" class="mb-8">
         <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2">パスキー</h2>
         <div class="flex flex-col gap-4">
           <% if @user.user_passkeys.empty? %>
@@ -32,6 +32,17 @@
               新しいパスキーを登録
             </button>
           </div>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2">パスワード</h2>
+        <div class="flex flex-col gap-4">
+          <% if @user.user_basic_password.blank? %>
+            <p class="font-mono text-gray-600">未設定</p>
+          <% else %>
+            <p class="font-mono">設定済み</p>
+          <% end %>
         </div>
       </div>
     </div>
