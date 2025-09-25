@@ -22,7 +22,7 @@ class PasskeysController < ApplicationController
         id: WebAuthn.generate_user_id, # TODO: webauthn_id にする
         name: user.email_address,
       },
-      exclude: user.user_passkeys.pluck(&:id)
+      exclude: user.user_passkeys.pluck(:id)
     )
 
     session[:creation_challenge] = options.challenge
