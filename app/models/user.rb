@@ -10,11 +10,17 @@ class User < ApplicationRecord
             format: { with: URI::MailTo::EMAIL_REGEXP, message: "の形式が正しくありません" }
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
+  before_create :set_webauthn_user_handle
+
   def create_otp!
     otp = SecureRandom.alphanumeric(8)
     # NOTE: 開発環境では OTP を確認しやすいようにデバッグログに出力
     Rails.logger.debug "otp: #{otp}" if Rails.env.development?
     OtpMailer.otp_login(self, otp).deliver_later
     user_one_time_passwords.create!(password: otp, expires_at: Time.current + 5.minutes)
+  end
+
+  def set_webauthn_user_handle
+    self.webauthn_user_handle = WebAuthn.generate_user_id
   end
 end

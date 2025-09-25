@@ -17,7 +17,7 @@ class PasskeysController < ApplicationController
     user = Current.user
     options = WebAuthn::Credential.options_for_create(
       user: {
-        id: WebAuthn.generate_user_id, # TODO: webauthn_id にする
+        id: user.webauthn_user_handle,
         name: user.email_address
       },
       exclude: user.user_passkeys.pluck(:id)

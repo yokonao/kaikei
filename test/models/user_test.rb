@@ -1,6 +1,12 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
+  test "webauthn_user_handle should be set automatically" do
+    user = User.create!(email_address: "test+123@example.com")
+
+    assert user.webauthn_user_handle.present?
+  end
+
   test "should be valid with valid email address" do
     user = User.new(email_address: "test@example.com")
 
