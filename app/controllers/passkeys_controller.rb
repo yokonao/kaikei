@@ -3,7 +3,7 @@ class PasskeysController < ApplicationController
 
   def create
     phase = params[:phase]
-    raise "phase must be initialization or verification" unless phase == "initiation" || phase == "verification"
+    raise "phase must be initiation or verification" unless phase == "initiation" || phase == "verification"
 
     case phase
     when "initiation"
