@@ -39,8 +39,12 @@ export default class extends Controller {
         // });
         alert("Failed to register passkey");
       }
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      if (e.name === "InvalidStateError" && e.message.includes("already registered")) {
+        alert("Passkey already registered");
+        return;
+      }
+      // console.error(e);
       alert("Failed to register passkey");
     }
   }
