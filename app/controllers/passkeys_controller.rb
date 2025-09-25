@@ -1,6 +1,4 @@
 class PasskeysController < ApplicationController
-  allow_unauthenticated_access only: [ :new_authentication, :create_authentication ]
-
   def create
     phase = params[:phase]
     raise "phase must be initiation or verification" unless phase == "initiation" || phase == "verification"
