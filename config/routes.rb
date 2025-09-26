@@ -5,14 +5,11 @@ Rails.application.routes.draw do
   resources :users, only: [ :create ]
   resource :user, only: [ :show ]
   namespace :users do
+    resources :passkeys, only: [ :create ]
     resource :password, only: [ :update ]
   end
-
   resource :session
   resources :passwords, param: :token
-
-  resources :passkeys, only: [ :create ]
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
@@ -23,7 +20,6 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   resources :journal_entries, only: [ :index, :new, :create, :edit, :update, :destroy ]
-
   resource :profit_and_loss, only: [ :show ]
 
   # Defines the root path route ("/")
