@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_26_072319) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_26_073130) do
   create_table "accounts", primary_key: "name", id: :string, force: :cascade do |t|
     t.integer "category", default: 0, null: false
     t.boolean "is_standard", null: false
@@ -58,6 +58,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_26_072319) do
     t.string "user_agent"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "company_id"
+    t.index ["company_id"], name: "index_sessions_on_company_id"
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
@@ -100,6 +102,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_26_072319) do
   add_foreign_key "journal_entry_lines", "journal_entries", on_delete: :cascade
   add_foreign_key "memberships", "companies"
   add_foreign_key "memberships", "users"
+  add_foreign_key "sessions", "companies"
   add_foreign_key "sessions", "users"
   add_foreign_key "user_basic_passwords", "users"
   add_foreign_key "user_one_time_passwords", "users"
