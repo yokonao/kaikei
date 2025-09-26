@@ -15,6 +15,7 @@ ja:
               not_a_number: "を入力してください"
     models:
       account: 勘定科目
+      company: 事業所
       journal_entry: 仕訳
       journal_entry_line: 仕訳明細
       user_basic_password: パスワード
@@ -25,6 +26,8 @@ ja:
         name: 勘定科目名
         category: 区分（資産・負債・純資産・収益・費用）
         is_standard: デフォルト勘定科目かどうか
+      company:
+        name: 事業所名
       journal_entry:
         entry_date: 仕訳日
         summary: 摘要

@@ -11,6 +11,10 @@
 user1 = User.create!(email_address: "test@example.com")
 user1.create_user_basic_password!(password: "demodemo")
 
+company1 = Company.create!(name: "テスト事業所1")
+company2 = Company.create!(name: "テスト事業所2")
+company3 = Company.create!(name: "テスト事業所3")
+
 standard_accounts = [
   # 資産科目
   { name: "現金", category: :asset, is_standard: true },
