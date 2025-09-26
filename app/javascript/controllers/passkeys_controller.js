@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import { showErrorToast } from "utils/toast"
 
 export default class extends Controller {
   async register() {
@@ -37,15 +38,15 @@ export default class extends Controller {
         // verificationResponse.json().then((data) => {
         //   console.error(data);
         // });
-        alert("Failed to register passkey");
+        showErrorToast("Failed to register passkey");
       }
     } catch (e) {
       if (e.name === "InvalidStateError" && e.message.includes("already registered")) {
-        alert("Passkey already registered");
+        showErrorToast("指定された認証器は既に登録されています。他の認証器を選択してください。");
         return;
       }
       // console.error(e);
-      alert("Failed to register passkey");
+      showErrorToast("Failed to register passkey");
     }
   }
 }

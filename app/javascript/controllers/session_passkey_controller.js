@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { showErrorToast } from "utils/toast"
 
 export default class extends Controller {
   async authenticate() {
@@ -38,11 +39,11 @@ export default class extends Controller {
         // verificationResponse.json().then((data) => {
         //   console.error(data);
         // });
-        alert("Failed to authenticate passkey");
+        showErrorToast("Failed to authenticate passkey");
       }
     } catch (error) {
       // console.error(error);
-      alert("Failed to authenticate passkey");
+      showErrorToast("Failed to authenticate passkey");
     }
   }
 }
