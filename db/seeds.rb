@@ -15,6 +15,10 @@ company1 = Company.create!(name: "テスト事業所1")
 company2 = Company.create!(name: "テスト事業所2")
 company3 = Company.create!(name: "テスト事業所3")
 
+Membership.create!(user: user1, company: company1)
+Membership.create!(user: user1, company: company2)
+Membership.create!(user: user1, company: company3)
+
 standard_accounts = [
   # 資産科目
   { name: "現金", category: :asset, is_standard: true },
