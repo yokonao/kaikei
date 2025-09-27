@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resource :password, only: [ :update ]
   end
   resource :session
+  resource :company_selection, only: [ :new, :create ]
   resources :passwords, param: :token
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
