@@ -31,3 +31,21 @@
     translate: -50% -50px;
   }
 }
+
+button[popovertarget='financial-statements-menu'] {
+  anchor-name: --financial-statements-menu
+}
+
+#financial-statements-menu {
+  position-anchor: --financial-statements-menu;
+  position-area: bottom span-right;
+}
+
+button[popovertarget='user-profile-menu'] {
+  anchor-name: --user-profile-menu
+}
+
+#user-profile-menu {
+  position-anchor: --user-profile-menu;
+  position-area: bottom span-right;
+}
