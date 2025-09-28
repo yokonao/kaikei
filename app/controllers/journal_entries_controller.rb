@@ -3,7 +3,11 @@ class JournalEntriesController < ApplicationController
   MAX_LINES_PARAMS = 1000
 
   def index
-    @journal_entries = Current.company.journal_entries.includes(:journal_entry_lines).order(entry_date: :desc, id: :desc)
+    @journal_entries = Current.company.journal_entries.
+      includes(:journal_entry_lines).
+      order(entry_date: :desc, id: :desc).
+      page(params[:page]).
+      per(5)
   end
 
   def new
