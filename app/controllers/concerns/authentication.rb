@@ -4,7 +4,7 @@ module Authentication
   included do
     before_action :require_authentication
     before_action :require_company_selection
-    helper_method :authenticated?
+    helper_method :authenticated?, :company_selected?
   end
 
   class_methods do

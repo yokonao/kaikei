@@ -23,7 +23,7 @@
   </head>
 
   <body class="bg-gray-50">
-    <% if authenticated? %>
+    <% if authenticated? && company_selected? %>
       <%= render 'shared/header' %>
     <% end %>
 
