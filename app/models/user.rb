@@ -3,6 +3,8 @@ class User < ApplicationRecord
   has_many :user_one_time_passwords, dependent: :destroy
   has_many :user_passkeys, dependent: :destroy
   has_many :sessions, dependent: :destroy
+  has_many :memberships, dependent: :destroy
+  has_many :companies, through: :memberships
 
   validates :email_address, presence: true,
             uniqueness: { message: "は登録済みです" },

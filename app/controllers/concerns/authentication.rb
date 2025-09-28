@@ -3,12 +3,18 @@ module Authentication
 
   included do
     before_action :require_authentication
+    before_action :require_company_selection
     helper_method :authenticated?
   end
 
   class_methods do
     def allow_unauthenticated_access(**options)
       skip_before_action :require_authentication, **options
+      skip_before_action :require_company_selection, **options
+    end
+
+    def allow_no_company_access(**options)
+      skip_before_action :require_company_selection, **options
     end
   end
 
@@ -48,5 +54,19 @@ module Authentication
     def terminate_session
       Current.session.destroy
       cookies.delete(:session_id)
+    end
+
+    def company_selected?
+      Current.company.present?
+    end
+
+    def select_company(company)
+      resume_session.update!(company: company)
+    end
+
+    def require_company_selection
+      return if company_selected?
+
+      redirect_to new_company_selection_path
     end
 end
