@@ -12,6 +12,8 @@ gem "jbuilder"
 gem "kamal", require: false
 # HTTP client library that's fun to use
 gem "http"
+# Pagination utilities
+gem "kaminari"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use the Puma web server [https://github.com/puma/puma]
