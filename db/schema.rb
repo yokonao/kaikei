@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_26_073130) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_28_021643) do
   create_table "accounts", primary_key: "name", id: :string, force: :cascade do |t|
     t.integer "category", default: 0, null: false
     t.boolean "is_standard", null: false
@@ -29,6 +29,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_26_073130) do
     t.string "summary"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "company_id", null: false
+    t.index ["company_id"], name: "index_journal_entries_on_company_id"
   end
 
   create_table "journal_entry_lines", force: :cascade do |t|
@@ -98,6 +100,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_26_073130) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "journal_entries", "companies"
   add_foreign_key "journal_entry_lines", "accounts", column: "account_name", primary_key: "name"
   add_foreign_key "journal_entry_lines", "journal_entries", on_delete: :cascade
   add_foreign_key "memberships", "companies"

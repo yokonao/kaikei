@@ -61,7 +61,7 @@ end
 
 puts "勘定科目のサンプルデータを作成しました。"
 
-JournalEntry.create!(
+company1.journal_entries.create!(
   entry_date: Date.new(2025, 9, 1),
   summary: "会社設立",
   journal_entry_lines_attributes: [
@@ -69,7 +69,7 @@ JournalEntry.create!(
     { amount: 3000, side: :credit, account: Account.find("資本金") }
   ]
 )
-JournalEntry.create!(
+company1.journal_entries.create!(
   entry_date: Date.new(2025, 9, 2),
   summary: "銀行から借り入れ",
   journal_entry_lines_attributes: [
@@ -77,7 +77,7 @@ JournalEntry.create!(
     { amount: 2000, side: :credit, account: Account.find("借入金") }
   ]
 )
-JournalEntry.create!(
+company1.journal_entries.create!(
   entry_date: Date.new(2025, 9, 13),
   summary: "建物・土地の購入",
   journal_entry_lines_attributes: [
@@ -86,7 +86,7 @@ JournalEntry.create!(
     { amount: 1000, side: :debit, account: Account.find("土地") }
   ]
 )
-JournalEntry.create!(
+company1.journal_entries.create!(
   entry_date: Date.new(2025, 9, 14),
   summary: "取引先への貸し付け",
   journal_entry_lines_attributes: [
@@ -94,7 +94,7 @@ JournalEntry.create!(
     { amount: 1000, side: :credit, account: Account.find("現金") }
   ]
 )
-JournalEntry.create!(
+company1.journal_entries.create!(
   entry_date: Date.new(2025, 9, 16),
   summary: "商品の仕入れ",
   journal_entry_lines_attributes: [
@@ -102,7 +102,7 @@ JournalEntry.create!(
     { amount: 2700, side: :credit, account: Account.find("現金") }
   ]
 )
-JournalEntry.create!(
+company1.journal_entries.create!(
   entry_date: Date.new(2025, 9, 17),
   summary: "商品の売却",
   journal_entry_lines_attributes: [
@@ -110,7 +110,7 @@ JournalEntry.create!(
     { amount: 4000, side: :credit, account: Account.find("売上高") }
   ]
 )
-JournalEntry.create!(
+company1.journal_entries.create!(
   entry_date: Date.new(2025, 9, 25),
   summary: "従業員への給与支払い",
   journal_entry_lines_attributes: [

@@ -3,7 +3,8 @@ class ProfitAndLoss
 
   attr_reader :revenue_lines, :expense_lines
 
-  def initialize(start_date, end_date)
+  def initialize(company, start_date, end_date)
+    @company = company
     raise ArgumentError, "start_date must be a Date" unless start_date.is_a?(Date)
     raise ArgumentError, "end_date must be a Date" unless end_date.is_a?(Date)
     @start_date = start_date
@@ -15,6 +16,7 @@ class ProfitAndLoss
   def load!
     pl_lines = JournalEntryLine.joins(:journal_entry).
                                 includes(:account).
+                                where("journal_entry.company_id": @company.id).
                                 where("journal_entry.entry_date": @start_date..@end_date).
                                 where("account.category": [ :revenue, :expense ])
     @revenue_lines = pl_lines.

@@ -1,4 +1,5 @@
 class JournalEntry < ApplicationRecord
+  belongs_to :company
   has_many :journal_entry_lines, dependent: :destroy
   accepts_nested_attributes_for :journal_entry_lines, reject_if: :all_blank, allow_destroy: true
 

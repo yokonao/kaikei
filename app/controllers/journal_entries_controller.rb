@@ -3,16 +3,16 @@ class JournalEntriesController < ApplicationController
   MAX_LINES_PARAMS = 1000
 
   def index
-    @journal_entries = JournalEntry.includes(:journal_entry_lines).order(entry_date: :desc, id: :desc)
+    @journal_entries = Current.company.journal_entries.includes(:journal_entry_lines).order(entry_date: :desc, id: :desc)
   end
 
   def new
-    @journal_entry = JournalEntry.new(entry_date: Date.current)
+    @journal_entry = Current.company.journal_entries.build(entry_date: Date.current)
     prepare_journal_entry_detail
   end
 
   def create
-    @journal_entry = JournalEntry.new(journal_entry_params)
+    @journal_entry = Current.company.journal_entries.build(journal_entry_params)
 
     if @journal_entry.save
       redirect_to edit_journal_entry_path(@journal_entry), notice: "仕訳が正常に作成されました。"
@@ -23,12 +23,12 @@ class JournalEntriesController < ApplicationController
   end
 
   def edit
-    @journal_entry = JournalEntry.find(params[:id])
+    @journal_entry = Current.company.journal_entries.find_by!(id: params[:id])
     prepare_journal_entry_detail
   end
 
   def update
-    @journal_entry = JournalEntry.find(params[:id])
+    @journal_entry = Current.company.journal_entries.find_by!(id: params[:id])
 
     if @journal_entry.update(journal_entry_params)
       redirect_to edit_journal_entry_path(@journal_entry), notice: "仕訳が正常に更新されました。"
@@ -39,7 +39,7 @@ class JournalEntriesController < ApplicationController
   end
 
   def destroy
-    @journal_entry = JournalEntry.find(params[:id])
+    @journal_entry = Current.company.journal_entries.find_by!(id: params[:id])
     @journal_entry.destroy
     redirect_to journal_entries_path, notice: "仕訳が削除されました。"
   end
