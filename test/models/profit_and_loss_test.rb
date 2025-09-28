@@ -2,6 +2,7 @@ require "test_helper"
 
 class ProfitAndLossTest < ActiveSupport::TestCase
   setup do
+    @company = companies(:company_one)
     @sales = accounts(:sales)
     @cogs = accounts(:cogs)
     @cash = accounts(:cash)
@@ -9,12 +10,12 @@ class ProfitAndLossTest < ActiveSupport::TestCase
     @commision = accounts(:commision)
 
     # Create journal entries
-    @sept_entry = JournalEntry.create!(entry_date: Date.new(2025, 9, 1), summary: "9月の売上")
-    @sept_entry_2 = JournalEntry.create!(entry_date: Date.new(2025, 9, 20), summary: "9月の売上2")
-    @sept_entry_3 = JournalEntry.create!(entry_date: Date.new(2025, 9, 15), summary: "9月の仕入")
-    @sept_entry_4 = JournalEntry.create!(entry_date: Date.new(2025, 9, 25), summary: "9月の給与")
-    @sept_entry_5 = JournalEntry.create!(entry_date: Date.new(2025, 9, 25), summary: "9月の受取手数料")
-    @oct_entry = JournalEntry.create!(entry_date: Date.new(2025, 10, 1), summary: "10月の売上")
+    @sept_entry = JournalEntry.create!(company: @company, entry_date: Date.new(2025, 9, 1), summary: "9月の売上")
+    @sept_entry_2 = JournalEntry.create!(company: @company, entry_date: Date.new(2025, 9, 20), summary: "9月の売上2")
+    @sept_entry_3 = JournalEntry.create!(company: @company, entry_date: Date.new(2025, 9, 15), summary: "9月の仕入")
+    @sept_entry_4 = JournalEntry.create!(company: @company, entry_date: Date.new(2025, 9, 25), summary: "9月の給与")
+    @sept_entry_5 = JournalEntry.create!(company: @company, entry_date: Date.new(2025, 9, 25), summary: "9月の受取手数料")
+    @oct_entry = JournalEntry.create!(company: @company, entry_date: Date.new(2025, 10, 1), summary: "10月の売上")
 
     # Create journal entry lines
     @sept_entry.journal_entry_lines.create!(account: @sales, side: :credit, amount: 10000)
@@ -37,27 +38,25 @@ class ProfitAndLossTest < ActiveSupport::TestCase
   end
 
   test "should raise ArgumentError for invalid date" do
-    assert_raises(ArgumentError) { ProfitAndLoss.new("invalid", Date.today) }
-    assert_raises(ArgumentError) { ProfitAndLoss.new(Date.today, "invalid") }
+    assert_raises(ArgumentError) { ProfitAndLoss.new(@company, "invalid", Date.today) }
+    assert_raises(ArgumentError) { ProfitAndLoss.new(@company, Date.today, "invalid") }
   end
 
   test "#load! calculates revenue and expense lines correctly for a given period" do
     start_date = Date.new(2025, 9, 1)
     end_date = Date.new(2025, 9, 30)
-    pl = ProfitAndLoss.new(start_date, end_date)
+    pl = ProfitAndLoss.new(@company, start_date, end_date)
     pl.load!
 
     assert_equal 2, pl.revenue_lines.size
     assert_equal 16500, pl.total_revenue
-    revenue_line = pl.revenue_lines.first
-    assert_equal "売上高", revenue_line.name
-    assert_equal 15000, revenue_line.amount
+    sales_line = pl.revenue_lines.find { |line| line.name == "売上高" }
+    assert_equal 15000, sales_line.amount
 
     assert_equal 2, pl.expense_lines.size
     assert_equal 4000, pl.total_expenses
-    expense_line = pl.expense_lines.first
-    assert_equal "仕入高", expense_line.name
-    assert_equal 3000, expense_line.amount
+    cogs_line = pl.expense_lines.find { |line| line.name == "仕入高" }
+    assert_equal 3000, cogs_line.amount
 
     assert_equal 12500, pl.net_income
   end

@@ -1,5 +1,6 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 valid_entry:
+  company: company_one
   entry_date: <%= Date.current %>
   summary: "テスト仕訳"

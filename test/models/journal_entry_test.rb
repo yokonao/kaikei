@@ -1,6 +1,10 @@
 require "test_helper"
 
 class JournalEntryTest < ActiveSupport::TestCase
+  setup do
+    @company = companies(:company_one)
+  end
+
   [
     { entry_date: Date.current, summary: "テスト仕訳" },
     { entry_date: Date.current.tomorrow, summary: "a" * 200 },
@@ -8,7 +12,7 @@ class JournalEntryTest < ActiveSupport::TestCase
     { entry_date: Date.current - 30 }
   ].each do |tc|
     test "should be valid with valid attributes #{tc}" do
-      journal_entry = JournalEntry.new(**tc)
+      journal_entry = JournalEntry.new(company: @company, **tc)
       assert_nothing_raised { journal_entry.valid? }
     end
   end
@@ -17,6 +21,7 @@ class JournalEntryTest < ActiveSupport::TestCase
     cash_account = accounts(:cash)
     capital_stock_account = accounts(:capital_stock)
     journal_entry = JournalEntry.new(
+      company: @company,
       entry_date: Date.today,
       summary: "貸借が一致していない仕訳",
       journal_entry_lines_attributes: [
@@ -28,19 +33,19 @@ class JournalEntryTest < ActiveSupport::TestCase
   end
 
   test "should save valid journal entry" do
-    journal_entry = JournalEntry.new(entry_date: Date.today, summary: "保存テスト")
+    journal_entry = JournalEntry.new(company: @company, entry_date: Date.today, summary: "保存テスト")
     assert journal_entry.save
     assert_not_nil journal_entry.id
   end
 
   test "should require entry_date" do
-    journal_entry = JournalEntry.new(summary: "テスト仕訳")
+    journal_entry = JournalEntry.new(company: @company, summary: "テスト仕訳")
     assert_not journal_entry.valid?
     assert_includes journal_entry.errors.full_messages, "仕訳日を入力してください"
   end
 
   test "should enforce maximum length of summary" do
-    journal_entry = JournalEntry.new(entry_date: Date.today, summary: "a" * 201)
+    journal_entry = JournalEntry.new(company: @company, entry_date: Date.today, summary: "a" * 201)
     assert_not journal_entry.valid?
     assert_includes journal_entry.errors.full_messages, "摘要は200文字以内で入力してください"
   end
@@ -49,6 +54,7 @@ class JournalEntryTest < ActiveSupport::TestCase
     cash_account = accounts(:cash)
     capital_stock_account = accounts(:capital_stock)
     journal_entry = JournalEntry.new(
+      company: @company,
       entry_date: Date.today,
       summary: "貸借が一致していない仕訳",
       journal_entry_lines_attributes: [
@@ -64,6 +70,7 @@ class JournalEntryTest < ActiveSupport::TestCase
     cash_account = accounts(:cash)
     capital_stock_account = accounts(:capital_stock)
     journal_entry = JournalEntry.new(
+      company: @company,
       entry_date: Date.today,
       summary: "金額と勘定科目が空の仕訳",
       journal_entry_lines_attributes: [
@@ -77,8 +84,12 @@ class JournalEntryTest < ActiveSupport::TestCase
   end
 
   class EnsureEqualLineCountTest < ActiveSupport::TestCase
+    setup do
+      @company = companies(:company_one)
+    end
+
     test "should add missing lines when debit has more lines" do
-      journal_entry = JournalEntry.new(entry_date: Date.today, summary: "テスト仕訳")
+      journal_entry = JournalEntry.new(company: @company, entry_date: Date.today, summary: "テスト仕訳")
       journal_entry.journal_entry_lines.build(side: "debit")
       journal_entry.journal_entry_lines.build(side: "debit")
       journal_entry.journal_entry_lines.build(side: "credit")
@@ -93,7 +104,7 @@ class JournalEntryTest < ActiveSupport::TestCase
     end
 
     test "should add missing lines when credit has more lines" do
-      journal_entry = JournalEntry.new(entry_date: Date.today, summary: "テスト仕訳")
+      journal_entry = JournalEntry.new(company: @company, entry_date: Date.today, summary: "テスト仕訳")
       journal_entry.journal_entry_lines.build(side: "debit")
       journal_entry.journal_entry_lines.build(side: "credit")
       journal_entry.journal_entry_lines.build(side: "credit")
@@ -108,7 +119,7 @@ class JournalEntryTest < ActiveSupport::TestCase
     end
 
     test "should not add lines when both sides are equal" do
-      journal_entry = JournalEntry.new(entry_date: Date.today, summary: "テスト仕訳")
+      journal_entry = JournalEntry.new(company: @company, entry_date: Date.today, summary: "テスト仕訳")
       journal_entry.journal_entry_lines.build(side: "debit")
       journal_entry.journal_entry_lines.build(side: "credit")
 
@@ -121,7 +132,7 @@ class JournalEntryTest < ActiveSupport::TestCase
     end
 
     test "should respect minimum_lines parameter" do
-      journal_entry = JournalEntry.new(entry_date: Date.today, summary: "テスト仕訳")
+      journal_entry = JournalEntry.new(company: @company, entry_date: Date.today, summary: "テスト仕訳")
       journal_entry.journal_entry_lines.build(side: "debit")
 
       journal_entry.ensure_equal_line_count(3)
@@ -134,7 +145,7 @@ class JournalEntryTest < ActiveSupport::TestCase
     end
 
     test "should handle empty journal entry with minimum_lines" do
-      journal_entry = JournalEntry.new(entry_date: Date.today, summary: "テスト仕訳")
+      journal_entry = JournalEntry.new(company: @company, entry_date: Date.today, summary: "テスト仕訳")
 
       journal_entry.ensure_equal_line_count(2)
 
