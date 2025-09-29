@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_17_075422) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_29_032254) do
   create_table "accounts", primary_key: "name", id: :string, force: :cascade do |t|
     t.integer "category", default: 0, null: false
     t.boolean "is_standard", null: false
@@ -68,10 +68,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_17_075422) do
   create_table "user_one_time_passwords", force: :cascade do |t|
     t.string "password_digest", null: false
     t.datetime "expires_at", null: false
-    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_user_one_time_passwords_on_user_id"
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_user_one_time_passwords_on_user_id", unique: true
   end
 
   create_table "user_passkeys", id: :string, force: :cascade do |t|
