@@ -7,7 +7,7 @@ class JournalEntriesController < ApplicationController
       includes(:journal_entry_lines).
       order(entry_date: :desc, id: :desc).
       page(params[:page]).
-      per(5)
+      per(100)
   end
 
   def new
