@@ -7,7 +7,6 @@ class UsersController < ApplicationController
 
   def show
     @user = Current.user
-    @user_basic_password = @user.user_basic_password || @user.build_user_basic_password
   end
 
   def create

@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
 
   def new
     redirect_to root_path and return if authenticated?
-    @login_method = params[:login_method] || "otp"
+    @login_method = params[:login_method]
   end
 
   def create
@@ -17,7 +17,7 @@ class SessionsController < ApplicationController
     when "passkey"
       passkey_auth
     else
-      basic_auth
+      raise "unknown login method #{@login_method}"
     end
   end
 
@@ -94,17 +94,6 @@ class SessionsController < ApplicationController
       render json: { error: e.message }, status: :unprocessable_content
     ensure
       session.delete(:authentication_challenge)
-    end
-  end
-
-  def basic_auth
-    user = User.find_by(email_address: params[:email_address])
-    fail_login and return unless user
-
-    if UserBasicPassword.authenticate_by(user_id: user.id, password: params[:password])
-      success_login user
-    else
-      fail_login
     end
   end
 
