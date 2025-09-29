@@ -110,7 +110,11 @@ class SessionsController < ApplicationController
 
   def success_login(user)
     start_new_session_for user
-    redirect_to after_authentication_url
+    if Current.company.present
+      redirect_to after_authentication_url
+    else
+      redirect_to new_company_selection_path
+    end
   ensure
     session.delete(:otp_user_id)
   end
