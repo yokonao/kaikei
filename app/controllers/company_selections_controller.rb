@@ -1,11 +1,5 @@
 class CompanySelectionsController < ApplicationController
-  allow_no_company_access only: %i[ new create ]
-
-  def new
-    @user = Current.user
-    @companies = @user.companies
-    @current_company = Current.company
-  end
+  allow_no_company_access only: %i[ create ]
 
   def create
     company = Current.user.companies.find_by(id: params[:company_id])

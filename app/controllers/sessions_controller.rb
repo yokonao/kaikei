@@ -113,7 +113,7 @@ class SessionsController < ApplicationController
     if Current.company.present
       redirect_to after_authentication_url
     else
-      redirect_to new_company_selection_path
+      redirect_to companies_path
     end
   ensure
     session.delete(:otp_user_id)

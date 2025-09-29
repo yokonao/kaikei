@@ -68,6 +68,6 @@ module Authentication
     def require_company_selection
       return if company_selected?
 
-      redirect_to new_company_selection_path
+      redirect_to companies_path
     end
 end
