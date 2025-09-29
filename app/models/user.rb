@@ -1,6 +1,5 @@
 class User < ApplicationRecord
-  has_one :user_basic_password, dependent: :destroy
-  has_many :user_one_time_passwords, dependent: :destroy
+  has_one :user_one_time_password, dependent: :destroy
   has_many :user_passkeys, dependent: :destroy
   has_many :sessions, dependent: :destroy
   has_many :memberships, dependent: :destroy
@@ -19,7 +18,8 @@ class User < ApplicationRecord
     # NOTE: 開発環境では OTP を確認しやすいようにデバッグログに出力
     Rails.logger.debug "otp: #{otp}" if Rails.env.development?
     OtpMailer.otp_login(self, otp).deliver_later
-    user_one_time_passwords.create!(password: otp, expires_at: Time.current + 5.minutes)
+    otp_record = self.user_one_time_password || self.build_user_one_time_password
+    otp_record.update!(password: otp, expires_at: Time.current + 5.minutes)
   end
 
   def set_webauthn_user_handle
