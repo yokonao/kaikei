@@ -43,7 +43,7 @@ class BalanceSheetTest < ActiveSupport::TestCase
     assert_equal 3000, bs.liability_lines.first.amount
     assert_equal 3000, bs.total_liabilities
 
-    assert_equal 2, bs.equity_lines.size #資本金 + 当期純利益
+    assert_equal 2, bs.equity_lines.size # 資本金 + 当期純利益
     capital_line = bs.equity_lines.find { |line| line.name == "資本金" }
     net_income_line = bs.equity_lines.find { |line| line.name == "当期純利益" }
     assert_equal 10000, capital_line.amount
