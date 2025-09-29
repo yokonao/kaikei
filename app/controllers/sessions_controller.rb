@@ -110,7 +110,7 @@ class SessionsController < ApplicationController
 
   def success_login(user)
     start_new_session_for user
-    if Current.company.present
+    if Current.company.present?
       redirect_to after_authentication_url
     else
       redirect_to companies_path
