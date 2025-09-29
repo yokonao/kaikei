@@ -85,6 +85,5 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
-  # TODO: 本番環境の URL が決まったら差し替える
-  # config.webauthn_origin = 'http://localhost:3000'
+  config.webauthn_origin = "https://kaikei.yokonao.xyz"
 end
