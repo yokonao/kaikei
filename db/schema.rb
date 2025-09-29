@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_29_022844) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_17_075422) do
   create_table "accounts", primary_key: "name", id: :string, force: :cascade do |t|
     t.integer "category", default: 0, null: false
     t.boolean "is_standard", null: false
@@ -25,11 +25,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_29_022844) do
   end
 
   create_table "journal_entries", force: :cascade do |t|
+    t.integer "company_id", null: false
     t.date "entry_date", null: false
     t.string "summary"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "company_id", null: false
     t.index ["company_id"], name: "index_journal_entries_on_company_id"
   end
 
@@ -56,11 +56,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_29_022844) do
 
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
+    t.integer "company_id"
     t.string "ip_address"
     t.string "user_agent"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "company_id"
     t.index ["company_id"], name: "index_sessions_on_company_id"
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
@@ -86,9 +86,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_29_022844) do
 
   create_table "users", force: :cascade do |t|
     t.string "email_address", null: false
+    t.string "webauthn_user_handle", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "webauthn_user_handle"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 

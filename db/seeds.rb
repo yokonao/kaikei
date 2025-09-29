@@ -9,7 +9,6 @@
 #   end
 
 user1 = User.create!(email_address: "test@example.com")
-user1.create_user_basic_password!(password: "demodemo")
 user2 = User.create!(email_address: "test2@example.com")
 
 company1 = Company.create!(name: "テスト事業所1")
