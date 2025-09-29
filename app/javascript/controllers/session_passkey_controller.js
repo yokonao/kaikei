@@ -1,5 +1,5 @@
-import { Controller } from "@hotwired/stimulus"
-import { showErrorToast } from "utils/toast"
+import { Controller } from "@hotwired/stimulus";
+import { showErrorToast } from "utils/toast";
 
 export default class extends Controller {
   async authenticate() {
@@ -18,9 +18,7 @@ export default class extends Controller {
       });
       const initiationResponseJSON = await initiationResponse.json();
       const requestCredentialOptions =
-        PublicKeyCredential.parseRequestOptionsFromJSON(
-          initiationResponseJSON
-        );
+        PublicKeyCredential.parseRequestOptionsFromJSON(initiationResponseJSON);
       const credential = await navigator.credentials.get({
         publicKey: requestCredentialOptions,
       });
@@ -31,7 +29,11 @@ export default class extends Controller {
           "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')
             .content,
         },
-        body: JSON.stringify({ ...credential.toJSON(), login_method: "passkey", phase: "verification" }),
+        body: JSON.stringify({
+          ...credential.toJSON(),
+          login_method: "passkey",
+          phase: "verification",
+        }),
       });
       if (verificationResponse.ok) {
         window.location.reload();
@@ -39,11 +41,19 @@ export default class extends Controller {
         // verificationResponse.json().then((data) => {
         //   console.error(data);
         // });
-        showErrorToast("Failed to authenticate passkey");
+        showErrorToast("パスキーの検証に失敗しました。");
       }
-    } catch (error) {
-      // console.error(error);
-      showErrorToast("Failed to authenticate passkey");
+    } catch (e) {
+      if (e instanceof DOMException) {
+        if (e.name === "NotAllowedError") {
+          // ユーザーがパスキーの利用を許可しなかった、またはキャンセルしたことを示すため何もしない
+          // https://www.w3.org/TR/webauthn-2/#sctn-privacy-considerations-client
+          return;
+        }
+      }
+
+      // console.error(e);
+      showErrorToast("パスキーの検証に失敗しました。");
     }
   }
 }
