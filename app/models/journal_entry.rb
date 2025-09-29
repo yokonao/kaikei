@@ -7,6 +7,7 @@ class JournalEntry < ApplicationRecord
   validates :summary, length: { maximum: 200 }
 
   validate :balance_check
+  validate :at_least_one_line
 
   # 借方と貸方の仕訳行数を同じにし、最小行数を保証する
   #
@@ -42,6 +43,12 @@ class JournalEntry < ApplicationRecord
 
     if debit_total != credit_total
       errors.add(:base, "借方と貸方の金額が一致していません")
+    end
+  end
+
+  def at_least_one_line
+    if journal_entry_lines.reject(&:_destroy).empty?
+      errors.add(:base, "仕訳行を1つ以上入力してください")
     end
   end
 

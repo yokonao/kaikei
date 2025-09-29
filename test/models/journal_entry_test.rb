@@ -32,12 +32,6 @@ class JournalEntryTest < ActiveSupport::TestCase
     assert_nothing_raised { journal_entry.valid? }
   end
 
-  test "should save valid journal entry" do
-    journal_entry = JournalEntry.new(company: @company, entry_date: Date.today, summary: "保存テスト")
-    assert journal_entry.save
-    assert_not_nil journal_entry.id
-  end
-
   test "should require entry_date" do
     journal_entry = JournalEntry.new(company: @company, summary: "テスト仕訳")
     assert_not journal_entry.valid?
@@ -64,6 +58,12 @@ class JournalEntryTest < ActiveSupport::TestCase
     )
     assert_not journal_entry.valid?
     assert_includes journal_entry.errors.full_messages, "借方と貸方の金額が一致していません"
+  end
+
+  test "should be invalid without any journal entry lines" do
+    journal_entry = JournalEntry.new(company: @company, entry_date: Date.today)
+    assert_not journal_entry.valid?
+    assert_includes journal_entry.errors.full_messages, "仕訳行を1つ以上入力してください"
   end
 
   test "should disallow empty lines" do

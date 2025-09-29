@@ -10,17 +10,29 @@ class BalanceSheetTest < ActiveSupport::TestCase
     @cogs = accounts(:cogs)
 
     # Create journal entries
-    @entry1 = JournalEntry.create!(company: @company, entry_date: Date.new(2025, 4, 1), summary: "期首残高")
-    @entry1.journal_entry_lines.create!(account: @cash, side: :debit, amount: 10000)
-    @entry1.journal_entry_lines.create!(account: @capital_stock, side: :credit, amount: 10000)
+    @entry1 = JournalEntry.create!(
+      company: @company, entry_date: Date.new(2025, 4, 1), summary: "期首残高",
+      journal_entry_lines_attributes: [
+        { account: @cash, side: :debit, amount: 10000 },
+        { account: @capital_stock, side: :credit, amount: 10000 }
+      ]
+    )
 
-    @entry2 = JournalEntry.create!(company: @company, entry_date: Date.new(2025, 5, 15), summary: "売上")
-    @entry2.journal_entry_lines.create!(account: @cash, side: :debit, amount: 5000)
-    @entry2.journal_entry_lines.create!(account: @sales, side: :credit, amount: 5000)
+    @entry2 = JournalEntry.create!(
+      company: @company, entry_date: Date.new(2025, 5, 15), summary: "売上",
+      journal_entry_lines_attributes: [
+        { account: @cash, side: :debit, amount: 5000 },
+        { account: @sales, side: :credit, amount: 5000 }
+      ]
+    )
 
-    @entry3 = JournalEntry.create!(company: @company, entry_date: Date.new(2025, 6, 20), summary: "仕入")
-    @entry3.journal_entry_lines.create!(account: @cogs, side: :debit, amount: 3000)
-    @entry3.journal_entry_lines.create!(account: @accounts_payable, side: :credit, amount: 3000)
+    @entry3 = JournalEntry.create!(
+      company: @company, entry_date: Date.new(2025, 6, 20), summary: "仕入",
+      journal_entry_lines_attributes: [
+        { account: @cogs, side: :debit, amount: 3000 },
+        { account: @accounts_payable, side: :credit, amount: 3000 }
+      ]
+    )
   end
 
   test "should raise ArgumentError for invalid date" do

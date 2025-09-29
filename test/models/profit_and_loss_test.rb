@@ -10,31 +10,48 @@ class ProfitAndLossTest < ActiveSupport::TestCase
     @commision = accounts(:commision)
 
     # Create journal entries
-    @sept_entry = JournalEntry.create!(company: @company, entry_date: Date.new(2025, 9, 1), summary: "9月の売上")
-    @sept_entry_2 = JournalEntry.create!(company: @company, entry_date: Date.new(2025, 9, 20), summary: "9月の売上2")
-    @sept_entry_3 = JournalEntry.create!(company: @company, entry_date: Date.new(2025, 9, 15), summary: "9月の仕入")
-    @sept_entry_4 = JournalEntry.create!(company: @company, entry_date: Date.new(2025, 9, 25), summary: "9月の給与")
-    @sept_entry_5 = JournalEntry.create!(company: @company, entry_date: Date.new(2025, 9, 25), summary: "9月の受取手数料")
-    @oct_entry = JournalEntry.create!(company: @company, entry_date: Date.new(2025, 10, 1), summary: "10月の売上")
-
-    # Create journal entry lines
-    @sept_entry.journal_entry_lines.create!(account: @sales, side: :credit, amount: 10000)
-    @sept_entry.journal_entry_lines.create!(account: @cash, side: :debit, amount: 10000)
-
-    @sept_entry_2.journal_entry_lines.create!(account: @sales, side: :credit, amount: 5000)
-    @sept_entry_2.journal_entry_lines.create!(account: @cash, side: :debit, amount: 5000)
-
-    @sept_entry_3.journal_entry_lines.create!(account: @cogs, side: :debit, amount: 3000)
-    @sept_entry_3.journal_entry_lines.create!(account: @cash, side: :credit, amount: 3000)
-
-    @sept_entry_4.journal_entry_lines.create!(account: @salaries, side: :debit, amount: 1000)
-    @sept_entry_4.journal_entry_lines.create!(account: @cash, side: :credit, amount: 1000)
-
-    @sept_entry_5.journal_entry_lines.create!(account: @cash, side: :debit, amount: 1500)
-    @sept_entry_5.journal_entry_lines.create!(account: @commision, side: :credit, amount: 1500)
-
-    @oct_entry.journal_entry_lines.create!(account: @sales, side: :credit, amount: 20000)
-    @oct_entry.journal_entry_lines.create!(account: @cash, side: :debit, amount: 20000)
+    @sept_entry = JournalEntry.create!(
+      company: @company, entry_date: Date.new(2025, 9, 1), summary: "9月の売上",
+      journal_entry_lines_attributes: [
+        { account: @sales, side: :credit, amount: 10000 },
+        { account: @cash, side: :debit, amount: 10000 }
+      ]
+    )
+    @sept_entry_2 = JournalEntry.create!(
+      company: @company, entry_date: Date.new(2025, 9, 20), summary: "9月の売上2",
+      journal_entry_lines_attributes: [
+        { account: @sales, side: :credit, amount: 5000 },
+        { account: @cash, side: :debit, amount: 5000 }
+      ]
+    )
+    @sept_entry_3 = JournalEntry.create!(
+      company: @company, entry_date: Date.new(2025, 9, 15), summary: "9月の仕入",
+      journal_entry_lines_attributes: [
+        { account: @cogs, side: :debit, amount: 3000 },
+        { account: @cash, side: :credit, amount: 3000 }
+      ]
+    )
+    @sept_entry_4 = JournalEntry.create!(
+      company: @company, entry_date: Date.new(2025, 9, 25), summary: "9月の給与",
+      journal_entry_lines_attributes: [
+        { account: @salaries, side: :debit, amount: 1000 },
+        { account: @cash, side: :credit, amount: 1000 }
+      ]
+    )
+    @sept_entry_5 = JournalEntry.create!(
+      company: @company, entry_date: Date.new(2025, 9, 25), summary: "9月の受取手数料",
+      journal_entry_lines_attributes: [
+        { account: @cash, side: :debit, amount: 1500 },
+        { account: @commision, side: :credit, amount: 1500 }
+      ]
+    )
+    @oct_entry = JournalEntry.create!(
+      company: @company, entry_date: Date.new(2025, 10, 1), summary: "10月の売上",
+      journal_entry_lines_attributes: [
+        { account: @sales, side: :credit, amount: 20000 },
+        { account: @cash, side: :debit, amount: 20000 }
+      ]
+    )
   end
 
   test "should raise ArgumentError for invalid date" do
