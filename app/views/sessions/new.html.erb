@@ -40,7 +40,15 @@
         <% end %>
       <% else %>
         <div class="flex flex-col space-y-8">
-          <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2">パスワードレスログイン</h2>
+          <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2">パスキー</h2>
+          <div class="text-center" data-controller="session-passkey">
+            <button data-action="session-passkey#authenticate"
+              class="bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer">
+              パスキーでログイン
+            </button>
+          </div>
+
+          <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2">ワンタイムパスワード</h2>
           <%= form_with url: session_url do |form| %>
             <%= form.hidden_field :login_method, id: "password-less-login-login-method", value: "otp" %>
             <div class="border-2 border-black mb-4">
@@ -57,7 +65,8 @@
             </div>
 
             <div class="flex justify-center">
-              <%= form.submit "ワンタイムパスワードを送信", class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer" %>
+              <%= form.submit "ワンタイムパスワードを送信",
+                class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer" %>
             </div>
           <% end %>
         </div>
@@ -66,13 +75,7 @@
 
       <% unless @login_method == "otp_verification" %>
         <div class="text-center mt-6">
-          <%= link_to "アカウント登録", signup_path, class: "font-mono text-sm underline hover:text-blue-600" %>
-          <span class="font-mono text-sm">/</span>
-          <%= link_to "パスワードをお忘れの方", new_password_path, class: "font-mono text-sm underline hover:text-blue-600" %>
-        </div>
-
-        <div class="text-center mt-6" data-controller="session-passkey">
-          <button data-action="session-passkey#authenticate" class="bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer">パスキーでログイン</button>
+          <%= link_to "アカウント登録", signup_path, class: "font-mono underline hover:text-blue-600" %>
         </div>
       <% end %>
     </div>
