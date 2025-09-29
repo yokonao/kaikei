@@ -1,5 +1,7 @@
 one:
   email_address: one@example.com
+  webauthn_user_handle: "user_one_handle"
 
 two:
   email_address: two@example.com
+  webauthn_user_handle: "user_two_handle"

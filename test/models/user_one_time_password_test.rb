@@ -3,7 +3,7 @@ require "test_helper"
 class UserOneTimePasswordTest < ActiveSupport::TestCase
   test "should be valid with user, password and expires_at" do
     user = users(:one)
-    one_time_password = user.user_one_time_passwords.build(
+    one_time_password = user.build_user_one_time_password(
       password: "password",
       expires_at: 1.hour.from_now
     )
@@ -23,7 +23,7 @@ class UserOneTimePasswordTest < ActiveSupport::TestCase
 
   test "should be invalid without password" do
     user = users(:one)
-    one_time_password = user.user_one_time_passwords.build(
+    one_time_password = user.build_user_one_time_password(
       expires_at: 1.hour.from_now
     )
 
@@ -33,7 +33,7 @@ class UserOneTimePasswordTest < ActiveSupport::TestCase
 
   test "should be invalid without expires_at" do
     user = users(:one)
-    one_time_password = user.user_one_time_passwords.build(
+    one_time_password = user.build_user_one_time_password(
       password: "password"
     )
 
@@ -45,7 +45,7 @@ class UserOneTimePasswordTest < ActiveSupport::TestCase
     test "should return true and destroy the record for a valid OTP" do
       user = users(:one)
       otp = "123456"
-      one_time_password = user.user_one_time_passwords.create!(
+      one_time_password = user.create_user_one_time_password!(
         password: otp,
         expires_at: 1.hour.from_now
       )
@@ -56,22 +56,16 @@ class UserOneTimePasswordTest < ActiveSupport::TestCase
       assert_not UserOneTimePassword.authenticate_otp(user.id, otp) # The second time the authentication fails
     end
 
-    test "the last OTP should be priotized" do
+    test "should overwrite old otp" do
       user = users(:one)
-      otps = [ "123456", "654321", "111111" ]
-      otps.each do |otp|
-        one_time_password = user.user_one_time_passwords.create!(
-          password: otp,
-          expires_at: 1.hour.from_now
-        )
-      end
 
-      assert_not UserOneTimePassword.authenticate_otp(user.id, otps[0])
-      assert_not UserOneTimePassword.authenticate_otp(user.id, otps[1])
-      assert UserOneTimePassword.authenticate_otp(user.id, otps[2])
-      assert_not UserOneTimePassword.authenticate_otp(user.id, otps[0])
-      assert UserOneTimePassword.authenticate_otp(user.id, otps[1])
-      assert UserOneTimePassword.authenticate_otp(user.id, otps[0])
+      user.create_user_one_time_password!(password: "old_otp", expires_at: 1.hour.from_now)
+
+      # create_user_one_time_password! will raise an error, so we need to use update!
+      user.user_one_time_password.update!(password: "new_otp", expires_at: 1.hour.from_now)
+
+      assert_not UserOneTimePassword.authenticate_otp(user.id, "old_otp")
+      assert UserOneTimePassword.authenticate_otp(user.id, "new_otp")
     end
 
     test "should return false for a non-existent OTP" do
@@ -82,7 +76,7 @@ class UserOneTimePasswordTest < ActiveSupport::TestCase
     test "should return false for an invalid OTP" do
       user = users(:one)
       otp = "123456"
-      one_time_password = user.user_one_time_passwords.create!(
+      one_time_password = user.create_user_one_time_password!(
         password: otp,
         expires_at: 1.hour.from_now
       )
@@ -95,7 +89,7 @@ class UserOneTimePasswordTest < ActiveSupport::TestCase
     test "should return false for an expired OTP" do
       user = users(:one)
       otp = "123456"
-      one_time_password = user.user_one_time_passwords.create!(
+      one_time_password = user.create_user_one_time_password!(
         password: otp,
         expires_at: 1.hour.ago
       )
