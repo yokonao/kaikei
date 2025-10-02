@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   end
 
   resources :companies, only: [ :index, :new, :create ]
+  resource :company, only: [ :show, :update ]
 
   resource :session
   resource :company_selection, only: [ :create ]

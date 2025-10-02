@@ -7,6 +7,10 @@ class CompaniesController < ApplicationController
     @current_company = Current.company
   end
 
+  def show
+    @company = Current.company
+  end
+
   def new
     @user = Current.user
     @company = Company.new
@@ -27,9 +31,18 @@ class CompaniesController < ApplicationController
     redirect_to after_authentication_url
   end
 
+  def update
+    @company = Current.company
+    if @company.update(company_params)
+      redirect_to company_path, notice: "事業所の設定を更新しました。"
+    else
+      render :show, status: :unprocessable_content
+    end
+  end
+
   private
 
   def company_params
-    params.expect(company: [ :name ])
+    params.expect(company: [ :name, :fy_start_month_num ])
   end
 end
