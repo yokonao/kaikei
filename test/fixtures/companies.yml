@@ -1,2 +1,3 @@
 company_one:
   name: "テスト事業所"
+  fy_start_month_num: 4
