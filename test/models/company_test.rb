@@ -12,10 +12,10 @@ class CompanyTest < ActiveSupport::TestCase
     assert_includes company.errors.full_messages, "事業所名を入力してください"
   end
 
-  test "should be invalid without fy_start_month_num" do
+  test "should be valid without fy_start_month_num" do
     company = Company.new(name: "テスト会社")
-    assert_not company.valid?
-    assert_includes company.errors.full_messages, "会計年度の開始月は1月から12月のいずれかを指定してください"
+    assert company.valid?
+    assert_equal 4, company.fy_start_month_num
   end
 
   test "should be invalid with zero fy_start_month_num" do
