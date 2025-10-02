@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'test_helper'
+require "test_helper"
 
 class AccountingPeriodTest < ActiveSupport::TestCase
-  test '.from_date' do
+  test ".from_date" do
     # 基準日が開始月より前の場合
     period1 = AccountingPeriod.from_date(Date.new(2025, 1, 15), start_month: 4)
     assert_equal Date.new(2024, 4, 1), period1.start_date
