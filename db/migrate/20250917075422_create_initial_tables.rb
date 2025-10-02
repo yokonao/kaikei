@@ -30,6 +30,7 @@ class CreateInitialTables < ActiveRecord::Migration[8.0]
     # 事業所関連テーブル
     create_table :companies do |t|
       t.string :name
+      t.integer :fy_start_month_num, null: false
 
       t.timestamps
     end
