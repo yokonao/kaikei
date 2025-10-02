@@ -32,7 +32,16 @@ module Authentication
     end
 
     def find_session_by_cookie
-      Session.find_by(id: cookies.signed[:session_id]) if cookies.signed[:session_id]
+      session_id = cookies.signed[:session_id]
+      return nil unless session_id
+
+      session = Session.find_by(id: session_id).tap do |session|
+        return unless session
+        user = session.user
+        company = user.companies.find_by(id: session.company_id) if user
+        Current.user = user
+        Current.company = company
+      end
     end
 
     def request_authentication
