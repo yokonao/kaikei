@@ -23,7 +23,7 @@ gem "rails", "~> 8.0.2", ">= 8.0.2.1"
 # Localization (Japanese) support
 gem "rails-i18n"
 # Email API for developers
-gem 'resend'
+gem "resend"
 # PDF generation
 gem "prawn"
 gem "prawn-table"
