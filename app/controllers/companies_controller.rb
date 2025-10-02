@@ -43,6 +43,6 @@ class CompaniesController < ApplicationController
   private
 
   def company_params
-    params.expect(company: [ :name, :fy_start_month_num ])
+    params.expect(company: [ :name, :accounting_period_start_month ])
   end
 end

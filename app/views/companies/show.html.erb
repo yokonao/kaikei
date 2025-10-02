@@ -33,10 +33,10 @@
         </tr>
         <tr>
           <th scope="row" class="border">
-            <%= form.label :fy_start_month_num, "会計年度の開始月", class: "block w-full h-full border-black bg-gray-100 py-2 text-center" %>
+            <%= form.label :accounting_period_start_month, "会計年度の開始月", class: "block w-full h-full border-black bg-gray-100 py-2 text-center" %>
           </th>
           <td class="border">
-            <%= form.select :fy_start_month_num, (1..12).map { |v| [ "#{v}月", v ]}, {},
+            <%= form.select :accounting_period_start_month, (1..12).map { |v| [ "#{v}月", v ]}, {},
                 { class: "block w-full h-full px-2 py-2 focus:outline-none focus:bg-yellow-100" } %>
           </td>
         </tr>

@@ -35,7 +35,7 @@ ja:
         is_standard: デフォルト勘定科目かどうか
       company:
         name: 事業所名
-        fy_start_month_num: 会計年度の開始月
+        accounting_period_start_month: 会計年度の開始月
       journal_entry:
         entry_date: 仕訳日
         summary: 摘要

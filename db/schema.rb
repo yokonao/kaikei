@@ -20,7 +20,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_17_075422) do
 
   create_table "companies", force: :cascade do |t|
     t.string "name"
-    t.integer "fy_start_month_num", null: false
+    t.integer "accounting_period_start_month", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
