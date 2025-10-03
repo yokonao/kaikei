@@ -38,7 +38,7 @@ class BalanceSheet
                           map { |k, v| Line.new(name: k, amount: v) }
 
     # Add net income to equity
-    pl = ProfitAndLoss.new(@company, @start_date, @end_date)
+    pl = ProfitAndLoss.new(company: @company, start_date: @start_date, end_date: @end_date)
     pl.load!
     @equity_lines << Line.new(name: "当期純利益", amount: pl.net_income)
 

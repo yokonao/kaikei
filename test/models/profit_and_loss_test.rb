@@ -54,15 +54,10 @@ class ProfitAndLossTest < ActiveSupport::TestCase
     )
   end
 
-  test "should raise ArgumentError for invalid date" do
-    assert_raises(ArgumentError) { ProfitAndLoss.new(@company, "invalid", Date.today) }
-    assert_raises(ArgumentError) { ProfitAndLoss.new(@company, Date.today, "invalid") }
-  end
-
   test "#load! calculates revenue and expense lines correctly for a given period" do
     start_date = Date.new(2025, 9, 1)
     end_date = Date.new(2025, 9, 30)
-    pl = ProfitAndLoss.new(@company, start_date, end_date)
+    pl = ProfitAndLoss.new(company: @company, start_date: start_date, end_date: end_date)
     pl.load!
 
     assert_equal 2, pl.revenue_lines.size

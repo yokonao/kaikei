@@ -1,5 +1,4 @@
 class GeneralLedgersController < ApplicationController
-
   def show
     company = Current.company
     @from = (Date.parse(params[:from]) rescue nil)

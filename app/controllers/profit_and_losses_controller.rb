@@ -14,7 +14,7 @@ class ProfitAndLossesController < ApplicationController
       @to = @from.years_since(1).days_ago(1)
     end
 
-    pl = ProfitAndLoss.new(Current.company, @from, @to)
+    pl = ProfitAndLoss.new(company: Current.company, start_date: @from, end_date: @to)
     pl.load!
 
     @revenue_lines = pl.revenue_lines

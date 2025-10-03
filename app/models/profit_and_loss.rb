@@ -1,23 +1,20 @@
 class ProfitAndLoss
   Line = Data.define(:name, :amount)
 
-  attr_reader :revenue_lines, :expense_lines
+  include ActiveModel::Model
+  include ActiveModel::Attributes
 
-  def initialize(company, start_date, end_date)
-    @company = company
-    raise ArgumentError, "start_date must be a Date" unless start_date.is_a?(Date)
-    raise ArgumentError, "end_date must be a Date" unless end_date.is_a?(Date)
-    @start_date = start_date
-    @end_date = end_date
-    @revenue_lines = []
-    @expense_lines = []
-  end
+  attr_accessor :company
+  attribute :start_date, :date
+  attribute :end_date, :date
+
+  attr_reader :revenue_lines, :expense_lines
 
   def load!
     pl_lines = JournalEntryLine.joins(:journal_entry).
                                 includes(:account).
-                                where("journal_entry.company_id": @company.id).
-                                where("journal_entry.entry_date": @start_date..@end_date).
+                                where("journal_entry.company_id": company.id).
+                                where("journal_entry.entry_date": start_date..end_date).
                                 where("account.category": [ :revenue, :expense ])
     @revenue_lines = pl_lines.
                           filter { |line| line.account.revenue? }.
