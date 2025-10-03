@@ -83,7 +83,7 @@ company1.journal_entries.create!(
   summary: "建物・土地の購入",
   journal_entry_lines_attributes: [
     { amount: 700, side: :debit, account: Account.find("建物") },
-    { amount: 1700, side: :credit, account: Account.find("資本金") },
+    { amount: 1700, side: :credit, account: Account.find("現金") },
     { amount: 1000, side: :debit, account: Account.find("土地") }
   ]
 )
