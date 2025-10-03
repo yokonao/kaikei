@@ -37,8 +37,8 @@ module Authentication
 
       session = Session.find_by(id: session_id).tap do |session|
         return unless session
-        Crrent.user = user = session.user
-        Curent.company = user.companies.find_by(id: session.company_id) if user
+        Current.user = user = session.user
+        Current.company = user.companies.find_by(id: session.company_id) if user
       end
     end
 
