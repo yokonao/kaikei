@@ -31,15 +31,14 @@ class GeneralLedger
     end
   end
 
-  attr_reader :company, :start_date, :end_date, :account_tables
+  include ActiveModel::Model
+  include ActiveModel::Attributes
 
-  def initialize(company, start_date, end_date)
-    @company = company
-    raise ArgumentError, "start_date must be a Date" unless start_date.is_a?(Date)
-    raise ArgumentError, "end_date must be a Date" unless end_date.is_a?(Date)
-    @start_date = start_date
-    @end_date = end_date
-  end
+  attr_accessor :company
+  attribute :start_date, :date
+  attribute :end_date, :date
+
+  attr_reader :account_tables
 
   def load!
     all_entries = @company.journal_entries.includes(journal_entry_lines: [ :account ]).where(entry_date: @start_date..@end_date).order(:entry_date, :id)

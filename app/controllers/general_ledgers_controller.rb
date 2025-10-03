@@ -14,7 +14,7 @@ class GeneralLedgersController < ApplicationController
       @to = @from.years_since(1).days_ago(1)
     end
 
-    @gl = GeneralLedger.new(Current.company, @from, @to)
+    @gl = GeneralLedger.new(company: Current.company, start_date: @from, end_date: @to)
     @gl.load!
   end
 end
