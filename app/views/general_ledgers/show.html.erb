@@ -5,66 +5,70 @@
     </div>
 
     <p class="font-mono font-bold text-center m-4"><%= @from.strftime('%Y年%m月%d日') %> ~ <%= @to.strftime('%Y年%m月%d日') %></p>
-    <div class="p-8">
-      <div>
-        <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2 text-center">現金</h2>
-        <table class="w-full border-collapse border-2 mb-4">
-          <colgroup>
-            <col span="3" class="w-1/6">
-            <col span="3" class="w-1/6">
-          </colgroup>
-          <tbody>
-            <tr>
-              <th scope="column" colspan="3" class="border">
-                <div class="w-full h-full bg-gray-100 py-2 text-center">借方</div>
-              </th>
-              <th scope="column" colspan="3" class="border">
-                <div class="w-full h-full bg-gray-100 py-2 text-center">貸方</div>
-              </th>
-            </tr>
-            <tr>
-              <td>
-                <div class="w-full h-full py-2 text-center">3/1</div>
-              </td>
-              <td>
-                <div class="w-full h-full py-2 text-center">資本金</div>
-              </td>
-              <td class="border-r">
-                <div class="w-full h-full py-2 text-center">3,000</div>
-              </td>
-              <td class="border-l">
-                <div class="w-full h-full py-2 text-center">3/10</div>
-              </td>
-              <td>
-                <div class="w-full h-full py-2 text-center">仕入</div>
-              </td>
-              <td>
-                <div class="w-full h-full py-2 text-center">1,200</div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="w-full h-full py-2 text-center">3/5</div>
-              </td>
-              <td>
-                <div class="w-full h-full py-2 text-center">売上</div>
-              </td>
-              <td class="border-r">
-                <div class="w-full h-full py-2 text-center">2,000</div>
-              </td>
-              <td class="border-l">
-                <div class="w-full h-full py-2 text-center">3/6</div>
-              </td>
-              <td>
-                <div class="w-full h-full py-2 text-center">当座預金</div>
-              </td>
-              <td>
-                <div class="w-full h-full py-2 text-center">3,500</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="p-8 space-y-2">
+      <% @gl.account_tables.each do |account_name, account_table| %>
+        <div>
+          <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2 text-center"><%= account_name %></h2>
+          <table class="w-full border-collapse border-2 mb-4">
+            <colgroup>
+              <col span="3" class="w-1/6">
+              <col span="3" class="w-1/6">
+            </colgroup>
+            <tbody>
+              <tr>
+                <th scope="column" colspan="3" class="border">
+                  <div class="w-full h-full bg-gray-100 py-2 text-center">借方</div>
+                </th>
+                <th scope="column" colspan="3" class="border">
+                  <div class="w-full h-full bg-gray-100 py-2 text-center">貸方</div>
+                </th>
+              </tr>
+
+              <% i = 0 %>
+              <% loop do |line| %>
+                <% debit_line = account_table.debit_lines[i] %>
+                <% credit_line = account_table.credit_lines[i] %>
+                <% break if debit_line.blank? && credit_line.blank? %>
+
+                <tr>
+                  <td>
+                    <div class="w-full h-full py-2 text-center">
+                      <%= debit_line&.entry_date&.strftime('%Y/%m/%d') %>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="w-full h-full py-2 text-center">
+                      <%= debit_line&.opponent_account_name %>
+                    </div>
+                  </td>
+                  <td class="border-r">
+                    <div class="w-full h-full py-2 text-center">
+                      <%= number_to_currency(debit_line&.amount, unit: "¥", precision: 0, delimiter: ",") %>
+                    </div>
+                  </td>
+                  <td class="border-l">
+                    <div class="w-full h-full py-2 text-center">
+                      <%= credit_line&.entry_date&.strftime('%Y/%m/%d') %>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="w-full h-full py-2 text-center">
+                      <%= credit_line&.opponent_account_name %>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="w-full h-full py-2 text-center">
+                      <%= number_to_currency(credit_line&.amount, unit: "¥", precision: 0, delimiter: ",") %>
+                    </div>
+                  </td>
+                </tr>
+
+                <% i += 1 %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

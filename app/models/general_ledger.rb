@@ -3,6 +3,8 @@ class GeneralLedger
     Line = Data.define(:entry_date, :opponent_account_name, :amount)
     Balance = Data.define(:side, :amount)
 
+    attr_reader :account, :debit_lines, :credit_lines
+
     def initialize(account)
       @account = account
       @debit_lines = []
@@ -29,6 +31,8 @@ class GeneralLedger
     end
   end
 
+  attr_reader :company, :start_date, :end_date, :account_tables
+
   def initialize(company, start_date, end_date)
     @company = company
     raise ArgumentError, "start_date must be a Date" unless start_date.is_a?(Date)
@@ -39,23 +43,23 @@ class GeneralLedger
 
   def load!
     all_entries = @company.journal_entries.includes(journal_entry_lines: [ :account ]).where(entry_date: @start_date..@end_date).order(:entry_date, :id)
-    account_tables = {}
+    @account_tables = {}
 
     all_entries.each do |entry|
       debit_lines = entry.journal_entry_lines.filter { |line| line.side == "debit" }
       credit_lines = entry.journal_entry_lines.filter { |line| line.side == "credit" }
 
       debit_lines.each do |line|
-        account_tables[line.account_name] ||= AccountTable.new(line.account)
-        account_tables[line.account_name].add_debit_line(entry.entry_date, credit_lines.length == 1 ? credit_lines.first.account_name : "諸口", line.amount)
+        @account_tables[line.account_name] ||= AccountTable.new(line.account)
+        @account_tables[line.account_name].add_debit_line(entry.entry_date, credit_lines.length == 1 ? credit_lines.first.account_name : "諸口", line.amount)
       end
 
       credit_lines.each do |line|
-        account_tables[line.account_name] ||= AccountTable.new(line.account)
-        account_tables[line.account_name].add_credit_line(entry.entry_date, debit_lines.length == 1 ? debit_lines.first.account_name : "諸口", line.amount)
+        @account_tables[line.account_name] ||= AccountTable.new(line.account)
+        @account_tables[line.account_name].add_credit_line(entry.entry_date, debit_lines.length == 1 ? debit_lines.first.account_name : "諸口", line.amount)
       end
     end
 
-    account_tables
+    nil
   end
 end
