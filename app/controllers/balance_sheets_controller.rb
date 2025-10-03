@@ -14,7 +14,7 @@ class BalanceSheetsController < ApplicationController
       @to = @from.years_since(1).days_ago(1)
     end
 
-    bs = BalanceSheet.new(company, @from, @to)
+    bs = BalanceSheet.new(company: company, start_date: @from, end_date: @to)
     bs.load!
 
     @asset_lines = bs.asset_lines

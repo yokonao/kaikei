@@ -1,18 +1,14 @@
 class BalanceSheet
   Line = Data.define(:name, :amount)
 
-  attr_reader :asset_lines, :liability_lines, :equity_lines
+  include ActiveModel::Model
+  include ActiveModel::Attributes
 
-  def initialize(company, start_date, end_date)
-    @company = company
-    raise ArgumentError, "start_date must be a Date" unless start_date.is_a?(Date)
-    raise ArgumentError, "end_date must be a Date" unless end_date.is_a?(Date)
-    @start_date = start_date
-    @end_date = end_date
-    @asset_lines = []
-    @liability_lines = []
-    @equity_lines = []
-  end
+  attr_accessor :company
+  attribute :start_date, :date
+  attribute :end_date, :date
+
+  attr_reader :asset_lines, :liability_lines, :equity_lines
 
   def load!
     bs_lines = JournalEntryLine.joins(:journal_entry).

@@ -35,14 +35,10 @@ class BalanceSheetTest < ActiveSupport::TestCase
     )
   end
 
-  test "should raise ArgumentError for invalid date" do
-    assert_raises(ArgumentError) { BalanceSheet.new(@company, "invalid") }
-  end
-
   test "#load! calculates asset, liability, and equity lines correctly for a given date" do
     start_date = Date.new(2025, 4, 1)
     end_date = Date.new(2025, 6, 30)
-    bs = BalanceSheet.new(@company, start_date, end_date)
+    bs = BalanceSheet.new(company: @company, start_date: start_date, end_date: end_date)
     bs.load!
 
     assert_equal 1, bs.asset_lines.size
