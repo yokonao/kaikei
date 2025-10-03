@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   resource :company_selection, only: [ :create ]
 
   resources :journal_entries, only: [ :index, :new, :create, :edit, :update, :destroy ]
+  resource :general_ledger, only: [ :show ]
   resource :profit_and_loss, only: [ :show ]
   resource :balance_sheet, only: [ :show ]
 
