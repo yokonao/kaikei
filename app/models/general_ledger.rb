@@ -1,6 +1,6 @@
 class GeneralLedger
   class AccountTable
-    Line = Data.define(:entry_date, :opponent_account_name, :amount)
+    Line = Data.define(:entry_id, :entry_date, :opponent_account_name, :amount)
     Balance = Data.define(:side, :amount)
 
     attr_reader :account, :debit_lines, :credit_lines
@@ -11,12 +11,12 @@ class GeneralLedger
       @credit_lines = []
     end
 
-    def add_debit_line(entry_date, opponent_account_name, amount)
-      @debit_lines << Line.new(entry_date: entry_date, opponent_account_name: opponent_account_name, amount: amount)
+    def add_debit_line(entry_id, entry_date, opponent_account_name, amount)
+      @debit_lines << Line.new(entry_id: entry_id, entry_date: entry_date, opponent_account_name: opponent_account_name, amount: amount)
     end
 
-    def add_credit_line(entry_date, opponent_account_name, amount)
-      @credit_lines << Line.new(entry_date: entry_date, opponent_account_name: opponent_account_name, amount: amount)
+    def add_credit_line(entry_id, entry_date, opponent_account_name, amount)
+      @credit_lines << Line.new(entry_id: entry_id, entry_date: entry_date, opponent_account_name: opponent_account_name, amount: amount)
     end
 
     def balance
@@ -51,12 +51,12 @@ class GeneralLedger
 
       debit_lines.each do |line|
         @account_tables[line.account_name] ||= AccountTable.new(line.account)
-        @account_tables[line.account_name].add_debit_line(entry.entry_date, credit_lines.length == 1 ? credit_lines.first.account_name : "諸口", line.amount)
+        @account_tables[line.account_name].add_debit_line(entry.id, entry.entry_date, credit_lines.length == 1 ? credit_lines.first.account_name : "諸口", line.amount)
       end
 
       credit_lines.each do |line|
         @account_tables[line.account_name] ||= AccountTable.new(line.account)
-        @account_tables[line.account_name].add_credit_line(entry.entry_date, debit_lines.length == 1 ? debit_lines.first.account_name : "諸口", line.amount)
+        @account_tables[line.account_name].add_credit_line(entry.id, entry.entry_date, debit_lines.length == 1 ? debit_lines.first.account_name : "諸口", line.amount)
       end
     end
 
