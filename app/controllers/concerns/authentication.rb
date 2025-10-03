@@ -51,8 +51,8 @@ module Authentication
       session.delete(:return_to_after_authenticating) || root_url
     end
 
-    def start_new_session_for(user)
-      company = user.companies.length == 1 ? user.companies.first : nil
+    def start_new_session_for(user, company: nil)
+      company ||= user.companies.length == 1 ? user.companies.first : nil
       user.sessions.create!(user_agent: request.user_agent, ip_address: request.remote_ip, company: company).tap do |session|
         Current.session = session
         cookies.signed.permanent[:session_id] = { value: session.id, httponly: true, same_site: :lax }

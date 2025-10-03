@@ -16,6 +16,9 @@ class SessionsController < ApplicationController
       verify_otp
     when "passkey"
       passkey_auth
+    when "dev"
+      raise "unknown login method #{@login_method}" unless Rails.env.development?
+      dev_auth
     else
       raise "unknown login method #{@login_method}"
     end
@@ -97,9 +100,15 @@ class SessionsController < ApplicationController
     end
   end
 
-  def success_login(user)
-    start_new_session_for user
-    if Current.company.present?
+  def dev_auth
+    user = User.first
+    company = user.companies.first
+    success_login User.first, company: company
+  end
+
+  def success_login(user, company: nil)
+    start_new_session_for user, company: company
+    if Current.session.company.present?
       redirect_to after_authentication_url
     else
       redirect_to companies_path
