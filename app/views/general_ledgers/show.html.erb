@@ -65,6 +65,25 @@
 
                 <% i += 1 %>
               <% end %>
+
+              <tr>
+                <% balance = account_table.balance %>
+
+                <td colspan="3" class="border-r border-t">
+                  <% if balance.side == "debit" %>
+                    <div class="w-full h-full py-2 text-center">
+                      借方残高 <%= number_to_currency(balance.amount, unit: "¥", precision: 0, delimiter: ",") %>
+                    </div>
+                  <% end %>
+                </td>
+                <td colspan="3" class="border-l border-t">
+                  <% if balance.side == "credit" %>
+                    <div class="w-full h-full py-2 text-center">
+                      貸方残高 <%= number_to_currency(balance.amount, unit: "¥", precision: 0, delimiter: ",") %>
+                    </div>
+                  <% end %>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
