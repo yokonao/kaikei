@@ -12,6 +12,14 @@ ja:
   activerecord:
     errors:
       models:
+        financial_closing:
+          attributes:
+            company:
+              required: "を指定してください"
+            start_date:
+              required: "を指定してください"
+            end_date:
+              required: "を指定してください"
         journal_entry_line:
           attributes:
             journal_entry:
@@ -23,6 +31,7 @@ ja:
     models:
       account: 勘定科目
       company: 事業所
+      financial_closing: 決算処理
       journal_entry: 仕訳
       journal_entry_line: 仕訳明細
       user_basic_password: パスワード
@@ -36,6 +45,11 @@ ja:
       company:
         name: 事業所名
         accounting_period_start_month: 会計年度の開始月
+      financial_closing:
+        company: 事業所
+        start_date: 決算の開始日
+        end_date: 決算の終了日
+        phase: フェーズ
       journal_entry:
         entry_date: 仕訳日
         summary: 摘要
