@@ -3,11 +3,11 @@ class FinancialClosingsController < ApplicationController
     company = Current.company
     redirect_to edit_financial_closing_path if company.ongoing_closing.present?
 
-    # TODO: 開始日、終了日は現在の日付と事業所の状態などからいい感じに推測する
+    start_date, end_date = default_closing_date_range(company)
     @financial_closing = FinancialClosing.new(
       company: company,
-      start_date: Date.new(2024, 4, 1),
-      end_date: Date.new(2025, 3, 31),
+      start_date: start_date,
+      end_date: end_date,
       phase: :adjusting
     )
   end
@@ -52,6 +52,19 @@ class FinancialClosingsController < ApplicationController
   end
 
   private
+
+  def default_closing_date_range(company)
+    previous_closing = company.financial_closings.order(end_date: :desc).first
+
+    if previous_closing.present?
+      start_date = previous_closing.end_date + 1.day
+      end_date = start_date + 1.year - 1.day
+      return start_date, end_date
+    else
+      period = AccountingPeriod.from_date(Date.current - 1.year, start_month: company.accounting_period_start_month)
+      return period.start_date, period.end_date
+    end
+  end
 
   def financial_closing_params
     params.expect(financial_closing: [ :start_date, :end_date ])
