@@ -30,6 +30,7 @@ class FinancialClosing < ApplicationRecord
     end
 
     other_closings = FinancialClosing.where(company_id: company_id).order(end_date: :desc)
+    other_closings = other_closings.where.not(id: id) if persisted?
     return if other_closings.empty?
 
     latest_closing_end_date = other_closings.first.end_date
