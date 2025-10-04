@@ -4,7 +4,8 @@
       <h1 class="text-3xl tracking-wide">決算処理</h1>
     </div>
 
-    <%= form_with model: @financial_closing, url: companies_path, class: "p-8" do |form| %>
+    <p class="font-mono font-bold text-center m-4"><%= @financial_closing.start_date.strftime('%Y年%m月%d日') %> ~ <%= @financial_closing.end_date.strftime('%Y年%m月%d日') %></p>
+    <%= form_with model: @financial_closing, url: financial_closing_path, method: "PATCH", class: "p-8" do |form| %>
       <% if @financial_closing.errors.any? %>
         <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6">
           <ul>
@@ -21,7 +22,57 @@
         </div>
       <% end %>
 
-      <div class="p-2 text-center">決算中</div>
+      <div class="space-y-8">
+        <div>
+          <h2 class="text-2xl tracking-wide mb-4 border-b-2 border-black pb-2">① 決済整理仕訳</h2>
+          <% if @financial_closing.adjusting? %>
+            <div class="p-2 mb-4">仕訳入力画面で決算整理仕訳を作成してください</div>
+            <%= form.hidden_field :action, value: "finish_adjustment" %>
+            <div class="flex justify-center">
+              <%= form.submit "決算整理仕訳の入力が完了した",
+                class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black text-xl tracking-widest cursor-pointer" %>
+            </div>
+          <% end %>
+          <% if @financial_closing.done? || @financial_closing.closing? %>
+            <div class="flex">
+              <!-- https://heroicons.com/ -->
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+              </svg>
+              完了
+            </div>
+          <% end %>
+        </div>
+        <div>
+          <h2 class="text-2xl tracking-wide mb-4 border-b-2 border-black pb-2">② 帳簿の締め切り</h2>
+          <% unless @financial_closing.done? %>
+            <div class="p-2 mb-4">
+              <p>帳簿の締め切り処理を自動で行います。</p>
+              <ul class="mt-2 list-disc list-inside">
+                <li>収益残高を損益勘定に振り替える</li>
+                <li>費用残高を損益勘定に振り替える</li>
+                <li>資産・負債・純資産の残高を次期に繰り越す</li>
+              </ul>
+            </div>
+          <% end %>
+          <% if @financial_closing.closing? %>
+            <div class="flex justify-center">
+              <%= form.hidden_field :action, value: "close" %>
+              <%= form.submit "締め切り",
+                class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black text-xl tracking-widest cursor-pointer" %>
+            </div>
+          <% end %>
+          <% if @financial_closing.done? %>
+            <div class="flex">
+              <!-- https://heroicons.com/ -->
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+              </svg>
+              完了
+            </div>
+          <% end %>
+        </div>
+      </div>
     <% end %>
   </div>
 </div>

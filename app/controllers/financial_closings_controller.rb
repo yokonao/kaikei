@@ -36,6 +36,19 @@ class FinancialClosingsController < ApplicationController
   end
 
   def update
+    company = Current.company
+    @financial_closing = company.ongoing_closing
+
+    case action = params.dig(:financial_closing, :action)
+    when "finish_adjustment"
+      @financial_closing.closing!
+      redirect_to edit_financial_closing_path, notice: "決算整理仕訳の入力が完了しました。"
+    when "close"
+      @financial_closing.done!
+      redirect_to edit_financial_closing_path, notice: "決算処理が完了しました。"
+    else
+      raise "invalid action #{action} for updating financial closing"
+    end
   end
 
   private
