@@ -10,12 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_04_095149) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_05_010247) do
   create_table "accounts", primary_key: "name", id: :string, force: :cascade do |t|
     t.integer "category", default: 0, null: false
     t.boolean "is_standard", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "balance_forwards", force: :cascade do |t|
+    t.integer "company_id", null: false
+    t.integer "financial_closing_id", null: false
+    t.string "account_name", null: false
+    t.date "closing_date", null: false
+    t.decimal "amount", precision: 18, scale: 4, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_name"], name: "index_balance_forwards_on_account_name"
+    t.index ["company_id"], name: "index_balance_forwards_on_company_id"
+    t.index ["financial_closing_id"], name: "index_balance_forwards_on_financial_closing_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -103,6 +116,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_04_095149) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "balance_forwards", "accounts", column: "account_name", primary_key: "name"
+  add_foreign_key "balance_forwards", "companies"
+  add_foreign_key "balance_forwards", "financial_closings"
   add_foreign_key "financial_closings", "companies"
   add_foreign_key "journal_entries", "companies"
   add_foreign_key "journal_entry_lines", "accounts", column: "account_name", primary_key: "name"

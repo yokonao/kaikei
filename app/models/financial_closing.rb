@@ -1,5 +1,6 @@
 class FinancialClosing < ApplicationRecord
   belongs_to :company
+  has_many :balance_forwards
 
   enum :phase, {
     adjusting: 1, # 決算整理仕訳を行うフェーズ

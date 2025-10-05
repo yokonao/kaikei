@@ -12,6 +12,16 @@ ja:
   activerecord:
     errors:
       models:
+        balance_forward:
+          attributes:
+            account:
+              required: "を指定してください"
+            amount:
+              not_a_number: "を入力してください"
+            company:
+              required: "を指定してください"
+            financial_closing:
+              required: "を指定してください"
         financial_closing:
           attributes:
             company:
@@ -30,6 +40,7 @@ ja:
               not_a_number: "を入力してください"
     models:
       account: 勘定科目
+      balance_forawrd: 残高繰越
       company: 事業所
       financial_closing: 決算処理
       journal_entry: 仕訳
@@ -42,6 +53,12 @@ ja:
         name: 勘定科目名
         category: 区分（資産・負債・純資産・収益・費用）
         is_standard: デフォルト勘定科目かどうか
+      balance_forward:
+        account: 勘定科目
+        amount: 金額
+        closing_date: 決算日
+        company: 事業所
+        financial_closing: 決算
       company:
         name: 事業所名
         accounting_period_start_month: 会計年度の開始月
