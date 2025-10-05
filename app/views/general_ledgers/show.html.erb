@@ -48,7 +48,7 @@
                     </div>
                   </td>
                   <td class="border-r">
-                    <div class="w-full h-full py-2 text-center">
+                    <div class="w-full h-full py-2 pr-2 text-right">
                       <%= number_to_currency(debit_line&.amount, unit: "", precision: 0, delimiter: ",") %>
                       <% if debit_line && debit_line.entry_id %>
                         <a href="<%= edit_journal_entry_path(debit_line.entry_id) %>" aria-label="仕訳帳" target="_blank">
@@ -71,7 +71,7 @@
                     </div>
                   </td>
                   <td>
-                    <div class="w-full h-full py-2 text-center">
+                    <div class="w-full h-full py-2 pr-2 text-right">
                       <%= number_to_currency(credit_line&.amount, unit: "", precision: 0, delimiter: ",") %>
                       <% if credit_line && credit_line.entry_id %>
                         <a href="<%= edit_journal_entry_path(credit_line.entry_id) %>" aria-label="仕訳帳" target="_blank">
