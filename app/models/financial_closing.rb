@@ -100,6 +100,17 @@ class FinancialClosing < ApplicationRecord
       )
     end
 
+    # B/S 残高を次期に繰り越す
+    ActiveRecord::Base.transaction do
+      gl.load! # 仕訳が追加されているのでリロードする
+      gl.account_tables.values.each do |account_table|
+        account = account_table.account
+        if account.asset? || account.liability? || account.equity?
+          balance_forwards.create!(company: company, closing_date: end_date, account: account, amount: account_table.balance.amount)
+        end
+      end
+    end
+
     done!
   end
 end
