@@ -24,6 +24,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_05_010247) do
     t.string "account_name", null: false
     t.date "closing_date", null: false
     t.decimal "amount", precision: 18, scale: 4, null: false
+    t.string "side", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_name"], name: "index_balance_forwards_on_account_name"

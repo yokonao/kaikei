@@ -105,8 +105,11 @@ class FinancialClosing < ApplicationRecord
       gl.load! # 仕訳が追加されているのでリロードする
       gl.account_tables.values.each do |account_table|
         account = account_table.account
+        amount = account_table.balance.amount
+        side = account_table.balance.side
+        next if amount.zero?
         if account.asset? || account.liability? || account.equity?
-          balance_forwards.create!(company: company, closing_date: end_date, account: account, amount: account_table.balance.amount)
+          balance_forwards.create!(company: company, closing_date: end_date, account: account, amount: amount, side: side == "debit" ? "credit" : "debit")
         end
       end
     end

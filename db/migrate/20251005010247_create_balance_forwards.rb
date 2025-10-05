@@ -7,6 +7,7 @@ class CreateBalanceForwards < ActiveRecord::Migration[8.0]
       t.string :account_name, null: false, index: true
       t.date :closing_date, null: false
       t.decimal :amount, null: false, precision: 18, scale: 4
+      t.string :side, null: false, comment: "debit(借方) または credit(貸方)"
 
       t.foreign_key :accounts, column: :account_name, primary_key: :name
 

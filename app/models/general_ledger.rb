@@ -42,20 +42,48 @@ class GeneralLedger
 
   def load!
     all_entries = @company.journal_entries.includes(journal_entry_lines: [ :account ]).where(entry_date: start_date..end_date).order(:entry_date, :id)
+    balance_forwards = BalanceForward.includes(:account).where(company_id: @company.id).where(closing_date: start_date..end_date).order(:closing_date, :id)
+
+    # 日付ベースでソート、日付が同じなら残高繰越が後ろになる
+    # e.g. 期首仕訳（3/31） → 期末仕訳（3/31） → 残高繰越（4/1）
+    combined_entries = (all_entries + balance_forwards).sort_by do |entry|
+      if entry.is_a?(BalanceForward)
+        [ entry.closing_date, 1, entry.id ]
+      else
+        [ entry.entry_date, 0, entry.id ]
+      end
+    end
     @account_tables = {}
 
-    all_entries.each do |entry|
-      debit_lines = entry.journal_entry_lines.filter { |line| line.side == "debit" }
-      credit_lines = entry.journal_entry_lines.filter { |line| line.side == "credit" }
+    combined_entries.each do |entry|
+      if entry.is_a?(BalanceForward)
+        case entry.side
+        when "debit"
+          @account_tables[entry.account_name] ||= AccountTable.new(entry.account)
+          @account_tables[entry.account_name].add_debit_line(nil, entry.closing_date, "次期繰越", entry.amount)
+          if entry.closing_date.tomorrow <= end_date
+            @account_tables[entry.account_name].add_credit_line(nil, entry.closing_date.tomorrow, "前期繰越", entry.amount)
+          end
+        when "credit"
+          @account_tables[entry.account_name] ||= AccountTable.new(entry.account)
+          @account_tables[entry.account_name].add_credit_line(nil, entry.closing_date, "次期繰越", entry.amount)
+          if entry.closing_date.tomorrow <= end_date
+            @account_tables[entry.account_name].add_debit_line(nil, entry.closing_date.tomorrow, "前期繰越", entry.amount)
+          end
+        end
+      elsif entry.is_a?(JournalEntry)
+        debit_lines = entry.journal_entry_lines.filter { |line| line.side == "debit" }
+        credit_lines = entry.journal_entry_lines.filter { |line| line.side == "credit" }
 
-      debit_lines.each do |line|
-        @account_tables[line.account_name] ||= AccountTable.new(line.account)
-        @account_tables[line.account_name].add_debit_line(entry.id, entry.entry_date, credit_lines.length == 1 ? credit_lines.first.account_name : "諸口", line.amount)
-      end
+        debit_lines.each do |line|
+          @account_tables[line.account_name] ||= AccountTable.new(line.account)
+          @account_tables[line.account_name].add_debit_line(entry.id, entry.entry_date, credit_lines.length == 1 ? credit_lines.first.account_name : "諸口", line.amount)
+        end
 
-      credit_lines.each do |line|
-        @account_tables[line.account_name] ||= AccountTable.new(line.account)
-        @account_tables[line.account_name].add_credit_line(entry.id, entry.entry_date, debit_lines.length == 1 ? debit_lines.first.account_name : "諸口", line.amount)
+        credit_lines.each do |line|
+          @account_tables[line.account_name] ||= AccountTable.new(line.account)
+          @account_tables[line.account_name].add_credit_line(entry.id, entry.entry_date, debit_lines.length == 1 ? debit_lines.first.account_name : "諸口", line.amount)
+        end
       end
     end
 
