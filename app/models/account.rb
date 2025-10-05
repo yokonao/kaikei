@@ -4,7 +4,8 @@ class Account < ApplicationRecord
     liability: 2, # 負債
     equity: 3, # 純資産
     revenue: 4, # 収益
-    expense: 5 # 費用
+    expense: 5, # 費用
+    collective: 6 # 集合勘定
   }
 
   validates :name,

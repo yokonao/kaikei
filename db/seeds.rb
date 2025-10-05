@@ -38,7 +38,7 @@ standard_accounts = [
 
   # 純資産科目
   { name: "資本金", category: :equity, is_standard: true },
-  { name: "利益剰余金", category: :equity, is_standard: true },
+  { name: "繰越利益剰余金", category: :equity, is_standard: true },
 
   # 収益科目
   { name: "売上高", category: :revenue, is_standard: true },
@@ -50,7 +50,10 @@ standard_accounts = [
   { name: "支払利息", category: :expense, is_standard: true },
   { name: "租税公課", category: :expense, is_standard: true },
   { name: "旅費交通費", category: :expense, is_standard: true },
-  { name: "通信費", category: :expense, is_standard: true }
+  { name: "通信費", category: :expense, is_standard: true },
+
+  # 集合勘定
+  { name: "損益", category: :collective, is_standard: true }
 ]
 
 standard_accounts.each do |acc|

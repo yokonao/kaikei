@@ -39,4 +39,66 @@ class FinancialClosing < ApplicationRecord
       errors.add(:base, "決算の開始日は前回決算の終了日の翌日にしてください")
     end
   end
+
+  def close!
+    gl = GeneralLedger.new(company: company, start_date: start_date, end_date: end_date)
+    gl.load!
+
+    # 収益・費用を損益勘定に振り替える
+    pl_account = Account.find("損益")
+    revenue_tranfer_entry = JournalEntry.new(company: company, entry_date: end_date, summary: "決算振替仕訳（収益 → 損益）")
+    revenue_balance = 0
+    expense_transfer_entry = JournalEntry.new(company: company, entry_date: end_date, summary: "決算振替仕訳（費用 → 損益）")
+    expense_balance = 0
+    gl.account_tables.values.each do |account_table|
+      account = account_table.account
+      amount = account_table.balance.amount
+      if account.revenue?
+        case account_table.balance.side
+        when "debit"
+          revenue_balance -= amount
+          revenue_tranfer_entry.journal_entry_lines.build(account: account, side: "credit", amount: amount)
+        when "credit"
+          revenue_balance += amount
+          revenue_tranfer_entry.journal_entry_lines.build(account: account, side: "debit", amount: amount)
+        end
+      elsif account.expense?
+        case account_table.balance.side
+        when "debit"
+          expense_balance += amount
+          expense_transfer_entry.journal_entry_lines.build(account: account, side: "credit", amount: amount)
+        when "credit"
+          expense_balance -= amount
+          expense_transfer_entry.journal_entry_lines.build(account: account, side: "debit", amount: amount)
+        end
+      end
+    end
+
+    if revenue_balance != 0
+      side = revenue_balance.positive? ? "credit" : "debit"
+      revenue_tranfer_entry.journal_entry_lines.build(account: pl_account, side: side, amount: revenue_balance.abs)
+      revenue_tranfer_entry.save!
+    end
+    if expense_balance != 0
+      side = expense_balance.positive? ? "debit" : "credit"
+      expense_transfer_entry.journal_entry_lines.build(account: pl_account, side: side, amount: expense_balance.abs)
+      expense_transfer_entry.save!
+    end
+
+    # 損益勘定を繰越利益剰余金に振り替える
+    pl_balance = revenue_balance - expense_balance
+    if pl_balance != 0
+      JournalEntry.create!(
+        company: company,
+        entry_date: end_date,
+        summary: "決算振替仕訳（損益 → 繰越利益剰余金）",
+        journal_entry_lines_attributes: [
+          { account: pl_account, side: pl_balance.positive? ? "debit" : "credit", amount: pl_balance.abs },
+          { account: Account.find("繰越利益剰余金"), side: pl_balance.positive? ? "credit" : "debit", amount: pl_balance.abs }
+        ]
+      )
+    end
+
+    done!
+  end
 end

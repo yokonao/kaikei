@@ -44,7 +44,7 @@ class FinancialClosingsController < ApplicationController
       @financial_closing.closing!
       redirect_to edit_financial_closing_path, notice: "決算整理仕訳の入力が完了しました。"
     when "close"
-      @financial_closing.done!
+      @financial_closing.close!
       redirect_to edit_financial_closing_path, notice: "決算処理が完了しました。"
     else
       raise "invalid action #{action} for updating financial closing"

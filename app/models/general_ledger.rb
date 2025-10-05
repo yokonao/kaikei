@@ -41,7 +41,7 @@ class GeneralLedger
   attr_reader :account_tables
 
   def load!
-    all_entries = @company.journal_entries.includes(journal_entry_lines: [ :account ]).where(entry_date: @start_date..@end_date).order(:entry_date, :id)
+    all_entries = @company.journal_entries.includes(journal_entry_lines: [ :account ]).where(entry_date: start_date..end_date).order(:entry_date, :id)
     @account_tables = {}
 
     all_entries.each do |entry|
