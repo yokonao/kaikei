@@ -1,4 +1,4 @@
-<div class="font-mono max-w-6xl min-w-2xs sm:min-w-2xl mx-auto min-h-screen">
+<div class="font-mono max-w-6xl min-w-2xs sm:min-w-2xl md:min-w-3xl mx-auto min-h-screen">
   <div class="bg-white border-4 border-black shadow-2xl">
     <div class="bg-gray-100 px-8 py-6 border-b-4 border-black flex justify-between items-center">
       <h1 class="text-3xl tracking-wide">総勘定元帳</h1>
@@ -49,7 +49,7 @@
                   </td>
                   <td class="border-r">
                     <div class="w-full h-full py-2 text-center">
-                      <%= number_to_currency(debit_line&.amount, unit: "¥", precision: 0, delimiter: ",") %>
+                      <%= number_to_currency(debit_line&.amount, unit: "", precision: 0, delimiter: ",") %>
                       <% if debit_line && debit_line.entry_id %>
                         <a href="<%= edit_journal_entry_path(debit_line.entry_id) %>" aria-label="仕訳帳" target="_blank">
                           <!-- https://heroicons.com/ -->
@@ -72,7 +72,7 @@
                   </td>
                   <td>
                     <div class="w-full h-full py-2 text-center">
-                      <%= number_to_currency(credit_line&.amount, unit: "¥", precision: 0, delimiter: ",") %>
+                      <%= number_to_currency(credit_line&.amount, unit: "", precision: 0, delimiter: ",") %>
                       <% if credit_line && credit_line.entry_id %>
                         <a href="<%= edit_journal_entry_path(credit_line.entry_id) %>" aria-label="仕訳帳" target="_blank">
                           <!-- https://heroicons.com/ -->
@@ -88,24 +88,25 @@
                 <% i += 1 %>
               <% end %>
 
-              <tr>
-                <% balance = account_table.balance %>
-
-                <td colspan="3" class="border-r border-t">
-                  <% if balance.side == "debit" %>
-                    <div class="w-full h-full py-2 text-center">
-                      借方残高 <%= number_to_currency(balance.amount, unit: "¥", precision: 0, delimiter: ",") %>
-                    </div>
-                  <% end %>
-                </td>
-                <td colspan="3" class="border-l border-t">
-                  <% if balance.side == "credit" %>
-                    <div class="w-full h-full py-2 text-center">
-                      貸方残高 <%= number_to_currency(balance.amount, unit: "¥", precision: 0, delimiter: ",") %>
-                    </div>
-                  <% end %>
-                </td>
-              </tr>
+              <% balance = account_table.balance %>
+              <% if balance.amount.positive? %>
+                <tr>
+                  <td colspan="3" class="border-r border-t">
+                    <% if balance.side == "debit" %>
+                      <div class="w-full h-full py-2 text-center">
+                        借方残高 <%= number_to_currency(balance.amount, unit: "", precision: 0, delimiter: ",") %>
+                      </div>
+                    <% end %>
+                  </td>
+                  <td colspan="3" class="border-l border-t">
+                    <% if balance.side == "credit" %>
+                      <div class="w-full h-full py-2 text-center">
+                        貸方残高 <%= number_to_currency(balance.amount, unit: "", precision: 0, delimiter: ",") %>
+                      </div>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
             </tbody>
           </table>
         </div>
