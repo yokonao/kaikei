@@ -7,7 +7,7 @@ class FinancialClosings::StatementsController < ApplicationController
     @balance_sheet = BalanceSheet.new(company: company, start_date: @start_date, end_date: @end_date)
     @balance_sheet.load!
 
-    @profit_and_loss = ProfitAndLoss.new(company: company, start_date: @start_date, end_date: @end_date)
+    @profit_and_loss = ProfitAndLoss.new(company: company, start_date: @start_date, end_date: @end_date, exclude_closing_entry: true)
     @profit_and_loss.load!
   end
 end

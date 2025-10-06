@@ -34,3 +34,8 @@ salaries:
   name: 給与手当
   category: 5
   is_standard: true
+
+profit_and_loss:
+  name: 損益
+  category: 6
+  is_standard: true
