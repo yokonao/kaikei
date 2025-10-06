@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 
   resources :journal_entries, only: [ :index, :new, :create, :edit, :update, :destroy ]
   resource :general_ledger, only: [ :show ]
-  resources :financial_closings, only: [ :new, :create ]
+  resources :financial_closings, only: [ :index, :create ]
   resource :financial_closing, only: [ :edit, :update ]
   resource :profit_and_loss, only: [ :show ]
   resource :balance_sheet, only: [ :show ]

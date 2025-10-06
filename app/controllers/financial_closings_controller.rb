@@ -1,15 +1,17 @@
 class FinancialClosingsController < ApplicationController
-  def new
+  def index
     company = Current.company
-    redirect_to edit_financial_closing_path if company.ongoing_closing.present?
+    @financial_closings = Current.company.financial_closings.order(end_date: :desc, id: :desc)
 
-    start_date, end_date = default_closing_date_range(company)
-    @financial_closing = FinancialClosing.new(
-      company: company,
-      start_date: start_date,
-      end_date: end_date,
-      phase: :adjusting
-    )
+    if company.ongoing_closing.blank?
+      start_date, end_date = default_closing_date_range(company)
+      @financial_closing = FinancialClosing.new(
+        company: company,
+        start_date: start_date,
+        end_date: end_date,
+        phase: :adjusting
+      )
+    end
   end
 
   def create
@@ -25,14 +27,15 @@ class FinancialClosingsController < ApplicationController
     if @financial_closing.save
       redirect_to edit_financial_closing_path, notice: "決算処理を開始します。"
     else
-      render :new, status: :unprocessable_content
+      @financial_closings = Current.company.financial_closings.order(end_date: :desc, id: :desc)
+      render :index, status: :unprocessable_content
     end
   end
 
   def edit
     company = Current.company
     @financial_closing = company.ongoing_closing
-    redirect_to new_financial_closing_path unless @financial_closing.present?
+    redirect_to financial_closings_path unless @financial_closing.present?
   end
 
   def update
