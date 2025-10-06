@@ -13,8 +13,8 @@ class BalanceSheet
   def load!
     bs_lines = JournalEntryLine.joins(:journal_entry).
                                 includes(:account).
-                                where("journal_entry.company_id": @company.id).
-                                where("journal_entry.entry_date": @start_date..@end_date).
+                                where("journal_entry.company_id": company.id).
+                                where("journal_entry.entry_date": start_date..end_date).
                                 where("account.category": [ :asset, :liability, :equity ])
 
     @asset_lines = bs_lines.
@@ -34,7 +34,7 @@ class BalanceSheet
                           map { |k, v| Line.new(name: k, amount: v) }
 
     # Add net income to equity
-    pl = ProfitAndLoss.new(company: @company, start_date: @start_date, end_date: @end_date)
+    pl = ProfitAndLoss.new(company: company, start_date: start_date, end_date: end_date)
     pl.load!
     @equity_lines << Line.new(name: "当期純利益", amount: pl.net_income)
 
