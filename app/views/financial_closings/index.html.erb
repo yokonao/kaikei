@@ -53,8 +53,12 @@
       </div>
     <% end %>
 
+    <% if @financial_closing.present? && @financial_closings.present? %>
+      <hr class="border-2" />
+    <% end %>
+
     <% if @financial_closings.present? %>
-      <div class="border-t-2">
+      <div>
         <div class="p-8 space-y-4">
           <% @financial_closings.each do |financial_closing| %>
             <div class="p-4 border shadow-md">
