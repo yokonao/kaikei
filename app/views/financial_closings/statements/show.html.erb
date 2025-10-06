@@ -1,4 +1,4 @@
-<div class="max-w-6xl mx-auto min-h-screen">
+<div class="max-w-6xl min-w-2xs sm:min-w-2xl md:min-w-3xl mx-auto min-h-screen">
   <div class="bg-white border-4 border-black shadow-2xl">
     <div class="bg-gray-100 px-8 py-6 border-b-4 border-black flex justify-between items-center">
       <h1 class="text-3xl font-mono tracking-wide">財務諸表</h1>
@@ -6,161 +6,138 @@
 
     <p class="font-mono font-bold text-center m-4"><%= @start_date.strftime('%Y年%m月%d日') %> ~ <%= @end_date.strftime('%Y年%m月%d日') %></p>
 
-    <div class="px-4 grid grid-cols-1 sm:grid-cols-2 gap-8">
-      <!-- 資産の部 -->
-      <div>
-        <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2 text-center">資産の部</h2>
-        <table class="w-full border-collapse mb-4">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="px-4 py-3 border border-black text-center font-mono text-sm tracking-wider w-3/4">科目名</th>
-              <th class="px-4 py-3 border border-black text-center font-mono text-sm tracking-wider w-1/4">金額</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white">
-            <% @balance_sheet.asset_lines.each do |line| %>
-              <tr>
-                <td class="px-4 py-3 border border-black font-mono text-sm"><%= line.name %></td>
-                <td class="px-4 py-3 border border-black font-mono text-sm text-right">
-                  <%= number_to_currency(line.amount, unit: "¥", precision: 0, delimiter: ",") %>
-                </td>
-              </tr>
-            <% end %>
-            <tr class="font-bold">
-              <td class="px-4 py-3 border-2 border-black font-mono text-sm">資産合計</td>
-              <td class="px-4 py-3 border-2 border-black font-mono text-sm text-right">
-                <%= number_to_currency(@balance_sheet.total_assets, unit: "¥", precision: 0, delimiter: ",") %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="px-8 pb-8">
+      <h2 class="text-2xl font-mono tracking-wide mb-4 text-center">貸借対照表</h2>
+      <table class="w-full border-collapse border-2 mb-8">
+        <colgroup>
+          <col class="w-2/6">
+          <col class="w-1/6">
+          <col class="w-2/6">
+          <col class="w-1/6">
+        </colgroup>
 
-      <!-- 負債・純資産の部 -->
-      <div>
-        <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2 text-center">負債の部</h2>
-        <table class="w-full border-collapse mb-4">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="px-4 py-3 border border-black text-center font-mono text-sm tracking-wider w-3/4">科目名</th>
-              <th class="px-4 py-3 border border-black text-center font-mono text-sm tracking-wider w-1/4">金額</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white">
-            <% @balance_sheet.liability_lines.each do |line| %>
-              <tr>
-                <td class="px-4 py-3 border border-black font-mono text-sm"><%= line.name %></td>
-                <td class="px-4 py-3 border border-black font-mono text-sm text-right">
-                  <%= number_to_currency(line.amount, unit: "¥", precision: 0, delimiter: ",") %>
-                </td>
-              </tr>
-            <% end %>
-            <tr class="font-bold">
-              <td class="px-4 py-3 border-2 border-black font-mono text-sm">負債合計</td>
-              <td class="px-4 py-3 border-2 border-black font-mono text-sm text-right">
-                <%= number_to_currency(@balance_sheet.total_liabilities, unit: "¥", precision: 0, delimiter: ",") %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <% i = 0 %>
+        <% loop do %>
+        <% debit_line = @bs_debit_lines[i] %>
+        <% credit_line = @bs_credit_lines[i] %>
+        <% break if debit_line.blank? && credit_line.blank? %>
 
-        <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2 text-center">純資産の部</h2>
-        <table class="w-full border-collapse mb-4">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="px-4 py-3 border border-black text-center font-mono text-sm tracking-wider w-3/4">科目名</th>
-              <th class="px-4 py-3 border border-black text-center font-mono text-sm tracking-wider w-1/4">金額</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white">
-            <% @balance_sheet.equity_lines.each do |line| %>
-              <tr>
-                <td class="px-4 py-3 border border-black font-mono text-sm"><%= line.name %></td>
-                <td class="px-4 py-3 border border-black font-mono text-sm text-right">
-                  <%= number_to_currency(line.amount, unit: "¥", precision: 0, delimiter: ",") %>
-                </td>
-              </tr>
-            <% end %>
-            <tr class="font-bold">
-              <td class="px-4 py-3 border-2 border-black font-mono text-sm">純資産合計</td>
-              <td class="px-4 py-3 border-2 border-black font-mono text-sm text-right">
-                <%= number_to_currency(@balance_sheet.total_equity, unit: "¥", precision: 0, delimiter: ",") %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+        <tr>
+          <% if debit_line.present? %>
+            <td>
+              <div class="w-full h-full py-2 text-center">
+                <%= debit_line[0] %>
+              </div>
+            </td>
+            <td class="border-r">
+              <div class="w-full h-full py-2 pr-2 text-right">
+                <%= number_to_currency(debit_line[1], unit: "", precision: 0, delimiter: ",") %>
+              </div>
+            </td>
+          <% else %>
+            <td />
+            <td class="border-r" />
+          <% end %>
+          <% if credit_line.present? %>
+            <td class="border-l">
+              <div class="w-full h-full py-2 text-center">
+                <%= credit_line[0] %>
+              </div>
+            </td>
+            <td>
+              <div class="w-full h-full py-2 pr-2 text-right">
+                <%= number_to_currency(credit_line[1], unit: "", precision: 0, delimiter: ",") %>
+              </div>
+            </td>
+          <% else %>
+            <td class="border-l" />
+            <td />
+          <% end %>
+        </tr>
 
+        <% i += 1 %>
+        <% end %>
+        <tr class="border-t">
+          <td />
+          <td class="border-r">
+            <div class="w-full h-full py-2 pr-2 text-right">
+              <%= number_to_currency(@balance_sheet.total_assets, unit: "", precision: 0, delimiter: ",") %>
+            </div>
+          </td>
+          <td class="border-l" />
+          <td>
+            <div class="w-full h-full py-2 pr-2 text-right">
+              <%= number_to_currency(@balance_sheet.total_liabilities + @balance_sheet.total_equity, unit: "", precision: 0, delimiter: ",") %>
+            </div>
+          </td>
+        </tr>
+      </table>
 
-    <div class="px-4 grid grid-cols-1 sm:grid-cols-2 gap-8">
-      <!-- 費用の部 -->
-      <div>
-        <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2 text-center">費用の部</h2>
-        <table class="w-full border-collapse mb-4">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="px-4 py-3 border border-black text-center font-mono text-sm tracking-wider w-3/4">科目名</th>
-              <th class="px-4 py-3 border border-black text-center font-mono text-sm tracking-wider w-1/4">金額</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white">
-            <% @profit_and_loss.expense_lines.each do |line| %>
-              <tr>
-                <td class="px-4 py-3 border border-black font-mono text-sm"><%= line.name %></td>
-                <td class="px-4 py-3 border border-black font-mono text-sm text-right">
-                  <%= number_to_currency(line.amount, unit: "¥", precision: 0, delimiter: ",") %>
-                </td>
-              </tr>
-            <% end %>
-            <tr class="font-bold">
-              <td class="px-4 py-3 border-2 border-black font-mono text-sm">費用合計</td>
-              <td class="px-4 py-3 border-2 border-black font-mono text-sm text-right">
-                <%= number_to_currency(@profit_and_loss.total_expenses, unit: "¥", precision: 0, delimiter: ",") %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <h2 class="text-2xl font-mono tracking-wide mb-4 text-center">損益計算書</h2>
+      <table class="w-full border-collapse border-2 mb-4">
+        <colgroup>
+          <col class="w-2/6">
+          <col class="w-1/6">
+          <col class="w-2/6">
+          <col class="w-1/6">
+        </colgroup>
 
-      <!-- 収益の部 -->
-      <div>
-        <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2 text-center">収益の部</h2>
-        <table class="w-full border-collapse mb-4">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="px-4 py-3 border border-black text-center font-mono text-sm tracking-wider w-3/4">科目名</th>
-              <th class="px-4 py-3 border border-black text-center font-mono text-sm tracking-wider w-1/4">金額</th>
-            </tr>
-          </thead>
-          <tbody class="bg-white">
-            <% @profit_and_loss.revenue_lines.each do |line| %>
-              <tr>
-                <td class="px-4 py-3 border border-black font-mono text-sm"><%= line.name %></td>
-                <td class="px-4 py-3 border border-black font-mono text-sm text-right">
-                  <%= number_to_currency(line.amount, unit: "¥", precision: 0, delimiter: ",") %>
-                </td>
-              </tr>
-            <% end %>
-            <tr class="font-bold">
-              <td class="px-4 py-3 border-2 border-black font-mono text-sm">収益合計</td>
-              <td class="px-4 py-3 border-2 border-black font-mono text-sm text-right">
-                <%= number_to_currency(@profit_and_loss.total_revenue, unit: "¥", precision: 0, delimiter: ",") %>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+        <% i = 0 %>
+        <% loop do %>
+        <% debit_line = @pl_debit_lines[i] %>
+        <% credit_line = @pl_credit_lines[i] %>
+        <% break if debit_line.blank? && credit_line.blank? %>
 
-    <!-- 当期純利益 -->
-    <div class="p-6 border-t-2 flex justify-between items-center">
-      <h3 class="text-xl font-mono tracking-wide font-bold">
-        <%= @profit_and_loss.net_income >= 0 ? "当期純利益" : "当期純損失" %>
-      </h3>
-      <span class="text-2xl font-mono font-bold">
-        <%= number_to_currency(@profit_and_loss.net_income.abs, unit: "¥", precision: 0, delimiter: ",") %>
-      </span>
+        <tr>
+          <% if debit_line.present? %>
+            <td>
+              <div class="w-full h-full py-2 text-center">
+                <%= debit_line[0] %>
+              </div>
+            </td>
+            <td class="border-r">
+              <div class="w-full h-full py-2 pr-2 text-right">
+                <%= number_to_currency(debit_line[1], unit: "", precision: 0, delimiter: ",") %>
+              </div>
+            </td>
+          <% else %>
+            <td />
+            <td class="border-r" />
+          <% end %>
+          <% if credit_line.present? %>
+            <td class="border-l">
+              <div class="w-full h-full py-2 text-center">
+                <%= credit_line[0] %>
+              </div>
+            </td>
+            <td>
+              <div class="w-full h-full py-2 pr-2 text-right">
+                <%= number_to_currency(credit_line[1], unit: "", precision: 0, delimiter: ",") %>
+              </div>
+            </td>
+          <% else %>
+            <td class="border-l" />
+            <td />
+          <% end %>
+        </tr>
+
+        <% i += 1 %>
+        <% end %>
+        <tr class="border-t">
+          <td />
+          <td class="border-r">
+            <div class="w-full h-full py-2 pr-2 text-right">
+              <%= number_to_currency(@pl_total_debit, unit: "", precision: 0, delimiter: ",") %>
+            </div>
+          </td>
+          <td class="border-l" />
+          <td>
+            <div class="w-full h-full py-2 pr-2 text-right">
+              <%= number_to_currency(@pl_total_credit, unit: "", precision: 0, delimiter: ",") %>
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
 </div>
