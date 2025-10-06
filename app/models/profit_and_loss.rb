@@ -10,7 +10,7 @@ class ProfitAndLoss
   # 決算処理で生成される仕訳を除外するかどうか
   attribute :exclude_closing_entry, :boolean
 
-  attr_reader :revenue_lines, :expense_lines
+  attr_reader :revenue_lines, :total_revenue, :expense_lines, :total_expenses
 
   def load!
     pl_lines = JournalEntryLine.includes(:journal_entry, :account).
@@ -29,20 +29,16 @@ class ProfitAndLoss
                           group_by { |line| line.account_name }.
                           transform_values { |lines| lines.sum { |line| line.side == "credit" ? line.amount : -line.amount } }.
                           map { |k, v| Line.new(name: k, amount: v) }
+    @total_revenue = @revenue_lines.sum(&:amount)
+
     @expense_lines = pl_lines.
                           filter { |line| line.account.expense? }.
                           group_by { |line| line.account_name }.
                           transform_values { |lines| lines.sum { |line| line.side == "debit" ? line.amount : -line.amount } }.
                           map { |k, v| Line.new(name: k, amount: v) }
+    @total_expenses = @expense_lines.sum(&:amount)
+
     nil
-  end
-
-  def total_revenue
-    @revenue_lines.sum { |line| line.amount }
-  end
-
-  def total_expenses
-    @expense_lines.sum { |line| line.amount }
   end
 
   def net_income
