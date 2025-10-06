@@ -83,7 +83,9 @@
                 <% end %>
               </div>
               <% if financial_closing.phase == "done" %>
-                <p class="text-center underline"><a href="/" target="_blank">財務諸表</a></p>
+                <p class="text-center underline">
+                  <%= link_to "財務諸表", financial_closing_statements_path(financial_closing_id: financial_closing.id), target: :_blank %>
+                </p>
               <% else %>
                 <p class="text-center underline">
                   <%= link_to "決算処理", edit_financial_closing_path %>
