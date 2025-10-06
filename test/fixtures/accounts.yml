@@ -15,6 +15,11 @@ capital_stock:
   category: 3
   is_standard: true
 
+retained_earnings:
+  name: "繰越利益剰余金"
+  category: 3
+  is_standard: true
+
 sales:
   name: "売上高"
   category: 4

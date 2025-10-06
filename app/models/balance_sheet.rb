@@ -8,7 +8,7 @@ class BalanceSheet
   attribute :start_date, :date
   attribute :end_date, :date
 
-  attr_reader :asset_lines, :liability_lines, :equity_lines
+  attr_reader :asset_lines, :total_assets, :liability_lines, :total_liabilities, :equity_lines, :total_equity
 
   def load!
     bs_lines = JournalEntryLine.joins(:journal_entry).
@@ -22,34 +22,22 @@ class BalanceSheet
                           group_by { |line| line.account_name }.
                           transform_values { |lines| lines.sum { |line| line.side == "debit" ? line.amount : -line.amount } }.
                           map { |k, v| Line.new(name: k, amount: v) }
+    @total_assets = @asset_lines.sum(&:amount)
+
     @liability_lines = bs_lines.
                           filter { |line| line.account.liability? }.
                           group_by { |line| line.account_name }.
                           transform_values { |lines| lines.sum { |line| line.side == "credit" ? line.amount : -line.amount } }.
                           map { |k, v| Line.new(name: k, amount: v) }
+    @total_liabilities = @liability_lines.sum(&:amount)
+
     @equity_lines = bs_lines.
                           filter { |line| line.account.equity? }.
                           group_by { |line| line.account_name }.
                           transform_values { |lines| lines.sum { |line| line.side == "credit" ? line.amount : -line.amount } }.
                           map { |k, v| Line.new(name: k, amount: v) }
-
-    # Add net income to equity
-    pl = ProfitAndLoss.new(company: company, start_date: start_date, end_date: end_date)
-    pl.load!
-    @equity_lines << Line.new(name: "当期純利益", amount: pl.net_income)
+    @total_equity = @equity_lines.sum(&:amount)
 
     nil
-  end
-
-  def total_assets
-    @asset_lines.sum { |line| line.amount }
-  end
-
-  def total_liabilities
-    @liability_lines.sum { |line| line.amount }
-  end
-
-  def total_equity
-    @equity_lines.sum { |line| line.amount }
   end
 end
