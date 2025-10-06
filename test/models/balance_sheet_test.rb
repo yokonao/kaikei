@@ -51,7 +51,7 @@ class BalanceSheetTest < ActiveSupport::TestCase
       company: company, entry_date: Date.new(2026, 3, 31), summary: "決算振替仕訳（損益 → 繰越利益剰余金)",
       journal_entry_lines_attributes: [
         { account: accounts(:profit_and_loss), side: :debit, amount: 2000 },
-        { account: accounts(:retained_earnings), side: :credit, amount: 2000 },
+        { account: accounts(:retained_earnings), side: :credit, amount: 2000 }
       ]
     )
   end
