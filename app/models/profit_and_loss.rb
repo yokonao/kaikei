@@ -13,15 +13,15 @@ class ProfitAndLoss
   attr_reader :revenue_lines, :total_revenue, :expense_lines, :total_expenses
 
   def load!
-    pl_lines = JournalEntryLine.includes(:journal_entry, :account).
-                                where("journal_entry.company_id": company.id).
-                                where("journal_entry.entry_date": start_date..end_date).
-                                where("account.category": [ :revenue, :expense ])
-
+    all_entries = @company.journal_entries.includes(journal_entry_lines: [ :account ]).where(entry_date: start_date..end_date)
     if exclude_closing_entry
-      pl_lines = pl_lines.reject do |line|
-        line.journal_entry.journal_entry_lines.any? { |line| line.account_name == "損益" }
+      all_entries = all_entries.reject do |entry|
+        entry.journal_entry_lines.any? { |line| line.account_name == "損益" }
       end
+    end
+
+    pl_lines = all_entries.flat_map do |entry|
+      entry.journal_entry_lines.filter { |line| line.account.revenue? || line.account.expense? }
     end
 
     @revenue_lines = pl_lines.
