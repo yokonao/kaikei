@@ -4,7 +4,7 @@ class JournalEntriesController < ApplicationController
 
   def index
     @journal_entries = Current.company.journal_entries.
-      includes(:journal_entry_lines).
+      includes(journal_entry_lines: [ :account ]).
       order(entry_date: :desc, id: :desc).
       page(params[:page]).
       per(100)

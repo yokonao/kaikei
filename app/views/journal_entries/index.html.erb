@@ -24,23 +24,22 @@
                 <td class="px-4 py-3 border-[0.5] border-black whitespace-nowrap font-mono text-sm">
                   <%= entry.entry_date.strftime("%Y年%m月%d日") %>
                 </td>
+                <% debit_lines, credit_lines = entry.split_lines %>
                 <td class="px-4 py-3 border-[0.5] border-black whitespace-nowrap font-mono text-sm">
                   <%= entry.summary.present? ? entry.summary : "—" %>
                 </td>
                 <td class="px-4 py-3 border-[0.5] border-black font-mono text-sm">
-                  <% debit_lines = entry.journal_entry_lines.select { |line| line.side == "debit" } %>
                   <% debit_lines.each do |line| %>
                     <div><%= line.account.name %></div>
                   <% end %>
                 </td>
                 <td class="px-4 py-3 border-[0.5] border-black font-mono text-sm">
-                  <% credit_lines = entry.journal_entry_lines.select { |line| line.side == "credit" } %>
                   <% credit_lines.each do |line| %>
                     <div><%= line.account.name %></div>
                   <% end %>
                 </td>
                 <td class="px-4 py-3 border-[0.5] border-black whitespace-nowrap font-mono text-sm text-right">
-                  <% amount = entry.journal_entry_lines.where(side: "debit").sum(:amount) %>
+                  <% amount = debit_lines.sum(&:amount) %>
                   <%= number_to_currency(amount, unit: "¥", precision: 0, delimiter: ",") %>
                 </td>
                 <td class="px-4 py-3 border-[0.5] border-black text-center font-mono text-sm">
