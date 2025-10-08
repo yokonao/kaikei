@@ -11,12 +11,13 @@ class GeneralLedger
       @credit_lines = []
     end
 
-    def add_debit_line(entry_id, entry_date, opponent_account_name, amount)
-      @debit_lines << Line.new(entry_id: entry_id, entry_date: entry_date, opponent_account_name: opponent_account_name, amount: amount)
-    end
-
-    def add_credit_line(entry_id, entry_date, opponent_account_name, amount)
-      @credit_lines << Line.new(entry_id: entry_id, entry_date: entry_date, opponent_account_name: opponent_account_name, amount: amount)
+    def add_line(side:, entry_id:, entry_date:, opponent_account_name:, amount:)
+      case side
+      when "debit"
+        @debit_lines << Line.new(entry_id: entry_id, entry_date: entry_date, opponent_account_name: opponent_account_name, amount: amount)
+      when "credit"
+        @credit_lines << Line.new(entry_id: entry_id, entry_date: entry_date, opponent_account_name: opponent_account_name, amount: amount)
+      end
     end
 
     def balance
@@ -53,44 +54,54 @@ class GeneralLedger
         [ entry.entry_date, 0, entry.id ]
       end
     end
-    @account_tables = {}
 
+    @account_tables = {}
     combined_entries.each do |entry|
       if entry.is_a?(BalanceForward)
-        case entry.side
-        when "debit"
-          @account_tables[entry.account_name] ||= AccountTable.new(entry.account)
-          if entry.closing_date >= start_date
-            @account_tables[entry.account_name].add_debit_line(nil, entry.closing_date, "次期繰越", entry.amount)
-          end
-          if entry.closing_date.tomorrow <= end_date
-            @account_tables[entry.account_name].add_credit_line(nil, entry.closing_date.tomorrow, "前期繰越", entry.amount)
-          end
-        when "credit"
-          @account_tables[entry.account_name] ||= AccountTable.new(entry.account)
-          if entry.closing_date >= start_date
-            @account_tables[entry.account_name].add_credit_line(nil, entry.closing_date, "次期繰越", entry.amount)
-          end
-          if entry.closing_date.tomorrow <= end_date
-            @account_tables[entry.account_name].add_debit_line(nil, entry.closing_date.tomorrow, "前期繰越", entry.amount)
-          end
+        if entry.closing_date >= start_date
+          _add_line(account: entry.account, side: entry.side, entry_id: nil, entry_date: entry.closing_date, opponent_account_name: "次期繰越", amount: entry.amount)
+        end
+        if entry.closing_date.tomorrow <= end_date
+          _add_line(account: entry.account, side: reverse_side(entry.side), entry_id: nil, entry_date: entry.closing_date.tomorrow, opponent_account_name: "前期繰越", amount: entry.amount)
         end
       elsif entry.is_a?(JournalEntry)
-        debit_lines = entry.journal_entry_lines.filter { |line| line.side == "debit" }
-        credit_lines = entry.journal_entry_lines.filter { |line| line.side == "credit" }
+        debit_lines, credit_lines = entry.split_lines
 
         debit_lines.each do |line|
-          @account_tables[line.account_name] ||= AccountTable.new(line.account)
-          @account_tables[line.account_name].add_debit_line(entry.id, entry.entry_date, credit_lines.length == 1 ? credit_lines.first.account_name : "諸口", line.amount)
+          _add_line(account: line.account, side: "debit", entry_id: entry.id, entry_date: entry.entry_date, opponent_account_name: _opponent_account_name(credit_lines), amount: line.amount)
         end
-
         credit_lines.each do |line|
-          @account_tables[line.account_name] ||= AccountTable.new(line.account)
-          @account_tables[line.account_name].add_credit_line(entry.id, entry.entry_date, debit_lines.length == 1 ? debit_lines.first.account_name : "諸口", line.amount)
+          _add_line(account: line.account, side: "credit", entry_id: entry.id, entry_date: entry.entry_date, opponent_account_name: _opponent_account_name(debit_lines), amount: line.amount)
         end
       end
     end
 
     nil
+  end
+
+  private
+
+  def _add_line(account:, side:, entry_id:, entry_date:, opponent_account_name:, amount:)
+    @account_tables[account.name] ||= AccountTable.new(account)
+    @account_tables[account.name].add_line(side: side, entry_id: entry_id, entry_date: entry_date, opponent_account_name: opponent_account_name, amount: amount)
+  end
+
+  def _opponent_account_name(lines)
+    if lines.length == 1
+      lines.first.account_name
+    else
+      "諸口"
+    end
+  end
+
+  def reverse_side(v)
+    case v
+    when "debit"
+      "credit"
+    when "credit"
+      "debit"
+    else
+      v
+    end
   end
 end

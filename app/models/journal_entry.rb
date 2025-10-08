@@ -33,6 +33,20 @@ class JournalEntry < ApplicationRecord
     self
   end
 
+  # 仕訳行を借方、貸方に分けて取得する
+  def split_lines
+    debit_lines, credit_lines = [], []
+    journal_entry_lines.each do |line|
+      case line.side
+      when "debit"
+        debit_lines << line
+      when "credit"
+        credit_lines << line
+      end
+    end
+    [ debit_lines, credit_lines ]
+  end
+
   private
 
   def balance_check
