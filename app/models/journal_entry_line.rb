@@ -14,4 +14,16 @@ class JournalEntryLine < ApplicationRecord
   def formatted_amount_for_input
     self.amount&.to_s&.sub(/\.0+$/, "")
   end
+
+  # 逆側の side を取得するメソッド
+  def opposite_side
+    case side
+    when "debit"
+      "credit"
+    when "credit"
+      "debit"
+    else
+      side
+    end
+  end
 end

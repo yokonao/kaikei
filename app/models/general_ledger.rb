@@ -62,7 +62,7 @@ class GeneralLedger
           _add_line(account: entry.account, side: entry.side, entry_id: nil, entry_date: entry.closing_date, opponent_account_name: "次期繰越", amount: entry.amount)
         end
         if entry.closing_date.tomorrow <= end_date
-          _add_line(account: entry.account, side: reverse_side(entry.side), entry_id: nil, entry_date: entry.closing_date.tomorrow, opponent_account_name: "前期繰越", amount: entry.amount)
+          _add_line(account: entry.account, side: entry.opposite_side, entry_id: nil, entry_date: entry.closing_date.tomorrow, opponent_account_name: "前期繰越", amount: entry.amount)
         end
       elsif entry.is_a?(JournalEntry)
         debit_lines, credit_lines = entry.split_lines
@@ -91,17 +91,6 @@ class GeneralLedger
       lines.first.account_name
     else
       "諸口"
-    end
-  end
-
-  def reverse_side(v)
-    case v
-    when "debit"
-      "credit"
-    when "credit"
-      "debit"
-    else
-      v
     end
   end
 end

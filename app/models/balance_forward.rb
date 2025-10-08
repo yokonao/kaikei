@@ -10,4 +10,16 @@ class BalanceForward < ApplicationRecord
     debit: "debit",
     credit: "credit"
   }
+
+  # 逆側の side を取得するメソッド
+  def opposite_side
+    case side
+    when "debit"
+      "credit"
+    when "credit"
+      "debit"
+    else
+      side
+    end
+  end
 end
