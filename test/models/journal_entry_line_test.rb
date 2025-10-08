@@ -60,14 +60,15 @@ class JournalEntryLineTest < ActiveSupport::TestCase
   end
 
   test "should be invalid with invalid side" do
-    entry_line = JournalEntryLine.new(
-      amount: 1000,
-      side: "unknown",
-      journal_entry: @journal_entry,
-      account: @cash_account
-    )
-    assert_not entry_line.valid?
-    assert_includes entry_line.errors.full_messages, "借方・貸方は debit または credit で指定してください"
+    e = assert_raises ArgumentError do
+      JournalEntryLine.new(
+        amount: 1000,
+        side: "unknown",
+        journal_entry: @journal_entry,
+        account: @cash_account
+      )
+    end
+    assert_equal "'unknown' is not a valid side", e.message
   end
 
   test "invalid without journal_entry" do
