@@ -5,4 +5,9 @@ class BalanceForward < ApplicationRecord
 
   validates :closing_date, presence: true
   validates :amount, numericality: { greater_than: 0 }
+
+  enum :side, {
+    debit: "debit",
+    credit: "credit"
+  }
 end

@@ -59,6 +59,7 @@ ja:
         closing_date: 決算日
         company: 事業所
         financial_closing: 決算
+        side: 借方・貸方
       company:
         name: 事業所名
         accounting_period_start_month: 会計年度の開始月
