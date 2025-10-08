@@ -42,10 +42,10 @@ class GeneralLedger
 
   def load!
     all_entries = @company.journal_entries.includes(journal_entry_lines: [ :account ]).where(entry_date: start_date..end_date).order(:entry_date, :id)
-    balance_forwards = BalanceForward.includes(:account).where(company_id: @company.id).where(closing_date: start_date..end_date).order(:closing_date, :id)
+    balance_forwards = BalanceForward.includes(:account).where(company_id: @company.id).where(closing_date: start_date.yesterday..end_date).order(:closing_date, :id)
 
     # 日付ベースでソート、日付が同じなら残高繰越が後ろになる
-    # e.g. 期首仕訳（3/31） → 期末仕訳（3/31） → 残高繰越（4/1）
+    # e.g. 期末仕訳（3/31） → 残高繰越（3/31） → 期首仕訳（4/1）
     combined_entries = (all_entries + balance_forwards).sort_by do |entry|
       if entry.is_a?(BalanceForward)
         [ entry.closing_date, 1, entry.id ]
@@ -60,13 +60,17 @@ class GeneralLedger
         case entry.side
         when "debit"
           @account_tables[entry.account_name] ||= AccountTable.new(entry.account)
-          @account_tables[entry.account_name].add_debit_line(nil, entry.closing_date, "次期繰越", entry.amount)
+          if entry.closing_date >= start_date
+            @account_tables[entry.account_name].add_debit_line(nil, entry.closing_date, "次期繰越", entry.amount)
+          end
           if entry.closing_date.tomorrow <= end_date
             @account_tables[entry.account_name].add_credit_line(nil, entry.closing_date.tomorrow, "前期繰越", entry.amount)
           end
         when "credit"
           @account_tables[entry.account_name] ||= AccountTable.new(entry.account)
-          @account_tables[entry.account_name].add_credit_line(nil, entry.closing_date, "次期繰越", entry.amount)
+          if entry.closing_date >= start_date
+            @account_tables[entry.account_name].add_credit_line(nil, entry.closing_date, "次期繰越", entry.amount)
+          end
           if entry.closing_date.tomorrow <= end_date
             @account_tables[entry.account_name].add_debit_line(nil, entry.closing_date.tomorrow, "前期繰越", entry.amount)
           end
