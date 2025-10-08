@@ -76,8 +76,44 @@ class BalanceSheetTest < ActiveSupport::TestCase
     capital_line = bs.equity_lines.find { |line| line.name == "資本金" }
     assert_equal 10000, capital_line.amount
     retained_earnings_line = bs.equity_lines.find { |line| line.name == "繰越利益剰余金" }
-    assert_equal 2000, retained_earnings_line.amount # 5000(売上) - 3000(仕入)
+    assert_equal 2000, retained_earnings_line.amount
     assert_equal 12000, bs.total_equity
+
+    assert_equal bs.total_assets, bs.total_liabilities + bs.total_equity
+  end
+
+  test "#load! calculates asset, liability, and equity lines correctly with balance forwards" do
+    # 前々年度決算
+    fc1 = @company.financial_closings.create!(start_date: Date.new(2023, 4, 1), end_date: Date.new(2024, 3, 31), phase: :done)
+    BalanceForward.create!(company: @company, financial_closing: fc1, closing_date: fc1.end_date, account: accounts(:cash), amount: 2000, side: :credit)
+    BalanceForward.create!(company: @company, financial_closing: fc1, closing_date: fc1.end_date, account: accounts(:retained_earnings), amount: 2000, side: :debit)
+
+    # 前年度決算
+    fc2 = @company.financial_closings.create!(start_date: Date.new(2024, 4, 1), end_date: Date.new(2025, 3, 31), phase: :done)
+    BalanceForward.create!(company: @company, financial_closing: fc2, closing_date: fc2.end_date, account: accounts(:cash), amount: 2000, side: :credit)
+    BalanceForward.create!(company: @company, financial_closing: fc2, closing_date: fc2.end_date, account: accounts(:retained_earnings), amount: 2000, side: :debit)
+
+    create_journal_entries(@company)
+
+    bs = BalanceSheet.new(company: @company, start_date: Date.new(2025, 4, 1), end_date: Date.new(2026, 3, 31))
+    bs.load!
+
+    assert_equal 1, bs.asset_lines.size
+    assert_equal "現金", bs.asset_lines.first.name
+    assert_equal 17000, bs.asset_lines.first.amount
+    assert_equal 17000, bs.total_assets
+
+    assert_equal 1, bs.liability_lines.size
+    assert_equal "買掛金", bs.liability_lines.first.name
+    assert_equal 3000, bs.liability_lines.first.amount
+    assert_equal 3000, bs.total_liabilities
+
+    assert_equal 2, bs.equity_lines.size
+    capital_line = bs.equity_lines.find { |line| line.name == "資本金" }
+    assert_equal 10000, capital_line.amount
+    retained_earnings_line = bs.equity_lines.find { |line| line.name == "繰越利益剰余金" }
+    assert_equal 4000, retained_earnings_line.amount
+    assert_equal 14000, bs.total_equity
 
     assert_equal bs.total_assets, bs.total_liabilities + bs.total_equity
   end
