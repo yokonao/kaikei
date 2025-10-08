@@ -37,6 +37,7 @@ class BalanceSheet
              transform_values { |lines| lines.sum { |line| line.side == "debit" ? line.amount : -line.amount } }.
              each { |k, v| asset_balances[k] += v }
     @asset_lines = asset_balances.map { |k, v| Line.new(name: k, amount: v) }.reject { |line| line.amount.zero? }
+    @asset_lines = @asset_lines.sort_by { |line| [ AccountOrder.account_order(line.name), line.name ] }
     @total_assets = @asset_lines.sum(&:amount)
 
     bs_lines.filter { |line| line.account.liability? }.
@@ -44,6 +45,7 @@ class BalanceSheet
              transform_values { |lines| lines.sum { |line| line.side == "credit" ? line.amount : -line.amount } }.
              each { |k, v| liability_balances[k] += v }
     @liability_lines = liability_balances.map { |k, v| Line.new(name: k, amount: v) }.reject { |line| line.amount.zero? }
+    @liability_lines = @liability_lines.sort_by { |line| [ AccountOrder.account_order(line.name), line.name ] }
     @total_liabilities = @liability_lines.sum(&:amount)
 
     bs_lines.filter { |line| line.account.equity? }.
@@ -51,6 +53,7 @@ class BalanceSheet
              transform_values { |lines| lines.sum { |line| line.side == "credit" ? line.amount : -line.amount } }.
              each { |k, v| equity_balances[k] += v }
     @equity_lines = equity_balances.map { |k, v| Line.new(name: k, amount: v) }.reject { |line| line.amount.zero? }
+    @equity_lines = @equity_lines.sort_by { |line| [ AccountOrder.account_order(line.name), line.name ] }
     @total_equity = @equity_lines.sum(&:amount)
 
     nil

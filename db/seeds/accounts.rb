@@ -34,7 +34,7 @@ asset_accounts = [
   "減価償却累計額",
   "建物減価償却累計額",
   "備品減価償却累計額",
-
+  "車両運搬具減価償却累計額"
 ]
 asset_accounts.each do |name|
   Account.find_or_create_by!(name: name) do |account|
@@ -68,7 +68,7 @@ liability_accounts = [
   "前受収益",
   "前受家賃",
   "前受利息",
-  "前受地代",
+  "前受地代"
 ]
 liability_accounts.each do |name|
   Account.find_or_create_by!(name: name) do |account|
@@ -80,7 +80,7 @@ end
 equity_accounts = [
   "資本金",
   "利益準備金",
-  "繰越利益剰余金",
+  "繰越利益剰余金"
 ]
 equity_accounts.each do |name|
   Account.find_or_create_by!(name: name) do |account|
@@ -100,7 +100,7 @@ revenue_accounts = [
   "受取家賃",
   "受取地代",
   "受取配当金",
-  "雑収入",
+  "雑収入"
 ]
 revenue_accounts.each do |name|
   Account.find_or_create_by!(name: name) do |account|
@@ -140,7 +140,7 @@ end
 
 other_accounts = [
   # 集合勘定
-  { name: "損益", category: :collective, is_standard: true },
+  { name: "損益", category: :collective, is_standard: true }
   # TODO: 現金過不足を追加する
 ]
 other_accounts.each do |acc|

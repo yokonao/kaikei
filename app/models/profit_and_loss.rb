@@ -29,6 +29,7 @@ class ProfitAndLoss
                           group_by { |line| line.account_name }.
                           transform_values { |lines| lines.sum { |line| line.side == "credit" ? line.amount : -line.amount } }.
                           map { |k, v| Line.new(name: k, amount: v) }
+    @revenue_lines = @revenue_lines.sort_by { |line| [ AccountOrder.account_order(line.name), line.name ] }
     @total_revenue = @revenue_lines.sum(&:amount)
 
     @expense_lines = pl_lines.
@@ -36,6 +37,7 @@ class ProfitAndLoss
                           group_by { |line| line.account_name }.
                           transform_values { |lines| lines.sum { |line| line.side == "debit" ? line.amount : -line.amount } }.
                           map { |k, v| Line.new(name: k, amount: v) }
+    @expense_lines = @expense_lines.sort_by { |line| [ AccountOrder.account_order(line.name), line.name ] }
     @total_expenses = @expense_lines.sum(&:amount)
 
     nil
