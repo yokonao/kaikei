@@ -40,6 +40,15 @@ class CompaniesController < ApplicationController
     end
   end
 
+  def destroy
+    user, company = Current.user, Current.company
+
+    Membership.where(user_id: user.id, company_id: company.id).destroy_all
+    # TODO: 非同期的に事業所のデータを全て削除する
+
+    redirect_to companies_path, notice: "事業所（#{company.name}）を削除しました。"
+  end
+
   private
 
   def company_params
