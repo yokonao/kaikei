@@ -64,6 +64,29 @@ class CreateInitialTables < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
+    create_table :balance_forwards do |t|
+      t.references :company, null: false, foreign_key: true
+      t.references :financial_closing, null: false, foreign_key: true
+
+      t.string :account_name, null: false, index: true
+      t.date :closing_date, null: false
+      t.decimal :amount, null: false, precision: 18, scale: 4
+      t.string :side, null: false, comment: "debit(借方) または credit(貸方)"
+
+      t.foreign_key :accounts, column: :account_name, primary_key: :name
+
+      t.timestamps
+    end
+
+    create_table :financial_closings do |t|
+      t.references :company, null: false, foreign_key: true
+      t.date :start_date
+      t.date :end_date
+      t.integer :phase
+
+      t.timestamps
+    end
+
     create_table :journal_entries do |t|
       t.references :company, null: false, foreign_key: true
 
