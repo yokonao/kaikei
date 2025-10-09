@@ -1,5 +1,7 @@
 module Users
   class PasskeysController < ApplicationController
+    allow_no_company_access only: %i[ create ]
+
     def create
       phase = params[:phase]
       raise "phase must be initiation or verification" unless phase == "initiation" || phase == "verification"
