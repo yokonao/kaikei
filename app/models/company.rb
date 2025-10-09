@@ -10,4 +10,8 @@ class Company < ApplicationRecord
   def ongoing_closing
     financial_closings.where.not(phase: :done).take
   end
+
+  def incinerate!
+    Company::Incineration.new(self).run
+  end
 end
