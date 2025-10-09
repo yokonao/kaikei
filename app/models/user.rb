@@ -25,4 +25,8 @@ class User < ApplicationRecord
   def set_webauthn_user_handle
     self.webauthn_user_handle = WebAuthn.generate_user_id
   end
+
+  def incinerate!
+    User::Incineration.new(self).run
+  end
 end

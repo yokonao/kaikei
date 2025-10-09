@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   get "signup", to: "users#new"
   resources :users, only: [ :create ]
-  resource :user, only: [ :show ]
+  resource :user, only: [ :show, :destroy ]
   namespace :users do
     resources :passkeys, only: [ :create ]
   end
