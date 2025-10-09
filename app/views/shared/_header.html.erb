@@ -7,24 +7,26 @@
         <% end %>
 
         <nav class="flex space-x-1">
-          <%= link_to "仕訳", journal_entries_path,
-              class: "tracking-wide text-black hover:bg-gray-100 px-3 py-2 border-2 border-transparent hover:border-black transition-all" %>
-          <%= link_to "勘定", general_ledger_path,
-              class: "tracking-wide text-black hover:bg-gray-100 px-3 py-2 border-2 border-transparent hover:border-black transition-all" %>
-          <%= link_to "決算", financial_closings_path,
-              class: "tracking-wide text-black hover:bg-gray-100 px-3 py-2 border-2 border-transparent hover:border-black transition-all" %>
-          <button popovertarget="financial-statements-menu"
-            class="tracking-wide text-black hover:bg-gray-100 px-3 py-2 border-2 border-transparent hover:border-black transition-all cursor-pointer">
-            財務諸表
-          </button>
-          <div id="financial-statements-menu" popover>
-            <div class="flex flex-col py-2 border-2 border-black">
-              <%= link_to "損益計算書", profit_and_loss_path,
-                class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all" %>
-              <%= link_to "貸借対照表", balance_sheet_path,
-                class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all" %>
+          <% if company_selected? %>
+            <%= link_to "仕訳", journal_entries_path,
+                class: "tracking-wide text-black hover:bg-gray-100 px-3 py-2 border-2 border-transparent hover:border-black transition-all" %>
+            <%= link_to "勘定", general_ledger_path,
+                class: "tracking-wide text-black hover:bg-gray-100 px-3 py-2 border-2 border-transparent hover:border-black transition-all" %>
+            <%= link_to "決算", financial_closings_path,
+                class: "tracking-wide text-black hover:bg-gray-100 px-3 py-2 border-2 border-transparent hover:border-black transition-all" %>
+            <button popovertarget="financial-statements-menu"
+              class="tracking-wide text-black hover:bg-gray-100 px-3 py-2 border-2 border-transparent hover:border-black transition-all cursor-pointer">
+              財務諸表
+            </button>
+            <div id="financial-statements-menu" popover>
+              <div class="flex flex-col py-2 border-2 border-black">
+                <%= link_to "損益計算書", profit_and_loss_path,
+                  class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all" %>
+                <%= link_to "貸借対照表", balance_sheet_path,
+                  class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all" %>
+              </div>
             </div>
-          </div>
+          <% end %>
           <button popovertarget="user-profile-menu"
             aria-label="ユーザープロフィールメニュー"
             class="tracking-wide text-black hover:bg-gray-100 px-2 border-2 border-transparent hover:border-black transition-all cursor-pointer">
@@ -37,13 +39,17 @@
           <div id="user-profile-menu" popover>
             <div class="flex flex-col py-2 border-2 border-black">
               <div class="px-3 py-2 text-center text-black"><%= Current.user.email_address %></div>
-              <div class="px-3 py-2 text-center text-black"><%= Current.company.name %></div>
-              <%= link_to "事業所切り替え", companies_path,
+              <% if company_selected? %>
+                <div class="px-3 py-2 text-center text-black"><%= Current.company.name %></div>
+              <% end %>
+              <%= link_to "事業所選択", companies_path,
                 class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all" %>
               <%= link_to "アカウント設定", user_path,
                 class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all" %>
-              <%= link_to "事業所設定", company_path,
-                class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all" %>
+              <% if company_selected? %>
+                <%= link_to "事業所設定", company_path,
+                  class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all" %>
+              <% end %>
               <%= form_with url: session_path, method: :delete, local: true do |form| %>
                 <%= form.button "ログアウト", formmethod: :delete,
                     class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all cursor-pointer" %>
