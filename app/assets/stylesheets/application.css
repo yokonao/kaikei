@@ -49,3 +49,12 @@ button[popovertarget='user-profile-menu'] {
   position-anchor: --user-profile-menu;
   position-area: bottom span-right;
 }
+
+button[popovertarget='company-menu'] {
+  anchor-name: --company-menu
+}
+
+#company-menu {
+  position-anchor: --company-menu;
+  position-area: bottom span-right;
+}
