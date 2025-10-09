@@ -4,14 +4,11 @@ class Company::Incineration
   end
 
   def run
-    # TODO:
-    # rm balance_forwards
-    # rm companies
-    # rm financial_closings
-    # rm journal_entries
-    # rm journal_entry_lines
-    # rm memberships
+    @company.balance_forwards.destroy_all
+    @company.financial_closings.destroy_all
+    @company.journal_entries.destroy_all
+    Membership.where(company_id: @company.id).destroy_all
 
-    puts "Incinerating the company (id: #{@company.id})"
+    @company.destroy!
   end
 end

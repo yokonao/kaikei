@@ -1,4 +1,5 @@
 class Company < ApplicationRecord
+  has_many :balance_forwards
   has_many :journal_entries
   has_many :financial_closings
 
