@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_05_010247) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_17_075422) do
   create_table "accounts", primary_key: "name", id: :string, force: :cascade do |t|
     t.integer "category", default: 0, null: false
     t.boolean "is_standard", null: false
@@ -126,8 +126,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_05_010247) do
   add_foreign_key "journal_entry_lines", "journal_entries", on_delete: :cascade
   add_foreign_key "memberships", "companies"
   add_foreign_key "memberships", "users"
-  add_foreign_key "sessions", "companies"
-  add_foreign_key "sessions", "users"
   add_foreign_key "user_one_time_passwords", "users"
   add_foreign_key "user_passkeys", "users"
 end

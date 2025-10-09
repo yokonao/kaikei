@@ -46,8 +46,8 @@ class CreateInitialTables < ActiveRecord::Migration[8.0]
 
     # セッション関連テーブル
     create_table :sessions do |t|
-      t.references :user, null: false, foreign_key: true
-      t.references :company, null: true, foreign_key: true
+      t.references :user, null: false
+      t.references :company, null: true
 
       t.string :ip_address
       t.string :user_agent
