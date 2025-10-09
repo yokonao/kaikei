@@ -1,12 +1,12 @@
 <div class="max-w-4xl min-w-2xs sm:min-w-2xl mx-auto py-12">
   <div class="bg-white border-4 border-black shadow-2xl">
     <div class="bg-gray-100 px-8 py-6 border-b-4 border-black">
-      <h1 class="text-3xl font-mono tracking-wide">事業所設定</h1>
+      <h1 class="text-3xl tracking-wide">事業所設定</h1>
     </div>
 
     <%= form_with model: @company, local: true, method: "PUT", class: "p-8" do |form| %>
       <% if @company.errors.any? %>
-        <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6 font-mono">
+        <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6">
           <strong>エラーが発生しました:</strong>
           <ul class="list-disc list-inside">
             <% @company.errors.full_messages.each do |message| %>
@@ -17,7 +17,7 @@
       <% end %>
 
       <% if notice = flash[:notice] %>
-        <div class="bg-gray-50 border-2 border-black px-6 py-4 mb-6 font-mono">
+        <div class="bg-gray-50 border-2 border-black px-6 py-4 mb-6">
           <%= notice %>
         </div>
       <% end %>

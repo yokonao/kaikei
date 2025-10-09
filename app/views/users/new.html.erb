@@ -2,12 +2,12 @@
   <div class="bg-white border-4 border-black shadow-2xl mt-12">
     <div class="bg-gray-100 px-8 py-6 border-b-4 border-black flex items-center space-x-2">
       <%= image_tag "/icon.svg", class: "w-12 h-12", alt: "ロゴ" %>
-      <h1 class="text-3xl font-mono tracking-wide">KAIKEI</h1>
+      <h1 class="text-3xl tracking-wide">KAIKEI</h1>
     </div>
 
     <%= form_with model: @user, url: users_path, class: "p-8" do |form| %>
       <% if @user.errors.any? %>
-        <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6 font-mono">
+        <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6">
           <ul>
             <% @user.errors.full_messages.each do |message| %>
               <li><%= message %></li>
@@ -18,23 +18,23 @@
 
       <div class="grid grid-cols-3 gap-0 border-2 border-black mb-4">
         <div class="col-span-1">
-          <%= form.label :email_address, "メールアドレス", class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center font-mono" %>
+          <%= form.label :email_address, "メールアドレス", class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center" %>
         </div>
         <div class="col-span-2">
-          <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email", class: "block w-full h-full border-b-[0.5px] border-black p-4 font-mono focus:outline-none focus:bg-yellow-100" %>
+          <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email", class: "block w-full h-full border-b-[0.5px] border-black p-4 focus:outline-none focus:bg-yellow-100" %>
         </div>
       </div>
 
-      <p class="font-mono mb-8">
+      <p class="mb-8">
         入力したメールアドレスにワンタイムパスワードを送信します。
       </p>
 
       <div class="flex justify-center">
-        <%= form.submit "アカウント登録", class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer" %>
+        <%= form.submit "アカウント登録", class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black text-xl tracking-widest cursor-pointer" %>
       </div>
 
       <div class="text-center mt-6">
-        <%= link_to "ログインはこちら", new_session_path, class: "font-mono text-sm underline hover:text-blue-600" %>
+        <%= link_to "ログインはこちら", new_session_path, class: "text-sm underline hover:text-blue-600" %>
       </div>
     <% end %>
   </div>

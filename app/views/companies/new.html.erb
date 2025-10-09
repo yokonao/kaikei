@@ -1,12 +1,12 @@
 <div class="max-w-xl min-w-2xs sm:min-w-xl mx-auto">
   <div class="bg-white border-4 border-black shadow-2xl mt-12">
     <div class="bg-gray-100 px-8 py-6 border-b-4 border-black flex items-center space-x-2">
-      <h1 class="text-3xl font-mono tracking-wide">事業所作成</h1>
+      <h1 class="text-3xl tracking-wide">事業所作成</h1>
     </div>
 
     <%= form_with model: @company, url: companies_path, class: "p-8" do |form| %>
       <% if @company.errors.any? %>
-        <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6 font-mono">
+        <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6">
           <ul>
             <% @company.errors.full_messages.each do |message| %>
               <li><%= message %></li>
@@ -18,17 +18,17 @@
       <div class="grid grid-cols-4 gap-0 border-2 border-black mb-4">
         <div class="col-span-1">
           <%= form.label :name, "事業所名",
-            class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center font-mono" %>
+            class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center" %>
         </div>
         <div class="col-span-3">
           <%= form.text_field :name, required: true, autofocus: true,
-            class: "block w-full h-full border-b-[0.5px] border-black p-4 font-mono focus:outline-none focus:bg-yellow-100" %>
+            class: "block w-full h-full border-b-[0.5px] border-black p-4 focus:outline-none focus:bg-yellow-100" %>
         </div>
       </div>
 
       <div class="flex justify-center">
         <%= form.submit "作成",
-          class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer" %>
+          class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black text-xl tracking-widest cursor-pointer" %>
       </div>
     <% end %>
   </div>

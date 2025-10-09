@@ -2,18 +2,18 @@
   <div class="bg-white border-4 border-black shadow-2xl mt-12">
     <div class="bg-gray-100 px-8 py-6 border-b-4 border-black flex items-center space-x-2">
       <%= image_tag "/icon.svg", class: "w-12 h-12", alt: "ロゴ" %>
-      <h1 class="text-3xl font-mono tracking-wide">KAIKEI</h1>
+      <h1 class="text-3xl tracking-wide">KAIKEI</h1>
     </div>
 
     <div class="p-8">
       <% if alert = flash[:alert] %>
-        <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6 font-mono">
+        <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6">
           <%= alert %>
         </div>
       <% end %>
 
       <% if notice = flash[:notice] %>
-        <div class="bg-gray-50 border-2 border-black px-6 py-4 mb-6 font-mono">
+        <div class="bg-gray-50 border-2 border-black px-6 py-4 mb-6">
           <%= notice %>
         </div>
       <% end %>
@@ -26,58 +26,58 @@
           <div class="border-2 border-black mb-8">
             <div class="grid grid-cols-2 gap-0">
               <div class="col-span-1">
-                <%= form.label :otp, "ワンタイムパスワード", class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center font-mono" %>
+                <%= form.label :otp, "ワンタイムパスワード", class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center" %>
               </div>
               <div class="col-span-1">
-                <%= form.text_field :otp, required: true, autocomplete: "one-time-code", maxlength: 8, class: "block w-full h-full border-b-[0.5px] border-black p-4 font-mono focus:outline-none focus:bg-yellow-100" %>
+                <%= form.text_field :otp, required: true, autocomplete: "one-time-code", maxlength: 8, class: "block w-full h-full border-b-[0.5px] border-black p-4 focus:outline-none focus:bg-yellow-100" %>
               </div>
             </div>
           </div>
 
           <div class="flex justify-center">
-            <%= form.submit "ログイン", class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer" %>
+            <%= form.submit "ログイン", class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black text-xl tracking-widest cursor-pointer" %>
           </div>
         <% end %>
       <% else %>
         <div class="flex flex-col space-y-8">
-          <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2">パスキー</h2>
+          <h2 class="text-2xl tracking-wide mb-4 border-b-2 border-black pb-2">パスキー</h2>
           <div class="text-center" data-controller="session-passkey">
             <button data-action="session-passkey#authenticate"
-              class="bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer">
+              class="bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black text-xl tracking-widest cursor-pointer">
               パスキーでログイン
             </button>
           </div>
 
-          <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2">ワンタイムパスワード</h2>
+          <h2 class="text-2xl tracking-wide mb-4 border-b-2 border-black pb-2">ワンタイムパスワード</h2>
           <%= form_with url: session_url do |form| %>
             <%= form.hidden_field :login_method, id: "password-less-login-login-method", value: "otp" %>
             <div class="border-2 border-black mb-4">
               <div class="grid grid-cols-3 gap-0">
                 <div class="col-span-1">
                   <%= form.label :email_address, "メールアドレス", for: "password-less-login-email",
-                                  class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center font-mono" %>
+                                  class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center" %>
                 </div>
                 <div class="col-span-2">
                   <%= form.email_field :email_address, id: "password-less-login-email", required: true, autofocus: true, autocomplete: "email",
-                                        class: "block w-full h-full border-b-[0.5px] border-black p-4 font-mono focus:outline-none focus:bg-yellow-100" %>
+                                        class: "block w-full h-full border-b-[0.5px] border-black p-4 focus:outline-none focus:bg-yellow-100" %>
                 </div>
               </div>
             </div>
 
             <div class="flex justify-center">
               <%= form.submit "ワンタイムパスワードを送信",
-                class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer" %>
+                class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black text-xl tracking-widest cursor-pointer" %>
             </div>
           <% end %>
 
           <% if Rails.env.development? %>
-            <h2 class="text-2xl font-mono tracking-wide mb-4 border-b-2 border-black pb-2">開発者向けログイン</h2>
+            <h2 class="text-2xl tracking-wide mb-4 border-b-2 border-black pb-2">開発者向けログイン</h2>
             <%= form_with url: session_url do |form| %>
               <%= form.hidden_field :login_method, id: "dev-login-login-method", value: "dev" %>
 
               <div class="flex justify-center">
                 <%= form.submit "ログイン",
-                  class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black font-mono text-xl tracking-widest cursor-pointer" %>
+                  class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black text-xl tracking-widest cursor-pointer" %>
               </div>
             <% end %>
           <% end %>
@@ -87,7 +87,7 @@
 
       <% unless @login_method == "otp_verification" %>
         <div class="text-center mt-6">
-          <%= link_to "アカウント登録", signup_path, class: "font-mono underline hover:text-blue-600" %>
+          <%= link_to "アカウント登録", signup_path, class: "underline hover:text-blue-600" %>
         </div>
       <% end %>
     </div>
