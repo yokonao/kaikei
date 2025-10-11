@@ -27,15 +27,19 @@ class Company::IncinerationTest < ActiveSupport::TestCase
       closing_date: "2024-03-31",
       account: accounts(:cash),
       amount: 1000,
-      side: 'debit'
+      side: "debit"
     )
+
+    # All models related to the company should be deleted
+    Rails.application.eager_load!
+    models_to_delete = ApplicationRecord.descendants.
+                                         reject(&:abstract_class?).
+                                         reject { |model| model == Session }. # Company が削除されることによって既存の Session は当該事業所にアクセス不可になるので削除する必要なし
+                                         select { |model| model.column_names.include?("company_id") }
 
     # Pre-assertions
     assert company.persisted?
-    assert_not_empty Membership.where(company_id: company.id)
-    assert_not_empty JournalEntry.where(company_id: company.id)
-    assert_not_empty FinancialClosing.where(company_id: company.id)
-    assert_not_empty BalanceForward.where(company_id: company.id)
+    models_to_delete.each { |model| assert_not_empty model.where(company_id: company.id).to_a }
 
     # Action
     incineration = Company::Incineration.new(company)
@@ -43,9 +47,6 @@ class Company::IncinerationTest < ActiveSupport::TestCase
 
     # Post-assertions
     assert company.destroyed?
-    assert_empty Membership.where(company_id: company.id)
-    assert_empty JournalEntry.where(company_id: company.id)
-    assert_empty FinancialClosing.where(company_id: company.id)
-    assert_empty BalanceForward.where(company_id: company.id)
+    models_to_delete.each { |model| assert_empty model.where(company_id: company.id).to_a }
   end
 end
