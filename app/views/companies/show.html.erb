@@ -72,7 +72,7 @@
                 <label for="company-desruction-confirmation-text" class="block w-full h-full border-black bg-gray-100 py-2 text-center">事業所名</label>
               </th>
               <td class="border">
-                <input type="text" id="company-desruction-confirmation-text" name="company-desruction-confirmation-text"
+                <input type="text" id="company-desruction-confirmation-text" name="company-desruction-confirmation-text" required
                         class="block w-full h-full px-2 py-2 focus:outline-none"
                         data-action="input->company-detail#onCompanyDestructionConfirmationTextChange"
                         data-correct-confirmation-text="<%= @company.name %>">
