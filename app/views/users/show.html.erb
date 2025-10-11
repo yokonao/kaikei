@@ -65,7 +65,9 @@
           </tr>
         </table>
         <div class="flex space-x-4 justify-center">
-          <%= form.submit "削除", class: "block py-4 px-12 bg-white hover:bg-red-700 focus:bg-red-700 border-2 border-red-700 text-xl text-red-700 hover:text-white focus:text-white tracking-widest cursor-pointer" %>
+          <%= form.submit "削除",
+                class: "block py-4 px-12 bg-white hover:bg-red-700 focus:bg-red-700 border-2 border-red-700 text-xl text-red-700 hover:text-white focus:text-white tracking-widest cursor-pointer",
+                data: { turbo_submits_with: "削除中" } %>
           <button type="button"
             class="block py-4 px-12 bg-white hover:bg-black focus:bg-black border-2 border-black text-xl text-black hover:text-white focus:text-white tracking-widest cursor-pointer"
             data-action="click->user-detail#closeUserDestructionDialog">
