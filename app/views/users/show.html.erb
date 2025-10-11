@@ -49,6 +49,9 @@
       <%= form_with model: @user, local: true, method: "DELETE", class: "p-8 space-y-4 border-4" do |form| %>
         <h1 id="user-destruction-dialog-label" class="text-3xl text-red-700 text-center tracking-wide">アカウント削除</h1>
         <p>
+          アカウントを削除しても事業所のデータは削除されないので注意してください。
+        </p>
+        <p>
           削除する場合は、アカウントのメールアドレスを入力してください（<%= @user.email_address %>）
         </p>
         <table class="w-full border-collapse border-2">
