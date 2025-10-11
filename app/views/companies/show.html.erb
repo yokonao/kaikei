@@ -58,7 +58,7 @@
       </button>
     </div>
     <dialog aria-labelledby="company-destruction-dialog-label" class="mx-auto my-auto" data-company-detail-target="companyDstructionDialog">
-      <%= form_with model: @company, local: true, method: "DELETE", class: "p-8 space-y-4 border-2" do |form| %>
+      <%= form_with model: @company, local: true, method: "DELETE", class: "p-8 space-y-4 border-4" do |form| %>
         <h1 id="company-destruction-dialog-label" class="text-3xl text-red-700 text-center tracking-wide">事業所削除</h1>
         <p>
           事業所を削除すると全ての会計データが削除され永久に失われます。
