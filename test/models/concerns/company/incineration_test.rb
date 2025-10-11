@@ -39,7 +39,7 @@ class Company::IncinerationTest < ActiveSupport::TestCase
 
     # Pre-assertions
     assert company.persisted?
-    models_to_delete.each { |model| assert_not_empty model.where(company_id: company.id).to_a }
+    models_to_delete.each { |model| assert_not_empty model.where(company_id: company.id).to_a, "#{model} should not be empty" }
 
     # Action
     incineration = Company::Incineration.new(company)
@@ -47,6 +47,6 @@ class Company::IncinerationTest < ActiveSupport::TestCase
 
     # Post-assertions
     assert company.destroyed?
-    models_to_delete.each { |model| assert_empty model.where(company_id: company.id).to_a }
+    models_to_delete.each { |model| assert_empty model.where(company_id: company.id).to_a, "#{model} should be empty" }
   end
 end
