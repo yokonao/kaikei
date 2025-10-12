@@ -18,6 +18,9 @@ Rails.application.routes.draw do
 
   resources :companies, only: [ :index, :new, :create ]
   resource :company, only: [ :show, :update, :destroy ]
+  namespace :company do
+    resources :members, only: [ :index ]
+  end
 
   resource :session
   resource :company_selection, only: [ :create ]
