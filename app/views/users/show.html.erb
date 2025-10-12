@@ -46,32 +46,43 @@
       </button>
     </div>
     <dialog aria-labelledby="user-destruction-dialog-label" class="mx-auto my-auto" data-user-detail-target="userDstructionDialog">
+      <% can_destroy = @user.incineratable? %>
       <%= form_with model: @user, local: true, method: "DELETE", class: "p-8 space-y-4 border-4" do |form| %>
         <h1 id="user-destruction-dialog-label" class="text-3xl text-red-700 text-center tracking-wide">アカウント削除</h1>
-        <p>
-          アカウントを削除しても事業所のデータは削除されないので注意してください。
-        </p>
-        <p>
-          削除する場合は、アカウントのメールアドレスを入力してください（<%= @user.email_address %>）
-        </p>
-        <table class="w-full border-collapse border-2">
-          <tr>
-            <th scope="row" class="border">
-              <label for="user-desruction-confirmation-text" class="block w-full h-full border-black bg-gray-100 py-2 text-center">メールアドレス</label>
-            </th>
-            <td class="border">
-              <input type="text" id="user-desruction-confirmation-text" name="user-desruction-confirmation-text" required
-                      class="block w-full h-full px-2 py-2 focus:outline-none"
-                      data-action="input->user-detail#onUserDestructionConfirmationTextChange"
-                      data-correct-confirmation-text="<%= @user.email_address %>">
-            </td>
-          </tr>
-        </table>
+        <% if can_destroy %>
+          <p>
+            アカウントを削除しても事業所のデータは削除されないので注意してください。
+          </p>
+          <p>
+            削除する場合は、アカウントのメールアドレスを入力してください（<%= @user.email_address %>）
+          </p>
+          <table class="w-full border-collapse border-2">
+            <tr>
+              <th scope="row" class="border">
+                <label for="user-desruction-confirmation-text" class="block w-full h-full border-black bg-gray-100 py-2 text-center">メールアドレス</label>
+              </th>
+              <td class="border">
+                <input type="text" id="user-desruction-confirmation-text" name="user-desruction-confirmation-text" required
+                        class="block w-full h-full px-2 py-2 focus:outline-none"
+                        data-action="input->user-detail#onUserDestructionConfirmationTextChange"
+                        data-correct-confirmation-text="<%= @user.email_address %>">
+              </td>
+            </tr>
+          </table>
+        <% else %>
+          <p>アカウントを削除することはできません</p>
+          <ul class="list-disc list-inside">
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        <% end %>
         <div class="flex space-x-4 justify-center">
-          <%= form.submit "削除",
-                class: "block py-4 px-12 bg-white focus:bg-red-700 border-2 border-red-700 text-xl text-red-700 focus:text-white tracking-widest cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
-                data: { turbo_submits_with: "削除中" },
-                disabled: true %>
+          <% if can_destroy %>
+            <%= form.submit "削除",
+                  class: "block py-4 px-12 bg-white focus:bg-red-700 border-2 border-red-700 text-xl text-red-700 focus:text-white tracking-widest cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
+                  data: { turbo_submits_with: "削除中" } %>
+          <% end %>
           <button type="button"
             class="block py-4 px-12 bg-white focus:bg-black border-2 border-black text-xl text-black focus:text-white tracking-widest cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
             data-action="click->user-detail#closeUserDestructionDialog">

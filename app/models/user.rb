@@ -30,6 +30,17 @@ class User < ApplicationRecord
     User::Incineration.new(self).run
   end
 
+  def incineratable?
+    runner = User::Incineration.new(self)
+    return true if runner.valid?
+
+    runner.errors.full_messages.each do |message|
+      errors.add(:base, message)
+    end
+
+    false
+  end
+
   def exit!(company)
     ActiveRecord::Base.transaction do
       exit = User::Exit.new(self, company)
