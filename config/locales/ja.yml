@@ -43,6 +43,7 @@ ja:
       balance_forawrd: 残高繰越
       company: 事業所
       financial_closing: 決算処理
+      invitation: 招待
       journal_entry: 仕訳
       journal_entry_line: 仕訳明細
       user_basic_password: パスワード
@@ -68,6 +69,9 @@ ja:
         start_date: 決算の開始日
         end_date: 決算の終了日
         phase: フェーズ
+      invitation:
+        email_address: メールアドレス
+        inviter_email_address: 招待者のメールアドレス
       journal_entry:
         entry_date: 仕訳日
         summary: 摘要
