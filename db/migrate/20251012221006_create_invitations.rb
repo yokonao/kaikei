@@ -3,7 +3,7 @@ class CreateInvitations < ActiveRecord::Migration[8.0]
     create_table :invitations do |t|
       t.references :company, null: false, foreign_key: true
 
-      t.string :emal_address, null: false
+      t.string :email_address, null: false
       t.string :inviter_email_address, null: false
       t.boolean :accepted, null: false, default: false
 

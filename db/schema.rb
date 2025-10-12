@@ -51,7 +51,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_12_221006) do
 
   create_table "invitations", force: :cascade do |t|
     t.integer "company_id", null: false
-    t.string "emal_address", null: false
+    t.string "email_address", null: false
     t.string "inviter_email_address", null: false
     t.boolean "accepted", default: false, null: false
     t.datetime "created_at", null: false
