@@ -1,7 +1,12 @@
-<div class="max-w-6xl min-w-2xs sm:min-w-2xl mx-auto min-h-screen">
+<div class="max-w-6xl min-w-2xs sm:min-w-2xl mx-auto min-h-screen" data-controller="members">
   <div class="bg-white border-4 border-black shadow-2xl">
     <div class="bg-gray-100 px-8 py-6 border-b-4 border-black flex justify-between items-center">
       <h1 class="text-3xl tracking-wide">メンバー管理</h1>
+      <button
+        class="bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-2 px-4 border-2 border-black tracking-widest cursor-pointer",
+        data-action="click->members#openMemberAdditionDialog">
+        メンバー追加
+      </button>
     </div>
 
     <div>
@@ -32,5 +37,36 @@
     </div>
 
     <%= paginate @members %>
+
+    <dialog aria-labelledby="member-addition-dialog-label" class="mx-auto my-auto" data-members-target="memberAdditionDialog">
+      <%= form_with url: company_members_path, local: true, class: "p-8 space-y-4 border-4" do |form| %>
+        <h1 id="member-addition-dialog-label" class="text-3xl text-center tracking-wide">メンバーを追加する</h1>
+        <p>
+          メールアドレスを入力して、事業所に新たなメンバーを追加します。
+        </p>
+        <table class="w-full border-collapse border-2">
+          <tr>
+            <th scope="row" class="border">
+              <%= form.label :email_address, "メールアドレス", class: "block w-full h-full border-black bg-gray-100 py-2 text-center" %>
+            </th>
+            <td class="border">
+              <%= form.email_field :email_address, autofocus: true, required: true,
+                    class: "block w-full h-full px-2 py-2 focus:outline-none" %>
+            </td>
+          </tr>
+        </table>
+        <div class="flex space-x-4 justify-center">
+          <%= form.submit "追加",
+                class: "block py-4 px-12 bg-black focus:bg-gray-700 text-xl text-white tracking-widest cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
+                data: { turbo_submits_with: "追加中" } %>
+          <button type="button"
+            class="block py-4 px-12 bg-white focus:bg-black border-2 border-black text-xl text-black focus:text-white tracking-widest cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+            data-action="click->members#closeMemberAdditionDialog">
+            キャンセル
+          </button>
+        </div>
+      <% end %>
+    </dialog>
+
   </div>
 </div>
