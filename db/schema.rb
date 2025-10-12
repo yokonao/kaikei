@@ -51,9 +51,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_12_221006) do
 
   create_table "invitations", force: :cascade do |t|
     t.integer "company_id", null: false
-    t.string "emal_address"
-    t.string "inviter_email_address"
-    t.boolean "accepted"
+    t.string "emal_address", null: false
+    t.string "inviter_email_address", null: false
+    t.boolean "accepted", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_invitations_on_company_id"
