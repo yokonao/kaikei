@@ -27,6 +27,9 @@ gem "resend"
 # PDF generation
 gem "prawn"
 gem "prawn-table"
+# Error Tracking
+gem "sentry-ruby"
+gem "sentry-rails"
 # Use the database-backed adapters for Rails.cache and Active Job
 gem "solid_cache"
 gem "solid_queue"
