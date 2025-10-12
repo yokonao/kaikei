@@ -29,4 +29,11 @@ class User < ApplicationRecord
   def incinerate!
     User::Incineration.new(self).run
   end
+
+  def exit!(company)
+    ActiveRecord::Base.transaction do
+      exit = User::Exit.new(self, company)
+      exit.run if exit.exitable?
+    end
+  end
 end

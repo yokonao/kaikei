@@ -1,3 +1,7 @@
 company_one:
   name: "テスト事業所"
   accounting_period_start_month: 4
+
+company_two:
+  name: "テスト事業所"
+  accounting_period_start_month: 1
