@@ -63,14 +63,16 @@
       </button>
     </div>
     <dialog aria-labelledby="company-exit-dialog-label" class="mx-auto my-auto" data-company-detail-target="companyExitDialog">
+      <% exitable = @user_exit.valid? %>
       <%= form_with url: company_exit_path, local: true, class: "p-8 space-y-4 border-4" do |form| %>
         <h1 id="company-exit-dialog-label" class="text-3xl text-red-700 text-center tracking-wide">事業所から脱退する</h1>
-        <p>
-          脱退するとこの事業所にアクセスできなくなります。</br>アクセスするためには事業所に所属するユーザーから再度招待される必要があります。
-        </p>
-        <p>
-          脱退する場合は、事業所名を入力してください（<%= @company.name %>）
-        </p>
+        <% if exitable %>
+          <p>
+            脱退するとこの事業所にアクセスできなくなります。</br>アクセスするためには事業所に所属するユーザーから再度招待される必要があります。
+          </p>
+          <p>
+            脱退する場合は、事業所名を入力してください（<%= @company.name %>）
+          </p>
           <table class="w-full border-collapse border-2">
             <tr>
               <th scope="row" class="border">
@@ -84,16 +86,26 @@
               </td>
             </tr>
           </table>
-          <div class="flex space-x-4 justify-center">
+        <% else %>
+          <p>事業所を脱退することはできません</p>
+          <ul class="list-disc list-inside">
+            <% @user_exit.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        <% end %>
+        <div class="flex space-x-4 justify-center">
+          <% if exitable %>
             <%= form.submit "脱退",
                   class: "block py-4 px-12 bg-white focus:bg-red-700 border-2 border-red-700 text-xl text-red-700 focus:text-white tracking-widest cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
                   data: { turbo_submits_with: "脱退中" } %>
-            <button type="button"
-              class="block py-4 px-12 bg-white focus:bg-black border-2 border-black text-xl text-black focus:text-white tracking-widest cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
-              data-action="click->company-detail#closeCompanyExitDialog">
-              キャンセル
-            </button>
-          </div>
+          <% end %>
+          <button type="button"
+            class="block py-4 px-12 bg-white focus:bg-black border-2 border-black text-xl text-black focus:text-white tracking-widest cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+            data-action="click->company-detail#closeCompanyExitDialog">
+            キャンセル
+          </button>
+        </div>
       <% end %>
     </dialog>
     <dialog aria-labelledby="company-destruction-dialog-label" class="mx-auto my-auto" data-company-detail-target="companyDstructionDialog">

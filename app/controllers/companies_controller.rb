@@ -8,7 +8,8 @@ class CompaniesController < ApplicationController
   end
 
   def show
-    @company = Current.company
+    @user, @company = Current.user, Current.company
+    @user_exit = User::Exit.new(@user, @company)
   end
 
   def new

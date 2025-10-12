@@ -1,4 +1,6 @@
 class Company < ApplicationRecord
+  has_many :memberships, dependent: :destroy
+  has_many :users, through: :memberships
   has_many :balance_forwards
   has_many :journal_entries
   has_many :financial_closings

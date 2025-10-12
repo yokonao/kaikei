@@ -33,7 +33,7 @@ class User < ApplicationRecord
   def exit!(company)
     ActiveRecord::Base.transaction do
       exit = User::Exit.new(self, company)
-      exit.run if exit.exitable?
+      exit.run
     end
   end
 end
