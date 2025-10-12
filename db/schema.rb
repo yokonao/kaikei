@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_11_072620) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_12_221006) do
   create_table "accounts", primary_key: "name", id: :string, force: :cascade do |t|
     t.integer "category", default: 0, null: false
     t.boolean "is_standard", null: false
@@ -47,6 +47,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_11_072620) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_financial_closings_on_company_id"
+  end
+
+  create_table "invitations", force: :cascade do |t|
+    t.integer "company_id", null: false
+    t.string "emal_address"
+    t.string "inviter_email_address"
+    t.boolean "accepted"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_invitations_on_company_id"
   end
 
   create_table "journal_entries", force: :cascade do |t|
@@ -121,6 +131,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_11_072620) do
   add_foreign_key "balance_forwards", "companies"
   add_foreign_key "balance_forwards", "financial_closings"
   add_foreign_key "financial_closings", "companies"
+  add_foreign_key "invitations", "companies"
   add_foreign_key "journal_entries", "companies"
   add_foreign_key "journal_entry_lines", "accounts", column: "account_name", primary_key: "name"
   add_foreign_key "journal_entry_lines", "journal_entries", on_delete: :cascade
