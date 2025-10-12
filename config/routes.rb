@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   resource :company, only: [ :show, :update, :destroy ]
   namespace :company do
     resources :members, only: [ :index, :create ]
+    resource :exit, only: [ :create ]
   end
 
   resource :session
