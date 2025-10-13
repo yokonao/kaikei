@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :members, only: [ :index, :create ]
     resource :exit, only: [ :create ]
   end
+  resource :invitation, only: [ :show ]
 
   resource :session
   resource :company_selection, only: [ :create ]

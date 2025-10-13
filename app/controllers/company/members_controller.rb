@@ -17,6 +17,7 @@ class Company::MembersController < ApplicationController
 
     Rails.logger.debug "TODO: メンバーの追加処理を実装する"
     Rails.logger.debug "token: #{token}"
+    Rails.logger.debug "url: #{invitation_url(token: token)}"
 
     redirect_to company_members_path
   end

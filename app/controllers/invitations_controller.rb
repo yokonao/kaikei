@@ -1,0 +1,15 @@
+class InvitationsController < ApplicationController
+  allow_unauthenticated_access only: %i[ show ]
+
+  def show
+    resume_session # TODO: ログイン状態かどうか確かめるために必要だが不要にしたい
+
+    @current_user = Current.user
+    token = params[:token]
+    @invitation = Invitation.find_by_token_for(:invitation, token)
+    raise ActiveRecord::RecordNotFound if @invitation.blank?
+
+    @existing_user = User.find_by(email_address: @invitation.email_address)
+    @email_address_mismatch = @current_user.present? && @invitation.email_address != @current_user.email_address
+  end
+end
