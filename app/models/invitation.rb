@@ -1,7 +1,8 @@
 class Invitation < ApplicationRecord
   belongs_to :company
 
-  generates_token_for :invitation, expires_in: 1.days
+  INVITATION_TOKEN_EXPIRES_IN = 1.days
+  generates_token_for :invitation, expires_in: INVITATION_TOKEN_EXPIRES_IN
 
   validates :email_address, presence: true,
           length: { maximum: 254 }, # @see https://www.rfc-editor.org/errata/eid1690

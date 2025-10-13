@@ -1,0 +1,13 @@
+<p><b><%= @invitation.inviter_email_address %></b> から <b><%= @invitation.company.name %></b> に招待されています。</p>
+<p>以下のリンクから招待を受諾することができます。</p>
+
+<p>
+  <a href="<%= @url %>" target="_blank">
+    <%= @url %>
+  </a>
+</p>
+
+<ul>
+  <li>KAIKEI のアカウントをお持ちでない場合は、招待を受諾すると同時にアカウントが作成されます</li>
+  <li>このリンクは <b><%= @expires_at.strftime("%Y/%m/%d %H:%M") %></b> まで有効です</li>
+</ul>

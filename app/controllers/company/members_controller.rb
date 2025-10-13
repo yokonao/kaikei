@@ -14,11 +14,12 @@ class Company::MembersController < ApplicationController
       company: company
     )
     token = iv.generate_token_for(:invitation)
+    # 生成したトークンから有効期限を取得する方法がわからないので推定値を利用する
+    # TODO: よりよい方法がないか調査する
+    token_expires_at = Time.current + Invitation::INVITATION_TOKEN_EXPIRES_IN
 
-    Rails.logger.debug "TODO: メンバーの追加処理を実装する"
-    Rails.logger.debug "token: #{token}"
-    Rails.logger.debug "url: #{invitation_url(token: token)}"
+    InvitationMailer.invite(iv, invitation_url(token: token), token_expires_at).deliver_later
 
-    redirect_to company_members_path
+    redirect_to company_members_path, notice: "#{email_address} に招待メールを送信しました。"
   end
 end
