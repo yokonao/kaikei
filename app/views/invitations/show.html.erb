@@ -10,6 +10,10 @@
         <p>
           現在ログイン中のアカウントに紐づくメールアドレス（<b><%= @current_user.email_address %></b>）宛の招待ではありません。ログアウトしてから再度アクセスしてください。
         </p>
+      <% elsif @membership_already_exists %>
+        <p>
+          すでに <b><%= @invitation.company.name %></b> に参加済みです。
+        </p>
       <% else %>
         <div class="flex flex-col space-y-2 mb-8">
           <p><b><%= @invitation.inviter_email_address %></b> から <b><%= @invitation.company.name %></b> に招待されています。</p>

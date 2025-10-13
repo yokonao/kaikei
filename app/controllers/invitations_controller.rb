@@ -11,5 +11,6 @@ class InvitationsController < ApplicationController
 
     @existing_user = User.find_by(email_address: @invitation.email_address)
     @email_address_mismatch = @current_user.present? && @invitation.email_address != @current_user.email_address
+    @membership_already_exists = @existing_user.present? && Membership.where(user_id: @existing_user.id, company_id: @invitation.company_id).exists?
   end
 end
