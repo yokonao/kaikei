@@ -10,6 +10,12 @@
     </div>
 
     <div>
+      <% if notice = flash[:notice] %>
+        <div class="bg-gray-50 border-2 border-black px-6 py-4 m-8">
+          <%= notice %>
+        </div>
+      <% end %>
+
       <table class="min-w-full border-collapse">
         <thead class="bg-gray-100">
           <tr>
