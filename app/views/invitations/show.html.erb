@@ -22,7 +22,8 @@
           <% end %>
         </div>
 
-        <%= form_with url: session_url, class: "flex justify-center" do |form| %>
+        <%= form_with url: invitation_path, method: "PATCH", class: "flex justify-center" do |form| %>
+          <%= form.hidden_field :token, value: @invitation_token %>
           <% primary_button_label = @existing_user.blank? ? "招待を受諾してアカウントを作成する" : "招待を受諾して事業所に参加する" %>
           <%= form.submit primary_button_label,
             class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black text-xl tracking-widest cursor-pointer" %>
