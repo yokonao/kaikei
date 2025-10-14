@@ -10,6 +10,12 @@
     </div>
 
     <div>
+      <% if alert = flash[:alert] %>
+        <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 m-8">
+          <%= alert %>
+        </div>
+      <% end %>
+
       <% if notice = flash[:notice] %>
         <div class="bg-gray-50 border-2 border-black px-6 py-4 m-8">
           <%= notice %>
@@ -31,9 +37,13 @@
               </td>
               <td class="px-4 py-3 border-[0.5] border-black text-center text-sm">
                 <div class="flex justify-center space-x-2">
-                  <%= button_to "削除", "https://example.com", method: :delete,
-                                data: { turbo_confirm: "本当に削除しますか？" },
-                                class: "text-black hover:bg-gray-200 px-2 py-1 border border-black bg-transparent" %>
+                  <% if Current.user.email_address != member.email_address %>
+                    <%= form_with url: company_member_path(member.id), method: :delete, local: true do |form| %>
+                      <%= form.submit "アクセス権を剥奪",
+                            class: "text-black hover:bg-gray-200 px-2 py-1 border border-black bg-transparent cursor-pointer",
+                            data: { turbo_confirm: "アクセス権を剥奪すると #{member.email_address} が事業所にアクセスできなくなります。よろしいですか？" } %>
+                    <% end %>
+                  <% end %>
                 </div>
               </td>
             </tr>

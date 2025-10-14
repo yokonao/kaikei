@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   resources :companies, only: [ :index, :new, :create ]
   resource :company, only: [ :show, :update, :destroy ]
   namespace :company do
-    resources :members, only: [ :index, :create ]
+    resources :members, only: [ :index, :create, :destroy ], param: :user_id
     resource :exit, only: [ :create ]
   end
   resource :invitation, only: [ :show, :update ]

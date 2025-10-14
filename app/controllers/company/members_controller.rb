@@ -22,4 +22,17 @@ class Company::MembersController < ApplicationController
 
     redirect_to company_members_path, notice: "#{email_address} に招待メールを送信しました。"
   end
+
+  def destroy
+    user, company = Current.user, Current.company
+    target_user_id = params[:user_id].try(:to_i)
+    if user.id == target_user_id
+      alert = "自分のアクセス権を剥奪することはできません"
+    else
+      Membership.where(user_id: params[:user_id], company_id: company.id).destroy_all
+      notice = "メンバーの事業所へのアクセス権を剥奪しました"
+    end
+
+    redirect_to company_members_path, notice: notice, alert: alert
+  end
 end
