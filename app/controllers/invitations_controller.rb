@@ -27,7 +27,7 @@ class InvitationsController < ApplicationController
 
   def set_invitation
     @invitation_token = params[:token]
-    @invitation = Invitation.find_by_token_for(:invitation, @invitation_token)
+    @invitation = Invitation.where(accepted: false).find_by_token_for(:invitation, @invitation_token)
     raise ActiveRecord::RecordNotFound if @invitation.blank?
   end
 end
