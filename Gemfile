@@ -9,7 +9,9 @@ gem "importmap-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
-gem "kamal", require: false
+# https://github.com/basecamp/kamal/pull/1355
+# ↑のために main ブランチを参照している。リリースされたら stable なバージョンを利用する
+gem "kamal", git: "https://github.com/basecamp/kamal", branch: "main", require: false
 # HTTP client library that's fun to use
 gem "http"
 # Pagination utilities

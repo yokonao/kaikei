@@ -30,5 +30,5 @@ bin/rails test:system
 
 [tasks.deploy]
 run = """
-bin/deploy
+bin/kamal deploy
 """

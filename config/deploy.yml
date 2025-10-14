@@ -21,8 +21,6 @@ proxy:
 # Credentials for your image host.
 registry:
   server: localhost:50000
-  username: dummy
-  password: dummy
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
 env:
