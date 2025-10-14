@@ -48,11 +48,29 @@
               </td>
             </tr>
           <% end %>
+
+          <% @inviting_members.each do |member| %>
+            <tr class="hover:bg-yellow-100">
+              <td class="px-4 py-3 border-[0.5] border-black whitespace-nowrap text-sm">
+                <%= member.email_address %>（招待中）
+              </td>
+              <td class="px-4 py-3 border-[0.5] border-black text-center text-sm">
+                <div class="flex justify-center space-x-2">
+                  <% if Current.user.email_address != member.email_address %>
+                    <%= form_with url: company_members_path, local: true do |form| %>
+                      <%= form.hidden_field :email_address, value: member.email_address %>
+                      <%= form.submit "招待メールを再送",
+                            class: "text-black hover:bg-gray-200 px-2 py-1 border border-black bg-transparent cursor-pointer",
+                            data: { turbo_confirm: "#{member.email_address} に再度招待メールを送信します。よろしいですか？" } %>
+                    <% end %>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
         </tbody>
       </table>
     </div>
-
-    <%= paginate @members %>
 
     <dialog aria-labelledby="member-addition-dialog-label" class="mx-auto my-auto" data-members-target="memberAdditionDialog">
       <%= form_with url: company_members_path, local: true, class: "p-8 space-y-4 border-4" do |form| %>
