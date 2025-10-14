@@ -23,7 +23,7 @@
     <%= Sentry.get_trace_propagation_meta.html_safe %>
   </head>
 
-  <body class="font-mono bg-gray-50">
+  <body class="flex font-mono bg-gray-50">
     <%= render 'shared/flash' %>
 
     <% if authenticated? %>
