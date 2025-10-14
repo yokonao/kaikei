@@ -70,7 +70,7 @@ ja:
         end_date: 決算の終了日
         phase: フェーズ
       invitation:
-        email_address: メールアドレス
+        email_address: 宛先メールアドレス
         inviter_email_address: 招待者のメールアドレス
       journal_entry:
         entry_date: 仕訳日
