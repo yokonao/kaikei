@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_14_023538) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_024109) do
   create_table "accounts", primary_key: "name", id: :string, force: :cascade do |t|
     t.integer "category", default: 0, null: false
     t.boolean "is_standard", null: false
@@ -53,7 +53,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_023538) do
     t.integer "company_id", null: false
     t.string "email_address", null: false
     t.string "inviter_email_address", null: false
-    t.boolean "accepted", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id", "email_address"], name: "index_invitations_on_company_id_and_email_address"

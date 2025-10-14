@@ -2,7 +2,7 @@ class Company::MembersController < ApplicationController
   def index
     company = Current.company
     @members = User.includes(:memberships).where("memberships.company_id": company.id)
-    @inviting_members = Invitation.where(company_id: company.id, accepted: false).
+    @inviting_members = Invitation.where(company_id: company.id).
                                    group(:email_address).
                                    reject { |iv| @members.any? { |m| m.email_address == iv.email_address } }
   end

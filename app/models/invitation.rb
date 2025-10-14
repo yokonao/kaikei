@@ -11,13 +11,13 @@ class Invitation < ApplicationRecord
           length: { maximum: 254 }, # @see https://www.rfc-editor.org/errata/eid1690
           format: { with: URI::MailTo::EMAIL_REGEXP, message: "の形式が正しくありません" }
 
-  def accept!
-    return if self.accepted?
-
+  def self.accept!(record)
     ActiveRecord::Base.transaction do
-      @user = User.find_or_create_by!(email_address: self.email_address)
-      Membership.create!(user_id: @user.id, company_id: self.company_id)
-      self.update!(accepted: true)
+      @user = User.find_or_create_by!(email_address: record.email_address)
+      Membership.create!(user_id: @user.id, company_id: record.company_id)
+
+      # NOTE: 招待受諾と同時に、同じ事業所・同じメールアドレス宛の招待は全て無効になる
+      Invitation.where(company_id: record.company_id, email_address: record.email_address).destroy_all
     end
   end
 
