@@ -65,4 +65,39 @@ class InvitationTest < ActiveSupport::TestCase
     assert_not invitation.valid?
     assert_includes invitation.errors.full_messages, "招待者のメールアドレスの形式が正しくありません"
   end
+
+  # .accept!
+  test ".accept! creates a new user and membership when user does not exist" do
+    new_user_email = "new.user@example.com"
+    invitation = Invitation.create!(company: @company, email_address: new_user_email, inviter_email_address: "inviter@example.com")
+
+    assert_difference -> { User.count } => 1,
+                      -> { Membership.count } => 1,
+                      -> { Invitation.count } => -1 do
+      Invitation.accept!(invitation)
+    end
+  end
+
+  test ".accept! does not create a new user when user already exists" do
+    existing_user = users(:one)
+    invitation = Invitation.create!(company: @company, email_address: existing_user.email_address, inviter_email_address: "inviter@example.com")
+
+    assert_difference -> { User.count } => 0,
+                      -> { Membership.count } => 1,
+                      -> { Invitation.count } => -1 do
+      Invitation.accept!(invitation)
+    end
+  end
+
+  test ".accept! does not delete invitations for other companies or emails" do
+    multi_email = "multi@example.com"
+    invitation1 = Invitation.create!(company: @company, email_address: multi_email, inviter_email_address: "inviter1@example.com")
+    other_company_invitation = Invitation.create!(company: companies(:company_two), email_address: multi_email, inviter_email_address: "inviter3@example.com")
+    other_email_invitation = Invitation.create!(company: @company, email_address: "another@example.com", inviter_email_address: "inviter4@example.com")
+
+    Invitation.accept!(invitation1)
+
+    assert Invitation.exists?(id: other_company_invitation.id)
+    assert Invitation.exists?(id: other_email_invitation.id)
+  end
 end
