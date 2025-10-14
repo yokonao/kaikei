@@ -22,7 +22,7 @@
           <% end %>
         </div>
 
-        <%= form_with url: invitation_path, method: "PATCH", class: "flex justify-center" do |form| %>
+        <%= form_with url: invitation_path(@dummy_id), method: "PATCH", class: "flex justify-center" do |form| %>
           <%= form.hidden_field :token, value: @invitation_token %>
           <% primary_button_label = @existing_user.blank? ? "招待を受諾してアカウントを作成する" : "招待を受諾して事業所に参加する" %>
           <%= form.submit primary_button_label,

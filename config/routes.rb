@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     resources :members, only: [ :index, :create, :destroy ], param: :user_id
     resource :exit, only: [ :create ]
   end
-  resource :invitation, only: [ :show, :update ]
+  resources :invitations, only: [ :show, :update ]
 
   resource :session
   resource :company_selection, only: [ :create ]

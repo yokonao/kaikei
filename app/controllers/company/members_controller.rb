@@ -21,7 +21,10 @@ class Company::MembersController < ApplicationController
     # TODO: よりよい方法がないか調査する
     token_expires_at = Time.current + Invitation::INVITATION_TOKEN_EXPIRES_IN
 
-    InvitationMailer.invite(iv, invitation_url(token: token), token_expires_at).deliver_later
+    # NOTE: リソースの特定は token で行うので id はダミー値をセットする
+    url = invitation_url(SecureRandom.uuid, token: token)
+
+    InvitationMailer.invite(iv, url, token_expires_at).deliver_later
 
     redirect_to company_members_path, notice: "#{email_address} に招待メールを送信しました。"
   end

@@ -26,6 +26,8 @@ class InvitationsController < ApplicationController
   private
 
   def set_invitation
+    # NOTE: リソースの特定は token で行うので id はダミー値がセットされている
+    @dummy_id = params[:id]
     @invitation_token = params[:token]
     @invitation = Invitation.find_by_token_for(:invitation, @invitation_token)
     raise ActiveRecord::RecordNotFound if @invitation.blank?
