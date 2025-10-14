@@ -11,11 +11,9 @@ class Company::MembersController < ApplicationController
     user, company = Current.user, Current.company
     email_address = params[:email_address]
 
-    iv = Invitation.create!(
-      email_address: email_address,
-      inviter_email_address: user.email_address,
-      company: company
-    )
+    iv = Invitation.find_or_create_by!(email_address: email_address, company: company) do |iv|
+      iv.inviter_email_address = user.email_address
+    end
     token = iv.generate_token_for(:invitation)
     # 生成したトークンから有効期限を取得する方法がわからないので推定値を利用する
     # TODO: よりよい方法がないか調査する
