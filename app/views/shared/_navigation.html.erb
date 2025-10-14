@@ -1,62 +1,66 @@
 <header class="sticky top-0 botom-0 h-screen bg-white border-r-4 border-black">
-  <div class="flex flex-col items-center justify-center space-y-8 p-4">
+  <div class="h-full flex flex-col items-center space-y-8 p-4">
     <%= link_to root_path, class: "text-xl font-black tracking-widest text-black hover:text-gray-700 transition-colors" do %>
       KAIKEI
     <% end %>
 
-    <nav class="w-full flex flex-col space-y-1">
-      <% if company_selected? %>
-        <%= link_to "仕訳", journal_entries_path,
-            class: "tracking-wide text-black text-center hover:bg-gray-100 px-3 py-2 border-2 border-transparent hover:border-black transition-all" %>
-        <%= link_to "勘定", general_ledger_path,
-            class: "tracking-wide text-black text-center hover:bg-gray-100 px-3 py-2 border-2 border-transparent hover:border-black transition-all" %>
-        <%= link_to "決算", financial_closings_path,
-            class: "tracking-wide text-black text-center hover:bg-gray-100 px-3 py-2 border-2 border-transparent hover:border-black transition-all" %>
-      <% end %>
-      <div class="flex flex-col">
-        <button popovertarget="company-menu"
-          aria-label="事業所メニュー"
-          class="tracking-wide text-black text-center hover:bg-gray-100 px-2 border-2 border-transparent hover:border-black transition-all cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 mx-auto my-2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z" />
-          </svg>
-        </button>
-        <span class="text-xs text-center">事業所</span>
+    <nav class="h-full flex flex-col justify-between">
+      <div class="flex flex-col space-y-1">
+        <% if company_selected? %>
+          <%= link_to "仕訳", journal_entries_path,
+              class: "tracking-wide text-black text-center hover:bg-gray-100 px-3 py-2 border-2 border-transparent hover:border-black transition-all" %>
+          <%= link_to "勘定", general_ledger_path,
+              class: "tracking-wide text-black text-center hover:bg-gray-100 px-3 py-2 border-2 border-transparent hover:border-black transition-all" %>
+          <%= link_to "決算", financial_closings_path,
+              class: "tracking-wide text-black text-center hover:bg-gray-100 px-3 py-2 border-2 border-transparent hover:border-black transition-all" %>
+        <% end %>
       </div>
-      <div id="company-menu" popover>
-        <div class="flex flex-col py-2 border-2 border-black">
-          <% if company_selected? %>
-            <div class="px-3 py-2 text-center text-black"><%= Current.company.name %></div>
-          <% end %>
-          <%= link_to "事業所選択", companies_path,
-            class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all" %>
-          <% if company_selected? %>
-            <%= link_to "メンバー管理", company_members_path,
+      <div class="flex flex-col space-y-1 mb-12">
+        <div class="flex flex-col">
+          <button popovertarget="company-menu"
+            aria-label="事業所メニュー"
+            class="tracking-wide text-black text-center hover:bg-gray-100 px-2 border-2 border-transparent hover:border-black transition-all cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 mx-auto my-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z" />
+            </svg>
+          </button>
+          <span class="text-xs text-center">事業所</span>
+        </div>
+        <div id="company-menu" popover>
+          <div class="flex flex-col py-2 border-2 border-black">
+            <% if company_selected? %>
+              <div class="px-3 py-2 text-center text-black"><%= Current.company.name %></div>
+            <% end %>
+            <%= link_to "事業所選択", companies_path,
               class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all" %>
-            <%= link_to "事業所設定", company_path,
+            <% if company_selected? %>
+              <%= link_to "メンバー管理", company_members_path,
+                class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all" %>
+              <%= link_to "事業所設定", company_path,
+                class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all" %>
+            <% end %>
+            </div>
+        </div>
+        <div class="flex flex-col">
+          <button popovertarget="user-profile-menu"
+            aria-label="ユーザープロフィールメニュー"
+            class="tracking-wide text-black text-center hover:bg-gray-100 px-2 border-2 border-transparent hover:border-black transition-all cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 mx-auto my-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+          </button>
+          <span class="text-xs text-center">プロフィール</span>
+        </div>
+        <div id="user-profile-menu" popover>
+          <div class="flex flex-col py-2 border-2 border-black">
+            <div class="px-3 py-2 text-center text-black"><%= Current.user.email_address %></div>
+            <%= link_to "アカウント設定", user_path,
               class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all" %>
-          <% end %>
+            <%= form_with url: session_path, method: :delete, local: true do |form| %>
+              <%= form.button "ログアウト", formmethod: :delete,
+                  class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all cursor-pointer" %>
+            <% end %>
           </div>
-      </div>
-      <div class="flex flex-col">
-        <button popovertarget="user-profile-menu"
-          aria-label="ユーザープロフィールメニュー"
-          class="tracking-wide text-black text-center hover:bg-gray-100 px-2 border-2 border-transparent hover:border-black transition-all cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 mx-auto my-2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-          </svg>
-        </button>
-        <span class="text-xs text-center">プロフィール</span>
-      </div>
-      <div id="user-profile-menu" popover>
-        <div class="flex flex-col py-2 border-2 border-black">
-          <div class="px-3 py-2 text-center text-black"><%= Current.user.email_address %></div>
-          <%= link_to "アカウント設定", user_path,
-            class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all" %>
-          <%= form_with url: session_path, method: :delete, local: true do |form| %>
-            <%= form.button "ログアウト", formmethod: :delete,
-                class: "w-full tracking-wide text-center text-black hover:bg-gray-100 px-3 py-2 transition-all cursor-pointer" %>
-          <% end %>
         </div>
       </div>
     </nav>
