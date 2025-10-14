@@ -12,6 +12,8 @@ class Invitation < ApplicationRecord
           length: { maximum: 254 }, # @see https://www.rfc-editor.org/errata/eid1690
           format: { with: URI::MailTo::EMAIL_REGEXP, message: "の形式が正しくありません" }
 
+  validate :validate_membership_does_not_exists
+
   def self.accept!(record)
     ActiveRecord::Base.transaction do
       @user = User.find_or_create_by!(email_address: record.email_address)
@@ -24,5 +26,13 @@ class Invitation < ApplicationRecord
 
   def user
     @user || User.find_by(email_address: self.email_address)
+  end
+
+  private
+
+  def validate_membership_does_not_exists
+    if Membership.joins(:user).where("user.email_address": self.email_address, company_id: self.company_id).exists?
+      errors.add(:email_address, "のユーザーは既に事業所のメンバーになっています")
+    end
   end
 end

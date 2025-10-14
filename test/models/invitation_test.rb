@@ -38,6 +38,15 @@ class InvitationTest < ActiveSupport::TestCase
     assert_includes invitation.errors.full_messages, "宛先メールアドレスは招待済みです"
   end
 
+  test "should be invalid with membership already exists" do
+    user = users(:one)
+    Membership.create!(user: user, company: @company)
+
+    invitation = Invitation.new(company: @company, email_address: user.email_address, inviter_email_address: "inviter@example.com")
+    assert_not invitation.valid?
+    assert_includes invitation.errors.full_messages, "宛先メールアドレスのユーザーは既に事業所のメンバーになっています"
+  end
+
   # inviter_email_address validations
   test "should be invalid without inviter_email_address" do
     invitation = Invitation.new(company: @company, email_address: "test@example.com")
