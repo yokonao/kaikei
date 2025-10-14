@@ -24,6 +24,8 @@
   </head>
 
   <body class="font-mono bg-gray-50">
+    <%= render 'shared/flash' %>
+
     <% if authenticated? %>
       <%= render 'shared/header' %>
     <% end %>
