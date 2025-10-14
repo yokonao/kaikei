@@ -35,8 +35,6 @@ Rails.application.routes.draw do
     end
   end
   resource :financial_closing, only: [ :edit, :update ]
-  resource :profit_and_loss, only: [ :show ]
-  resource :balance_sheet, only: [ :show ]
 
   # Defines the root path route ("/")
   root "journal_entries#index"
