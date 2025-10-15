@@ -19,7 +19,7 @@
             <span class="text-xs text-center">仕訳</span>
           </div>
           <div class="flex flex-col">
-            <%= link_to general_ledger_path,
+            <%= link_to company_general_ledger_path(company_id: Current.company.id),
                 "aria-label": "勘定",
                 class: "tracking-wide text-black text-center hover:bg-gray-100 px-2 border-2 border-transparent hover:border-black transition-all cursor-pointer" do %>
               <!-- https://heroicons.com/ -->

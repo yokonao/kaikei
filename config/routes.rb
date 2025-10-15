@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   end
 
   resources :companies, only: [ :index, :show, :new, :create, :update, :destroy ] do
+    resource :general_ledger, only: [ :show ]
     resources :journal_entries, only: [ :index, :new, :create, :edit, :update, :destroy ]
     resources :members, only: [ :index, :create, :destroy ]
   end
@@ -22,7 +23,6 @@ Rails.application.routes.draw do
 
   resource :session, only: [ :new, :create, :update, :destroy ]
 
-  resource :general_ledger, only: [ :show ]
   resources :financial_closings, only: [ :index, :create ] do
     scope module: :financial_closings do
       resource :statements, only: [ :show ]

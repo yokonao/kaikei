@@ -1,6 +1,6 @@
 class GeneralLedgersController < ApplicationController
   def show
-    company = Current.company
+    company = target_company
     @from = (Date.parse(params[:from]) rescue nil)
     @to = (Date.parse(params[:to]) rescue nil)
 
@@ -14,7 +14,7 @@ class GeneralLedgersController < ApplicationController
       @to = @from.years_since(1).days_ago(1)
     end
 
-    @gl = GeneralLedger.new(company: Current.company, start_date: @from, end_date: @to)
+    @gl = GeneralLedger.new(company: company, start_date: @from, end_date: @to)
     @gl.load!
   end
 end
