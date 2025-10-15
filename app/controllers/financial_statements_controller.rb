@@ -1,7 +1,7 @@
-class FinancialClosings::StatementsController < ApplicationController
+class FinancialStatementsController < ApplicationController
   def show
-    company = Current.company
-    @financial_closing = company.financial_closings.find_by!(id: params[:financial_closing_id])
+    company = target_company
+    @financial_closing = company.financial_closings.find(params[:id])
     @start_date, @end_date = @financial_closing.values_at(:start_date, :end_date)
 
     @balance_sheet = BalanceSheet.new(company: company, start_date: @start_date, end_date: @end_date)

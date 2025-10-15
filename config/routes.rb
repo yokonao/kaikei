@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   resources :companies, only: [ :index, :show, :new, :create, :update, :destroy ] do
     resources :financial_closings, only: [ :index, :edit, :create, :update ]
+    resources :financial_statements, only: [ :show ]
     resource :general_ledger, only: [ :show ]
     resources :journal_entries, only: [ :index, :new, :create, :edit, :update, :destroy ]
     resources :members, only: [ :index, :create, :destroy ]
@@ -23,13 +24,6 @@ Rails.application.routes.draw do
   resources :invitations, only: [ :show, :update ]
 
   resource :session, only: [ :new, :create, :update, :destroy ]
-
-  resources :financial_closings, only: [ :index, :create ] do
-    scope module: :financial_closings do
-      resource :statements, only: [ :show ]
-    end
-  end
-  resource :financial_closing, only: [ :edit, :update ]
 
   # Defines the root path route ("/")
   root "companies#index"
