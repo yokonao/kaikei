@@ -19,8 +19,7 @@ Rails.application.routes.draw do
   end
   resources :invitations, only: [ :show, :update ]
 
-  resource :session
-  resource :company_selection, only: [ :create ]
+  resource :session, only: [ :new, :create, :update, :destroy ]
 
   resources :journal_entries, only: [ :index, :new, :create, :edit, :update, :destroy ]
   resource :general_ledger, only: [ :show ]
