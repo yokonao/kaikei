@@ -4,7 +4,7 @@ module Authentication
   included do
     before_action :require_authentication
     before_action :require_company_selection
-    helper_method :authenticated?, :company_selected?
+    helper_method :authenticated?, :company_selected?, :target_user, :target_company
   end
 
   class_methods do
@@ -76,5 +76,17 @@ module Authentication
       return if company_selected?
 
       redirect_to companies_path
+    end
+
+    # 操作対象となるユーザー。認証済みユーザーとの一致を前提とする
+    # 例外的に別ユーザーに対する操作が必要な場合は、適切な認可処理とともに個別実装する想定
+    def target_user
+      @target_user ||= User.where(id: Current.user&.id).find(params[:user_id])
+    end
+
+    # 操作対象となる事業所、ログインセッションの事業所との一致を前提とする
+    # 例外的に別事業所に対する操作が必要な場合は、適切な認可処理とともに個別実装する想定
+    def target_company
+      @target_company ||= Company.where(id: Current.company&.id).find(params[:company_id])
     end
 end

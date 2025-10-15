@@ -26,7 +26,7 @@
               <td class="px-4 py-3 border-[0.5] border-black text-center text-sm">
                 <div class="flex justify-center space-x-2">
                   <% if Current.user.email_address != member.email_address %>
-                    <%= form_with url: company_member_path(member.id), method: :delete, local: true do |form| %>
+                    <%= form_with url: company_member_path(id: member.id), method: :delete, local: true do |form| %>
                       <%= form.hidden_field :inviting, value: false %>
                       <%= form.submit "アクセス権を剥奪",
                             class: "text-black hover:bg-gray-200 px-2 py-1 border border-black bg-transparent cursor-pointer",
@@ -51,7 +51,7 @@
                           class: "text-black hover:bg-gray-200 px-2 py-1 border border-black bg-transparent cursor-pointer",
                           data: { turbo_confirm: "#{member.email_address} に再度招待メールを送信します。よろしいですか？" } %>
                   <% end %>
-                  <%= form_with url: company_member_path(member.id), method: :delete, local: true do |form| %>
+                  <%= form_with url: company_member_path(id: member.id), method: :delete, local: true do |form| %>
                     <%= form.hidden_field :inviting, value: true %>
                     <%= form.hidden_field :email_address, value: member.email_address %>
                     <%= form.submit "招待をキャンセル",
