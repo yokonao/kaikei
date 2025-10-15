@@ -1,6 +1,6 @@
 <div class="px-8 py-4 flex items-center space-x-4">
   <h1 class="text-3xl tracking-wide">仕訳一覧</h1>
-  <%= link_to "新規仕訳", new_journal_entry_path, class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-2 px-4 border-2 border-black tracking-widest" %>
+  <%= link_to "新規仕訳", new_company_journal_entry_path, class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-2 px-4 border-2 border-black tracking-widest" %>
 </div>
 
 <div class="px-8 pb-8">
@@ -42,8 +42,8 @@
             </td>
             <td class="px-4 py-3 border-[0.5] border-black text-center text-sm">
               <div class="flex justify-center space-x-2">
-                <%= link_to "編集", edit_journal_entry_path(entry), class: "text-black hover:bg-gray-200 px-2 py-1 border border-black" %>
-                <%= button_to "削除", journal_entry_path(entry), method: :delete,
+                <%= link_to "編集", edit_company_journal_entry_path(id: entry.id), class: "text-black hover:bg-gray-200 px-2 py-1 border border-black" %>
+                <%= button_to "削除", company_journal_entry_path(id: entry.id), method: :delete,
                               data: { turbo_confirm: "本当に削除しますか？" },
                               class: "text-black hover:bg-gray-200 px-2 py-1 border border-black bg-transparent" %>
               </div>

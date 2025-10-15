@@ -17,7 +17,11 @@
       </a>
     </div>
 
-    <%= form_with model: @journal_entry, local: true, class: "p-8" do |form| %>
+    <%= form_with model: @journal_entry,
+          url: @journal_entry.persisted? ? company_journal_entry_path(id: @journal_entry.id) : company_journal_entries_path,
+          method: @journal_entry.persisted? ? :put : :post,
+          local: true,
+          class: "p-8" do |form| %>
       <%= hidden_field_tag :lines, params[:lines] if params[:lines].present? %>
 
       <% if @journal_entry.errors.any? %>

@@ -15,13 +15,13 @@ Rails.application.routes.draw do
   end
 
   resources :companies, only: [ :index, :show, :new, :create, :update, :destroy ] do
+    resources :journal_entries, only: [ :index, :new, :create, :edit, :update, :destroy ]
     resources :members, only: [ :index, :create, :destroy ]
   end
   resources :invitations, only: [ :show, :update ]
 
   resource :session, only: [ :new, :create, :update, :destroy ]
 
-  resources :journal_entries, only: [ :index, :new, :create, :edit, :update, :destroy ]
   resource :general_ledger, only: [ :show ]
   resources :financial_closings, only: [ :index, :create ] do
     scope module: :financial_closings do
@@ -31,5 +31,5 @@ Rails.application.routes.draw do
   resource :financial_closing, only: [ :edit, :update ]
 
   # Defines the root path route ("/")
-  root "journal_entries#index"
+  root "companies#index"
 end
