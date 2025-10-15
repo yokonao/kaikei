@@ -30,7 +30,7 @@
             <span class="text-xs text-center">勘定</span>
           </div>
           <div class="flex flex-col">
-            <%= link_to financial_closings_path,
+            <%= link_to company_financial_closings_path(company_id: Current.company.id),
                 "aria-label": "決算",
                 class: "tracking-wide text-black text-center hover:bg-gray-100 px-2 border-2 border-transparent hover:border-black transition-all cursor-pointer" do %>
               <!-- https://heroicons.com/ -->

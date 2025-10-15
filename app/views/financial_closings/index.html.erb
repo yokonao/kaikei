@@ -4,7 +4,7 @@
 
 <% if @financial_closing.present? %>
   <div>
-    <%= form_with model: @financial_closing, class: "p-8" do |form| %>
+    <%= form_with model: @financial_closing, url: company_financial_closings_path, class: "p-8" do |form| %>
       <h2 class="text-2xl tracking-wide mb-4">決算開始</h2>
       <% if @financial_closing.errors.any? %>
         <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6">
@@ -75,7 +75,7 @@
           </p>
         <% else %>
           <p class="text-center underline">
-            <%= link_to "決算処理", edit_financial_closing_path %>
+            <%= link_to "決算処理", edit_company_financial_closing_path(id: financial_closing.id) %>
           </p>
         <% end %>
       </div>

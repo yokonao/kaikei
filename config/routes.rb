@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   end
 
   resources :companies, only: [ :index, :show, :new, :create, :update, :destroy ] do
+    resources :financial_closings, only: [ :index, :edit, :create, :update ]
     resource :general_ledger, only: [ :show ]
     resources :journal_entries, only: [ :index, :new, :create, :edit, :update, :destroy ]
     resources :members, only: [ :index, :create, :destroy ]

@@ -2,7 +2,7 @@
   <h1 class="text-3xl tracking-wide">決算処理 <span class="text-xl tracking-normal align-middle"><%= @financial_closing.start_date.strftime('%Y年%m月%d日') %> ~ <%= @financial_closing.end_date.strftime('%Y年%m月%d日') %></span></h1>
 </div>
 
-<%= form_with model: @financial_closing, url: financial_closing_path, method: "PATCH", class: "max-w-3xl p-8" do |form| %>
+<%= form_with model: @financial_closing, url: company_financial_closing_path(id: @financial_closing.id), method: "PATCH", class: "max-w-3xl p-8" do |form| %>
   <% if @financial_closing.errors.any? %>
     <div class="bg-red-50 border-2 border-red-800 text-red-800 px-6 py-4 mb-6">
       <ul>

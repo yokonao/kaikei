@@ -1,7 +1,7 @@
 class FinancialClosingsController < ApplicationController
   def index
-    company = Current.company
-    @financial_closings = Current.company.financial_closings.order(end_date: :desc, id: :desc)
+    company = target_company
+    @financial_closings = company.financial_closings.order(end_date: :desc, id: :desc)
 
     if company.ongoing_closing.blank?
       start_date, end_date = default_closing_date_range(company)
@@ -15,7 +15,7 @@ class FinancialClosingsController < ApplicationController
   end
 
   def create
-    company = Current.company
+    company = target_company
     start_date, end_date = financial_closing_params.values_at(:start_date, :end_date)
     @financial_closing = FinancialClosing.new(
       company: company,
@@ -27,28 +27,34 @@ class FinancialClosingsController < ApplicationController
     if @financial_closing.save
       redirect_to edit_financial_closing_path, notice: "決算処理を開始します。"
     else
-      @financial_closings = Current.company.financial_closings.order(end_date: :desc, id: :desc)
+      @financial_closings = company.financial_closings.order(end_date: :desc, id: :desc)
       render :index, status: :unprocessable_content
     end
   end
 
   def edit
-    company = Current.company
-    @financial_closing = company.ongoing_closing
-    redirect_to financial_closings_path unless @financial_closing.present?
+    company = target_company
+    @financial_closing = company.financial_closings.find(params[:id])
+    unless @financial_closing.id == company.ongoing_closing&.id
+      raise ActiveRecord::RecordNotFound
+    end
+    redirect_to company_financial_closings_path(company_id: company.id) unless @financial_closing.present?
   end
 
   def update
-    company = Current.company
-    @financial_closing = company.ongoing_closing
+    company = target_company
+    @financial_closing = company.financial_closings.find(params[:id])
+    unless @financial_closing.id == company.ongoing_closing&.id
+      raise ActiveRecord::RecordNotFound
+    end
 
     case action = params.dig(:financial_closing, :action)
     when "finish_adjustment"
       @financial_closing.closing!
-      redirect_to edit_financial_closing_path, notice: "決算整理仕訳の入力が完了しました。"
+      redirect_to edit_company_financial_closing_path(company_id: company.id), notice: "決算整理仕訳の入力が完了しました。"
     when "close"
       @financial_closing.close!
-      redirect_to edit_financial_closing_path, notice: "決算処理が完了しました。"
+      redirect_to company_financial_closings_path(company_id: company.id), notice: "決算処理が完了しました。"
     else
       raise "invalid action #{action} for updating financial closing"
     end
