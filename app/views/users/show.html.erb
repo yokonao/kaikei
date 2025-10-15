@@ -47,7 +47,7 @@
     </div>
     <dialog aria-labelledby="user-destruction-dialog-label" class="mx-auto my-auto" data-user-detail-target="userDstructionDialog">
       <% can_destroy = @user.incineratable? %>
-      <%= form_with model: @user, local: true, method: "DELETE", class: "p-8 space-y-4 border-4" do |form| %>
+      <%= form_with model: @user, url: user_path(id: "current"), local: true, method: "DELETE", class: "p-8 space-y-4 border-4" do |form| %>
         <h1 id="user-destruction-dialog-label" class="text-3xl text-red-700 text-center tracking-wide">アカウント削除</h1>
         <% if can_destroy %>
           <p>

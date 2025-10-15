@@ -2,12 +2,13 @@ class UsersController < ApplicationController
   allow_unauthenticated_access only: %i[ new create ]
   allow_no_company_access only: %i[ show destroy ]
 
+  before_action :set_user, only: %i[ show destroy ]
+
   def new
     @user = User.new
   end
 
   def show
-    @user = Current.user
   end
 
   def create
@@ -19,14 +20,19 @@ class UsersController < ApplicationController
 
   def destroy
     terminate_session
-    user = Current.user
-    DestroyUserJob.perform_later(user_id: user.id)
+    DestroyUserJob.perform_later(user_id: @user.id)
 
-    redirect_to new_session_path, notice: "アカウント（#{user.email_address}）を削除しました。"
+    redirect_to new_session_path, notice: "アカウント（#{@user.email_address}）を削除しました。"
   end
 
   private
-    def user_params
-      params.require(:user).permit(:email_address)
-    end
+
+  def user_params
+    params.require(:user).permit(:email_address)
+  end
+
+  def set_user
+    raise ActiveRecord::RecordNotFound unless params[:id] == "current"
+    @user = Current.user
+  end
 end
