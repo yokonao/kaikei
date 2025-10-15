@@ -35,20 +35,28 @@ class Company::MembersController < ApplicationController
 
   def destroy
     user, company = Current.user, Current.company
-    if params[:inviting] == "true"
-      Invitation.where(email_address: params[:email_address], company_id: company.id).destroy_all
-      notice = "#{params[:email_address]} の招待をキャンセルしました"
+
+    if params[:user_id] == "current"
+      # 事業所から脱退（= 自分自身のメンバーシップを削除）
+      user.exit!(company)
+
+      redirect_to companies_path, notice: "事業所（#{company.name}）から脱退しました。"
     else
-      target_user_id = params[:user_id].try(:to_i)
-      if user.id == target_user_id
-        alert = "自分のアクセス権を剥奪することはできません"
+      # 他のユーザーのメンバーシップを剥奪する。対象のメンバーが招待中か否かで処理が分岐する
+      if params[:inviting] == "true"
+        Invitation.where(email_address: params[:email_address], company_id: company.id).destroy_all
+        notice = "#{params[:email_address]} の招待をキャンセルしました"
       else
-        Membership.where(user_id: params[:user_id], company_id: company.id).destroy_all
-        notice = "メンバーの事業所へのアクセス権を剥奪しました"
+        target_user_id = params[:user_id].try(:to_i)
+        if user.id == target_user_id
+          alert = "自分のアクセス権を剥奪することはできません"
+        else
+          Membership.where(user_id: params[:user_id], company_id: company.id).destroy_all
+          notice = "メンバーの事業所へのアクセス権を剥奪しました"
+        end
       end
+
+      redirect_to company_members_path, notice: notice, alert: alert
     end
-
-
-    redirect_to company_members_path, notice: notice, alert: alert
   end
 end
