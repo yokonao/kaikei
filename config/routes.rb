@@ -14,10 +14,9 @@ Rails.application.routes.draw do
     resources :passkeys, only: [ :create ]
   end
 
-  resources :companies, only: [ :index, :new, :create ] do
+  resources :companies, only: [ :index, :show, :new, :create, :update, :destroy ] do
     resources :members, only: [ :index, :create, :destroy ]
   end
-  resource :company, only: [ :show, :update, :destroy ]
   resources :invitations, only: [ :show, :update ]
 
   resource :session

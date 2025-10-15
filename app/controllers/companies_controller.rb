@@ -8,7 +8,7 @@ class CompaniesController < ApplicationController
   end
 
   def show
-    @user, @company = Current.user, Current.company
+    @user, @company = Current.user, target_company
     @user_exit = User::Exit.new(@user, @company)
   end
 
@@ -33,7 +33,7 @@ class CompaniesController < ApplicationController
   end
 
   def update
-    @company = Current.company
+    @company = target_company
     if @company.update(company_params)
       redirect_to company_path, notice: "事業所の設定を更新しました。"
     else
@@ -42,7 +42,7 @@ class CompaniesController < ApplicationController
   end
 
   def destroy
-    user, company = Current.user, Current.company
+    user, company = Current.user, target_company
 
     Membership.where(user_id: user.id, company_id: company.id).destroy_all
     DestroyCompanyJob.perform_later(company_id: company.id)
@@ -54,5 +54,9 @@ class CompaniesController < ApplicationController
 
   def company_params
     params.expect(company: [ :name, :accounting_period_start_month ])
+  end
+
+  def target_company
+    Company.where(id: Current.company&.id).find(params[:id])
   end
 end
