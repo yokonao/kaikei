@@ -18,7 +18,6 @@ Rails.application.routes.draw do
   resource :company, only: [ :show, :update, :destroy ]
   namespace :company do
     resources :members, only: [ :index, :create, :destroy ], param: :user_id
-    resource :exit, only: [ :create ]
   end
   resources :invitations, only: [ :show, :update ]
 
