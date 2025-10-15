@@ -4,7 +4,7 @@ import { showErrorToast } from "utils/toast";
 export default class extends Controller {
   async register() {
     try {
-      const initiationResponse = await fetch("/users/passkeys", {
+      const initiationResponse = await fetch("/users/current/passkeys", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,7 +23,7 @@ export default class extends Controller {
       const credential = await navigator.credentials.create({
         publicKey: createCredentialOptions,
       });
-      const verificationResponse = await fetch("/users/passkeys", {
+      const verificationResponse = await fetch("/users/current/passkeys", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

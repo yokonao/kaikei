@@ -10,8 +10,7 @@ Rails.application.routes.draw do
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 
   get "signup", to: "users#new"
-  resources :users, only: [ :show, :create, :destroy ]
-  namespace :users do
+  resources :users, only: [ :show, :create, :destroy ] do
     resources :passkeys, only: [ :create ]
   end
 
