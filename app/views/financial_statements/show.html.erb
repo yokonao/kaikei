@@ -14,8 +14,8 @@
 
     <% i = 0 %>
     <% loop do %>
-    <% debit_line = @bs_debit_lines[i] %>
-    <% credit_line = @bs_credit_lines[i] %>
+    <% debit_line = @financial_statement.bs_debit_lines[i] %>
+    <% credit_line = @financial_statement.bs_credit_lines[i] %>
     <% break if debit_line.blank? && credit_line.blank? %>
 
     <tr>
@@ -57,13 +57,13 @@
       <td />
       <td class="border-r">
         <div class="w-full h-full py-2 pr-2 text-right">
-          <%= format_amount(@balance_sheet.total_assets) %>
+          <%= format_amount(@financial_statement.bs_total_debit) %>
         </div>
       </td>
       <td class="border-l" />
       <td>
         <div class="w-full h-full py-2 pr-2 text-right">
-          <%= format_amount(@balance_sheet.total_liabilities + @balance_sheet.total_equity) %>
+          <%= format_amount(@financial_statement.bs_total_credit) %>
         </div>
       </td>
     </tr>
@@ -80,8 +80,8 @@
 
     <% i = 0 %>
     <% loop do %>
-    <% debit_line = @pl_debit_lines[i] %>
-    <% credit_line = @pl_credit_lines[i] %>
+    <% debit_line = @financial_statement.pl_debit_lines[i] %>
+    <% credit_line = @financial_statement.pl_credit_lines[i] %>
     <% break if debit_line.blank? && credit_line.blank? %>
 
     <tr>
@@ -123,13 +123,13 @@
       <td />
       <td class="border-r">
         <div class="w-full h-full py-2 pr-2 text-right">
-          <%= format_amount(@pl_total_debit) %>
+          <%= format_amount(@financial_statement.pl_total_debit) %>
         </div>
       </td>
       <td class="border-l" />
       <td>
         <div class="w-full h-full py-2 pr-2 text-right">
-          <%= format_amount(@pl_total_credit) %>
+          <%= format_amount(@financial_statement.pl_total_credit) %>
         </div>
       </td>
     </tr>
