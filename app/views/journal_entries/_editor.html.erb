@@ -5,7 +5,7 @@
   <% end %>
 </datalist>
 
-<div class="max-w-6xl mx-auto min-h-screen" data-controller="journal-entry-editor">
+<div class="max-w-4xl min-w-2xs sm:min-w-2xl mx-auto py-12" data-controller="journal-entry-editor">
   <div class="bg-white border-4 border-black shadow-2xl">
     <div class="flex justify-between items-center bg-gray-100 px-8 py-6 border-b-4 border-black">
       <h1 class="text-3xl tracking-wide">仕訳入力</h1>
@@ -31,7 +31,7 @@
         </div>
       <% end %>
 
-      <table class="border-collapse border-2 mb-4">
+      <table class="border-collapse border-2 mb-4 mx-auto">
         <tr>
           <th scope="row" colspan="2" class="border">
             <%= form.label :entry_date, "仕訳日", class: "block w-full h-full bg-gray-100 py-2 text-center text-sm" %>
