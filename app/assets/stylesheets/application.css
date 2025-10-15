@@ -32,15 +32,6 @@
   }
 }
 
-button[popovertarget='financial-statements-menu'] {
-  anchor-name: --financial-statements-menu
-}
-
-#financial-statements-menu {
-  position-anchor: --financial-statements-menu;
-  position-area: right span-bottom;
-}
-
 button[popovertarget='user-profile-menu'] {
   anchor-name: --user-profile-menu
 }
