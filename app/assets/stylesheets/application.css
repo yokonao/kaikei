@@ -38,7 +38,7 @@ button[popovertarget='user-profile-menu'] {
 
 #user-profile-menu {
   position-anchor: --user-profile-menu;
-  position-area: right span-bottom;
+  position-area: right span-top;
 }
 
 button[popovertarget='company-menu'] {
@@ -47,5 +47,5 @@ button[popovertarget='company-menu'] {
 
 #company-menu {
   position-anchor: --company-menu;
-  position-area: right span-bottom;
+  position-area: right span-top;
 }
