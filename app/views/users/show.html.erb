@@ -25,7 +25,7 @@
                       <div><%= passkey.display_name %></div>
                       <div class="flex items-center space-x-2 text-sm">
                         <% if icon_svg = passkey_provider&.dig("icon_light") %>
-                          <%= image_tag icon_svg %>
+                          <%= image_tag icon_svg, class: "size-6" %>
                         <% end %>
                         <div><%= passkey_provider&.dig("name") || "不明なプロバイダー" %></div>
                       </div>
