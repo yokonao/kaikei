@@ -53,6 +53,7 @@ class PasskeysController < ApplicationController
 
       passkey = @user.user_passkeys.create!(
         id: webauthn_credential.id,
+        display_name: "Chrome on Mac (THIS IS DUMMY VALUE)",
         public_key: webauthn_credential.public_key,
         sign_count: webauthn_credential.sign_count
       )

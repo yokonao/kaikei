@@ -20,7 +20,7 @@
               <% @user.user_passkeys.each do |passkey| %>
                 <li class="p-4 border border-black">
                   <div class="flex justify-between items-center">
-                    <span><%= passkey.id %></span>
+                    <span><%= passkey.display_name %></span>
                     <%= button_to '登録解除', user_passkey_path(@user, passkey), method: :delete,
                           class: 'text-red-700 cursor-pointer',
                           data: { turbo_confirm: "登録解除するとこのパスキーでログインできなくなります。よろしいですか？" } %>
