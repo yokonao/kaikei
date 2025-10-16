@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_16_075006) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_16_111543) do
   create_table "accounts", primary_key: "name", id: :string, force: :cascade do |t|
     t.integer "category", default: 0, null: false
     t.boolean "is_standard", null: false
@@ -117,6 +117,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_16_075006) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "display_name", null: false
+    t.string "aaguid", default: "00000000-0000-0000-0000-000000000000", null: false
     t.index ["user_id"], name: "index_user_passkeys_on_user_id"
   end
 
