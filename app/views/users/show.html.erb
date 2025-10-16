@@ -23,7 +23,12 @@
                   <div class="flex justify-between items-center">
                     <div class="flex flex-col space-y-2">
                       <div><%= passkey.display_name %></div>
-                      <div class="text-sm"><%= passkey_provider&.dig("name") || "不明なプロバイダー" %></div>
+                      <div class="flex items-center space-x-2 text-sm">
+                        <% if icon_svg = passkey_provider&.dig("icon_light") %>
+                          <%= image_tag icon_svg %>
+                        <% end %>
+                        <div><%= passkey_provider&.dig("name") || "不明なプロバイダー" %></div>
+                      </div>
                     </div>
                     <%= button_to '登録解除', user_passkey_path(@user, passkey), method: :delete,
                           class: 'text-red-700 cursor-pointer',
