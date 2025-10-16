@@ -55,7 +55,8 @@ class PasskeysController < ApplicationController
         id: webauthn_credential.id,
         display_name: "Chrome on Mac (THIS IS DUMMY VALUE)",
         public_key: webauthn_credential.public_key,
-        sign_count: webauthn_credential.sign_count
+        sign_count: webauthn_credential.sign_count,
+        aaguid: webauthn_credential.response.aaguid
       )
 
       render json: { status: "ok" }, status: :ok
