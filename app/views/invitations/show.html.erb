@@ -6,6 +6,7 @@
     </div>
 
     <div class="p-8">
+      <p class="mb-4"><b><%= @invitation.email_address %> 宛</b></p>
       <% if @email_address_mismatch %>
         <p>
           現在ログイン中のアカウントに紐づくメールアドレス（<b><%= @current_user.email_address %></b>）宛の招待ではありません。ログアウトしてから再度アクセスしてください。
