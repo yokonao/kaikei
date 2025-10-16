@@ -97,7 +97,7 @@ class SessionsController < ApplicationController
         sign_count: passkey.sign_count
       )
 
-      passkey.update!(sign_count: webauthn_credential.sign_count)
+      passkey.update!(sign_count: webauthn_credential.sign_count, last_used_at: Time.current)
       start_new_session_for(passkey.user)
 
       render json: { status: "ok", redirect_url: after_authentication_url }, status: :ok
