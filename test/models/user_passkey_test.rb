@@ -60,4 +60,45 @@ class UserPasskeyTest < ActiveSupport::TestCase
     assert_not user_passkey.valid?
     assert_includes user_passkey.errors.full_messages, "サインカウントを入力してください"
   end
+
+  # #autofill_display_name!
+  test "should autofill display name" do
+    user = users(:one)
+    user_passkey = UserPasskey.new(
+      id: SecureRandom.alphanumeric(24),
+      user: user,
+      display_name: "Passkey Name",
+      public_key: "public_key",
+      sign_count: 0,
+      aaguid: "00000000-0000-0000-0000-000000000000"
+    )
+    user_passkey.autofill_display_name!
+    assert_nothing_raised { user_passkey.save! }
+    assert_equal "パスキー1", user_passkey.display_name
+
+    user_passkey2 = UserPasskey.new(
+      id: SecureRandom.alphanumeric(24),
+      user: user,
+      display_name: "Passkey Name",
+      public_key: "public_key",
+      sign_count: 0,
+      aaguid: "00000000-0000-0000-0000-000000000000"
+    )
+    user_passkey2.autofill_display_name!
+    assert_nothing_raised { user_passkey2.save! }
+    assert_equal "パスキー2", user_passkey2.display_name
+
+    user2 = users(:two)
+    user_passkey3 = UserPasskey.new(
+      id: SecureRandom.alphanumeric(24),
+      user: user2,
+      display_name: "Passkey Name",
+      public_key: "public_key",
+      sign_count: 0,
+      aaguid: "00000000-0000-0000-0000-000000000000"
+    )
+    user_passkey3.autofill_display_name!
+    assert_nothing_raised { user_passkey3.save! }
+    assert_equal "パスキー1", user_passkey3.display_name
+  end
 end

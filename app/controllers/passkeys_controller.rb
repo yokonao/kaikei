@@ -51,13 +51,14 @@ class PasskeysController < ApplicationController
     begin
       webauthn_credential.verify(session[:creation_challenge])
 
-      passkey = @user.user_passkeys.create!(
+      passkey = @user.user_passkeys.build(
         id: webauthn_credential.id,
-        display_name: "Chrome on Mac (THIS IS DUMMY VALUE)",
         public_key: webauthn_credential.public_key,
         sign_count: webauthn_credential.sign_count,
         aaguid: webauthn_credential.response.aaguid
       )
+      passkey.autofill_display_name!
+      passkey.save!
 
       render json: { status: "ok" }, status: :ok
     rescue WebAuthn::Error => e
