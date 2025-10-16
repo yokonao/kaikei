@@ -24,12 +24,11 @@ class PasskeysController < ApplicationController
   private
 
   def set_passkey
-    @passkey = Current.user.user_passkeys.find(params[:id])
+    @passkey = target_user.user_passkeys.find(params[:id])
   end
 
   def set_user
-    raise ActiveRecord::RecordNotFound unless params[:user_id] == "current"
-    @user = Current.user
+    @user = target_user
   end
 
   def init_registration

@@ -32,7 +32,10 @@ class UsersController < ApplicationController
   end
 
   def set_user
-    raise ActiveRecord::RecordNotFound unless params[:id] == "current"
-    @user = Current.user
+    @user = target_user
+  end
+
+  def target_user
+    @target_user ||= User.where(id: Current.user&.id).find(params[:id])
   end
 end

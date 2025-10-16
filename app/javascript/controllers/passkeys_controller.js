@@ -2,9 +2,13 @@ import { Controller } from "@hotwired/stimulus";
 import { showErrorToast } from "utils/toast";
 
 export default class extends Controller {
+  static values = {
+    userId: Number,
+  };
+
   async register() {
     try {
-      const initiationResponse = await fetch("/users/current/passkeys", {
+      const initiationResponse = await fetch(`/users/${this.userIdValue}/passkeys`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,7 +27,7 @@ export default class extends Controller {
       const credential = await navigator.credentials.create({
         publicKey: createCredentialOptions,
       });
-      const verificationResponse = await fetch("/users/current/passkeys", {
+      const verificationResponse = await fetch(`/users/${this.userIdValue}/passkeys`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

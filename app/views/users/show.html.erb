@@ -10,7 +10,7 @@
         <p><%= @user.email_address %></p>
       </div>
 
-      <div data-controller="passkeys" class="mb-8">
+      <div data-controller="passkeys" data-passkeys-user-id-value="<%= @user.id %>" class="mb-8">
         <h2 class="text-2xl tracking-wide mb-4 border-b-2 border-black pb-2">パスキー</h2>
         <div class="flex flex-col gap-4">
           <% if @user.user_passkeys.empty? %>
@@ -21,7 +21,7 @@
                 <li class="p-4 border border-black">
                   <div class="flex justify-between items-center">
                     <span><%= passkey.id %></span>
-                    <%= button_to '登録解除', user_passkey_path("current", passkey), method: :delete,
+                    <%= button_to '登録解除', user_passkey_path(@user, passkey), method: :delete,
                           class: 'text-red-700 cursor-pointer',
                           data: { turbo_confirm: "登録解除するとこのパスキーでログインできなくなります。よろしいですか？" } %>
                   </div>
@@ -30,7 +30,7 @@
             </ul>
           <% end %>
           <div>
-            <button data-action="passkeys#register" class="bg-black text-white py-3 px-6 border-2 border-black hover:bg-gray-800">
+            <button data-action="passkeys#register" class="bg-black text-white py-3 px-6 border-2 border-black hover:bg-gray-800 cursor-pointer">
               新しいパスキーを登録
             </button>
           </div>
@@ -50,7 +50,7 @@
     </div>
     <dialog aria-labelledby="user-destruction-dialog-label" class="mx-auto my-auto" data-user-detail-target="userDstructionDialog">
       <% can_destroy = @user.incineratable? %>
-      <%= form_with model: @user, url: user_path(id: "current"), local: true, method: "DELETE", class: "p-8 space-y-4 border-4" do |form| %>
+      <%= form_with model: @user, url: user_path(@user), local: true, method: "DELETE", class: "p-8 space-y-4 border-4" do |form| %>
         <h1 id="user-destruction-dialog-label" class="text-3xl text-red-700 text-center tracking-wide">アカウント削除</h1>
         <% if can_destroy %>
           <p>
