@@ -28,6 +28,17 @@ class Invitation < ApplicationRecord
     @user || User.find_by(email_address: self.email_address)
   end
 
+  def send_mail
+    token = self.generate_token_for(:invitation)
+    # 生成したトークンから有効期限を取得する方法がわからないので推定値を利用する
+    # TODO: よりよい方法がないか調査する
+    token_expires_at = Time.current + Invitation::INVITATION_TOKEN_EXPIRES_IN
+    # NOTE: リソースの特定は token で行うので id はダミー値をセットする
+    dummy_id = SecureRandom.uuid
+
+    InvitationMailer.invite(self, dummy_id, token, token_expires_at).deliver_later
+  end
+
   private
 
   def validate_membership_does_not_exists

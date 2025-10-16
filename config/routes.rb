@@ -14,7 +14,9 @@ Rails.application.routes.draw do
     resources :financial_statements, only: [ :show ]
     resource :general_ledger, only: [ :show ]
     resources :journal_entries, only: [ :index, :new, :create, :edit, :update, :destroy ]
-    resources :members, only: [ :index, :create, :destroy ]
+    resources :members, only: [ :index, :create, :destroy ] do
+      resources :invitation_mails, only: [ :create ]
+    end
   end
   resources :invitations, only: [ :show, :update ]
   resource :session, only: [ :new, :create, :update, :destroy ]

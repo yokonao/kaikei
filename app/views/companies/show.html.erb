@@ -58,7 +58,7 @@
     </div>
     <dialog aria-labelledby="company-exit-dialog-label" class="mx-auto my-auto" data-company-detail-target="companyExitDialog">
       <% exitable = @user_exit.valid? %>
-      <%= form_with url: company_member_path(id: Current.user.id, company_id: Current.company.id, myself: "true"), method: :delete, local: true, class: "p-8 space-y-4 border-4" do |form| %>
+      <%= form_with url: company_member_path(id: Member.id(:membership, Current.membership.id), company_id: Current.company.id, myself: "true"), method: :delete, local: true, class: "p-8 space-y-4 border-4" do |form| %>
         <h1 id="company-exit-dialog-label" class="text-3xl text-red-700 text-center tracking-wide">事業所から脱退する</h1>
         <% if exitable %>
           <p>

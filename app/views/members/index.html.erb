@@ -19,48 +19,44 @@
         </thead>
         <tbody class="bg-white">
           <% @members.each do |member| %>
-            <tr class="hover:bg-yellow-100">
-              <td class="px-4 py-3 border-[0.5] border-black whitespace-nowrap text-sm">
-                <%= member.email_address %>
-              </td>
-              <td class="px-4 py-3 border-[0.5] border-black text-center text-sm">
-                <div class="flex justify-center space-x-2">
-                  <% if Current.user.email_address != member.email_address %>
-                    <%= form_with url: company_member_path(id: member.id), method: :delete, local: true do |form| %>
-                      <%= form.hidden_field :inviting, value: false %>
-                      <%= form.submit "アクセス権を剥奪",
+            <% if member.inviting %>
+              <tr class="hover:bg-yellow-100">
+                <td class="px-4 py-3 border-[0.5] border-black whitespace-nowrap text-sm">
+                  <%= member.email_address %>（招待中）
+                </td>
+                <td class="px-4 py-3 border-[0.5] border-black text-center text-sm">
+                  <div class="flex flex-col space-y-2">
+                    <%= form_with url: company_member_invitation_mails_path(member_id: member.id), local: true do |form| %>
+                      <%= form.submit "招待メールを再送",
                             class: "text-black hover:bg-gray-200 px-2 py-1 border border-black bg-transparent cursor-pointer",
-                            data: { turbo_confirm: "アクセス権を剥奪すると #{member.email_address} が事業所にアクセスできなくなります。よろしいですか？" } %>
+                            data: { turbo_confirm: "#{member.email_address} に再度招待メールを送信します。よろしいですか？" } %>
                     <% end %>
-                  <% end %>
-                </div>
-              </td>
-            </tr>
-          <% end %>
-
-          <% @inviting_members.each do |member| %>
-            <tr class="hover:bg-yellow-100">
-              <td class="px-4 py-3 border-[0.5] border-black whitespace-nowrap text-sm">
-                <%= member.email_address %>（招待中）
-              </td>
-              <td class="px-4 py-3 border-[0.5] border-black text-center text-sm">
-                <div class="flex flex-col space-y-2">
-                  <%= form_with url: company_members_path, local: true do |form| %>
-                    <%= form.hidden_field :email_address, value: member.email_address %>
-                    <%= form.submit "招待メールを再送",
-                          class: "text-black hover:bg-gray-200 px-2 py-1 border border-black bg-transparent cursor-pointer",
-                          data: { turbo_confirm: "#{member.email_address} に再度招待メールを送信します。よろしいですか？" } %>
-                  <% end %>
-                  <%= form_with url: company_member_path(id: member.id), method: :delete, local: true do |form| %>
-                    <%= form.hidden_field :inviting, value: true %>
-                    <%= form.hidden_field :email_address, value: member.email_address %>
-                    <%= form.submit "招待をキャンセル",
-                          class: "text-black hover:bg-gray-200 px-2 py-1 border border-black bg-transparent cursor-pointer",
-                          data: { turbo_confirm: "キャンセルする #{member.email_address} に送信された招待リンクが無効になります。よろしいですか？" } %>
-                  <% end %>
-                </div>
-              </td>
-            </tr>
+                    <%= form_with url: company_member_path(id: member.id), method: :delete, local: true do |form| %>
+                      <%= form.submit "招待をキャンセル",
+                            class: "text-black hover:bg-gray-200 px-2 py-1 border border-black bg-transparent cursor-pointer",
+                            data: { turbo_confirm: "キャンセルする #{member.email_address} に送信された招待リンクが無効になります。よろしいですか？" } %>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% else %>              
+              <tr class="hover:bg-yellow-100">
+                <td class="px-4 py-3 border-[0.5] border-black whitespace-nowrap text-sm">
+                  <%= member.email_address %>
+                </td>
+                <td class="px-4 py-3 border-[0.5] border-black text-center text-sm">
+                  <div class="flex justify-center space-x-2">
+                    <% if Current.user.email_address != member.email_address %>
+                      <%= form_with url: company_member_path(id: member.id), method: :delete, local: true do |form| %>
+                        <%= form.submit "アクセス権を剥奪",
+                              class: "text-black hover:bg-gray-200 px-2 py-1 border border-black bg-transparent cursor-pointer",
+                              data: { turbo_confirm: "アクセス権を剥奪すると #{member.email_address} が事業所にアクセスできなくなります。よろしいですか？" } %>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
           <% end %>
         </tbody>
       </table>
