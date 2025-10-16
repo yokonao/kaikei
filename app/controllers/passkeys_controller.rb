@@ -1,7 +1,8 @@
 class PasskeysController < ApplicationController
-  allow_no_company_access only: %i[ create ]
+  allow_no_company_access only: %i[ create destroy ]
 
   before_action :set_user, only: %i[ create ]
+  before_action :set_passkey, only: %i[ destroy ]
 
   def create
     phase = params[:phase]
@@ -15,7 +16,16 @@ class PasskeysController < ApplicationController
     end
   end
 
+  def destroy
+    @passkey.destroy!
+    redirect_to user_path, notice: 'パスキーを削除しました。'
+  end
+
   private
+
+  def set_passkey
+    @passkey = Current.user.user_passkeys.find(params[:id])
+  end
 
   def set_user
     raise ActiveRecord::RecordNotFound unless params[:user_id] == "current"

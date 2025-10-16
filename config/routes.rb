@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   resource :session, only: [ :new, :create, :update, :destroy ]
   get "signup", to: "users#new"
   resources :users, only: [ :show, :create, :destroy ] do
-    resources :passkeys, only: [ :create ]
+    resources :passkeys, only: [ :create, :destroy ]
   end
 
   # Defines the root path route ("/")
