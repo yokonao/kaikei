@@ -83,13 +83,14 @@ ja:
         side: 借方・貸方
         journal_entry: 仕訳
         account: 勘定科目
-      user_basic_password:
-        password_challenge: 現在のパスワード
-        password: 新しいパスワード
-        password_confirmation: 新しいパスワード（確認）
       user_one_time_password:
         user: ユーザー
         password: パスワード
         expires_at: 有効期限
+      user_passkey:
+        user: ユーザー
+        display_name: 表示名
+        public_key: 公開鍵
+        sign_count: サインカウント
       user:
         email_address: メールアドレス
