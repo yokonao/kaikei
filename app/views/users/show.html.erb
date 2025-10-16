@@ -29,6 +29,7 @@
                         <% end %>
                         <div><%= passkey_provider&.dig("name") || "不明なプロバイダー" %></div>
                       </div>
+                      <div class="text-sm">登録日時 <%= passkey.created_at.strftime("%Y/%m/%d %H:%M") %></div>
                     </div>
                     <%= button_to '登録解除', user_passkey_path(@user, passkey), method: :delete,
                           class: 'text-red-700 cursor-pointer',
