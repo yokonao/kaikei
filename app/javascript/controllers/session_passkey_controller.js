@@ -38,10 +38,28 @@ export default class extends Controller {
       if (verificationResponse.ok) {
         window.location.reload();
       } else {
+        if (verificationResponse.status == 404) {
+          if (PublicKeyCredential.signalUnknownCredential) {
+            await PublicKeyCredential.signalUnknownCredential({
+              rpId: window.location.hostname,
+              credentialId: credential.id,
+            });
+            showErrorToast(
+              "選択されたパスキーは既に登録解除されており、ご利用いただけません"
+            );
+          } else {
+            showErrorToast(
+              "選択されたパスキーは既に登録解除されており、ご利用いただけません。ご利用のデバイス等に保存されているパスキーを削除してください"
+            );
+          }
+
+          return;
+        }
+
         // verificationResponse.json().then((data) => {
         //   console.error(data);
         // });
-        showErrorToast("パスキーの検証に失敗しました。");
+        showErrorToast("パスキーの検証に失敗しました");
       }
     } catch (e) {
       if (e instanceof DOMException) {
@@ -53,7 +71,7 @@ export default class extends Controller {
       }
 
       // console.error(e);
-      showErrorToast("パスキーの検証に失敗しました。");
+      showErrorToast("パスキーの検証に失敗しました");
     }
   }
 }
