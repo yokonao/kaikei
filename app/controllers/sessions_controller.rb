@@ -12,8 +12,6 @@ class SessionsController < ApplicationController
     @login_method = params[:login_method]
     case @login_method
     when "otp"
-      init_otp
-    when "otp_verification"
       verify_otp
     when "passkey"
       passkey_auth
@@ -38,16 +36,6 @@ class SessionsController < ApplicationController
   end
 
   private
-
-  def init_otp
-    user = User.find_by(email_address: params[:email_address])
-    fail_login and return unless user
-
-    session[:otp_user_id] = user.id
-    user.create_otp!
-
-    redirect_to new_session_path(login_method: "otp_verification"), notice: "ワンタイムパスワードを #{user.email_address} に送信しました。"
-  end
 
   def verify_otp
     user_id = session[:otp_user_id]

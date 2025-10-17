@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     user = User.find_or_create_by(user_params)
     session[:otp_user_id] = user.id
     user.create_otp!
-    redirect_to new_session_path(login_method: "otp_verification"), notice: "ワンタイムパスワードを #{user.email_address} に送信しました。"
+    redirect_to new_session_path(login_method: "otp"), notice: "ワンタイムパスワードを #{user.email_address} に送信しました。"
   end
 
   def destroy

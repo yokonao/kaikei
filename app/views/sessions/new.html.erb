@@ -7,9 +7,9 @@
 
     <div class="p-8">
       <% case @login_method %>
-      <% when "otp_verification" %>
+      <% when "otp" %>
         <%= form_with url: session_url do |form| %>
-          <%= form.hidden_field :login_method, value: "otp_verification" %>
+          <%= form.hidden_field :login_method, value: "otp" %>
           <%= form.hidden_field :email_address, value: "" %>
           <table class="w-full border-collapse border-2 mb-4">
               <th scope="row" class="border">
@@ -28,7 +28,7 @@
         <% end %>
       <% else %>
         <div class="flex flex-col space-y-8">
-          <%= form_with url: session_url do |form| %>
+          <%= form_with url: one_time_passwords_path do |form| %>
             <%= form.hidden_field :login_method, id: "password-less-login-login-method", value: "otp" %>
             <table class="w-full border-collapse border-2 mb-4" data-controller="session-passkey">
                 <th scope="row" class="border">
@@ -73,7 +73,7 @@
       <% end %>
 
 
-      <% unless @login_method == "otp_verification" %>
+      <% unless @login_method == "otp" %>
         <div class="text-center mt-6">
           <%= link_to "アカウント登録", signup_path, class: "underline hover:text-blue-600" %>
         </div>
