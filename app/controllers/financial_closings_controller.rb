@@ -25,7 +25,7 @@ class FinancialClosingsController < ApplicationController
     )
 
     if @financial_closing.save
-      redirect_to edit_financial_closing_path, notice: "決算処理を開始します。"
+      redirect_to edit_company_financial_closing_path(company_id: company.id, id: @financial_closing.id), notice: "決算処理を開始します。"
     else
       @financial_closings = company.financial_closings.order(end_date: :desc, id: :desc)
       render :index, status: :unprocessable_content
