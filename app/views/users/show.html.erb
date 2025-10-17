@@ -79,11 +79,11 @@
           <table class="w-full border-collapse border-2">
             <tr>
               <th scope="row" class="border">
-                <label for="user-desruction-confirmation-text" class="block w-full border-black bg-gray-100 py-2 text-center">メールアドレス</label>
+                <label for="user-desruction-confirmation-text" class="block w-full border-black bg-gray-100 p-4 text-center">メールアドレス</label>
               </th>
               <td class="border">
                 <input type="text" id="user-desruction-confirmation-text" name="user-desruction-confirmation-text" required
-                        class="block w-full px-2 py-2 focus:outline-none"
+                        class="block w-full p-4 focus:outline-none"
                         data-action="input->user-detail#onUserDestructionConfirmationTextChange"
                         data-correct-confirmation-text="<%= @user.email_address %>">
               </td>

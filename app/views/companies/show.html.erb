@@ -70,11 +70,11 @@
           <table class="w-full border-collapse border-2">
             <tr>
               <th scope="row" class="border">
-                <label for="company-desruction-confirmation-text" class="block w-full border-black bg-gray-100 py-2 text-center">事業所名</label>
+                <label for="company-desruction-confirmation-text" class="block w-full border-black bg-gray-100 p-4 text-center">事業所名</label>
               </th>
               <td class="border">
                 <input type="text" id="company-desruction-confirmation-text" name="company-desruction-confirmation-text" required
-                        class="block w-full px-2 py-2 focus:outline-none"
+                        class="block w-full p-4 focus:outline-none"
                         data-action="input->company-detail#onCompanyExitConfirmationTextChange"
                         data-correct-confirmation-text="<%= @company.name %>">
               </td>
