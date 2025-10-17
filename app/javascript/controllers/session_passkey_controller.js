@@ -19,8 +19,11 @@ export default class extends Controller {
       const initiationResponseJSON = await initiationResponse.json();
       const requestCredentialOptions =
         PublicKeyCredential.parseRequestOptionsFromJSON(initiationResponseJSON);
+      const abortController = new AbortController();
+      this.credentialsGettingAbortController = abortController;
       const credential = await navigator.credentials.get({
         publicKey: requestCredentialOptions,
+        signal: abortController.signal,
         mediation: "conditional",
       });
       const verificationResponse = await fetch("/session", {
@@ -69,10 +72,21 @@ export default class extends Controller {
           // https://www.w3.org/TR/webauthn-2/#sctn-privacy-considerations-client
           return;
         }
+
+        if (e.name === "AbortError") {
+          // ここに到達するのはパスキー以外の方法でログインして処理がキャンセルされた場合。よって何もしない
+          return;
+        }
       }
 
       // console.error(e);
       showErrorToast("パスキーの検証に失敗しました");
+    }
+  }
+
+  disconnect() {
+    if (this.credentialsGettingAbortController) {
+      this.credentialsGettingAbortController.abort();
     }
   }
 }
