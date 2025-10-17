@@ -18,6 +18,7 @@ class PasskeysController < ApplicationController
 
   def destroy
     @passkey.destroy!
+    sync_passkeys
     redirect_to user_path(id: @user.id), notice: 'パスキーを削除しました。'
   end
 

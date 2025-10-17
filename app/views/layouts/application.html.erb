@@ -25,6 +25,9 @@
 
   <body class="flex font-mono bg-gray-50">
     <%= render 'shared/flash' %>
+    <% if flash[:will_sync_passkeys] && authenticated? %>
+      <%= render 'shared/passkey_signal' %>
+    <% end %>
 
     <% if authenticated? %>
       <%= render 'shared/navigation' %>

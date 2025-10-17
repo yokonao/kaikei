@@ -1,0 +1,6 @@
+<div data-controller="passkey-signals" 
+     data-passkey-signals-all-accepted-credential-ids-value="<%= Current.user.user_passkeys.pluck(:id) %>"
+     data-passkey-signals-email-address-value="<%= Current.user.email_address %>" 
+     data-passkey-signals-webauthn-user-handle-value="<%= Current.user.webauthn_user_handle %>">
+</div>
+ 

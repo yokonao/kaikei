@@ -99,6 +99,7 @@ class SessionsController < ApplicationController
 
       passkey.update!(sign_count: webauthn_credential.sign_count, last_used_at: Time.current)
       start_new_session_for(passkey.user)
+      sync_passkeys
 
       render json: { status: "ok", redirect_url: after_authentication_url }, status: :ok
     rescue WebAuthn::Error => e
@@ -116,6 +117,7 @@ class SessionsController < ApplicationController
 
   def success_login(user, company: nil)
     start_new_session_for user, company: company
+    sync_passkeys
     if Current.session.company.present?
       redirect_to after_authentication_url
     else
