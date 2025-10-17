@@ -15,16 +15,16 @@
         </div>
       <% end %>
 
-      <div class="grid grid-cols-4 gap-0 border-2 border-black mb-4">
-        <div class="col-span-1">
-          <%= form.label :name, "事業所名",
-            class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center" %>
-        </div>
-        <div class="col-span-3">
-          <%= form.text_field :name, required: true, autofocus: true,
-            class: "block w-full h-full border-b-[0.5px] border-black p-4 focus:outline-none focus:bg-yellow-100" %>
-        </div>
-      </div>
+      <table class="w-full border-collapse border-2 mb-4">
+          <th scope="row" class="border">
+            <%= form.label :name, "事業所名", class: "block w-full border-black bg-gray-100 p-4 text-center" %>
+          </th>
+          <td class="border">
+            <%= form.text_field :name, required: true, autofocus: true,
+                  class: "block w-full p-4 focus:outline-none focus:bg-yellow-100" %>
+          </td>
+        </tr>
+      </table>
 
       <div class="flex justify-center">
         <%= form.submit "作成",
