@@ -19,19 +19,19 @@
       <table class="w-full border-collapse border-2 mb-4">
         <tr>
           <th scope="row" class="border">
-            <%= form.label :name, "事業所名", class: "block w-full border-black bg-gray-100 py-2 text-center" %>
+            <%= form.label :name, "事業所名", class: "block w-full border-black bg-gray-100 p-4 text-center" %>
           </th>
           <td class="border">
-            <%= form.text_field :name, autofocus: true, class: "block w-full px-2 py-2 focus:outline-none focus:bg-yellow-100" %>
+            <%= form.text_field :name, autofocus: true, class: "block w-full p-4 focus:outline-none focus:bg-yellow-100" %>
           </td>
         </tr>
         <tr>
           <th scope="row" class="border">
-            <%= form.label :accounting_period_start_month, "会計年度の開始月", class: "block w-full border-black bg-gray-100 py-2 text-center" %>
+            <%= form.label :accounting_period_start_month, "会計年度の開始月", class: "block w-full border-black bg-gray-100 p-4 text-center" %>
           </th>
           <td class="border">
             <%= form.select :accounting_period_start_month, (1..12).map { |v| [ "#{v}月", v ]}, {},
-                { class: "block w-full px-2 py-2 focus:outline-none focus:bg-yellow-100" } %>
+                { class: "block w-full p-4 focus:outline-none focus:bg-yellow-100 appearance-none" } %>
           </td>
         </tr>
       </table>
