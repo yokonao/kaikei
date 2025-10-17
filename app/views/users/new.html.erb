@@ -16,14 +16,16 @@
         </div>
       <% end %>
 
-      <div class="grid grid-cols-3 gap-0 border-2 border-black mb-4">
-        <div class="col-span-1">
-          <%= form.label :email_address, "メールアドレス", class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center" %>
-        </div>
-        <div class="col-span-2">
-          <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email", class: "block w-full h-full border-b-[0.5px] border-black p-4 focus:outline-none focus:bg-yellow-100" %>
-        </div>
-      </div>
+      <table class="w-full border-collapse border-2 mb-4" data-controller="session-passkey">
+          <th scope="row" class="border">
+            <%= form.label :email_address, "メールアドレス", class: "block w-full border-black bg-gray-100 p-4 text-center" %>
+          </th>
+          <td class="border">
+            <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "email",
+                  class: "block w-full p-4 focus:outline-none focus:bg-yellow-100" %>
+          </td>
+        </tr>
+      </table>
 
       <p class="mb-8">
         入力したメールアドレスにワンタイムパスワードを送信します。
