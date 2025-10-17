@@ -34,6 +34,10 @@ class PasskeysController < ApplicationController
 
   def init_registration
     options = WebAuthn::Credential.options_for_create(
+      authenticator_selection: {
+        require_resident_key: true,
+        resident_key: "required"
+      },
       exclude: @user.user_passkeys.pluck(:id),
       user: {
         id: @user.webauthn_user_handle,
