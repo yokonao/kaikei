@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 import { showErrorToast } from "utils/toast";
 
 export default class extends Controller {
-  async authenticate() {
+  async connect() {
     try {
       const initiationResponse = await fetch("/session", {
         method: "POST",
@@ -21,6 +21,7 @@ export default class extends Controller {
         PublicKeyCredential.parseRequestOptionsFromJSON(initiationResponseJSON);
       const credential = await navigator.credentials.get({
         publicKey: requestCredentialOptions,
+        mediation: "conditional",
       });
       const verificationResponse = await fetch("/session", {
         method: "POST",
