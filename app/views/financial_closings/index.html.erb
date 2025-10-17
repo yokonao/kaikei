@@ -17,26 +17,26 @@
       <% end %>
 
       <div class="mb-2">決算の開始日と終了日を入力してください</div>
-      <div class="w-xs grid grid-cols-4 gap-0 border-2 border-black mb-4">
-        <div class="col-span-1">
-          <%= form.label :start_date, "期首",
-            class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center" %>
-        </div>
-        <div class="col-span-3">
-          <%= form.date_field :start_date, required: true, autofocus: true,
-            class: "block w-full h-full border-b-[0.5px] border-black p-4 focus:outline-none focus:bg-yellow-100" %>
-        </div>
-      </div>
-      <div class="w-xs grid grid-cols-4 gap-0 border-2 border-black mb-4">
-        <div class="col-span-1">
-          <%= form.label :end_date, "期末",
-            class: "block border-b-[0.5px] border-r-[0.5px] border-black bg-gray-100 p-4 text-center" %>
-        </div>
-        <div class="col-span-3">
-          <%= form.date_field :end_date, required: true,
-            class: "block w-full h-full border-b-[0.5px] border-black p-4 focus:outline-none focus:bg-yellow-100" %>
-        </div>
-      </div>
+      <table class="w-xs border-collapse border-2 mb-4">
+        <tr>
+          <th scope="row" class="border">
+            <%= form.label :start_date, "期首", class: "block w-full border-black bg-gray-100 p-4 text-center" %>
+          </th>
+          <td class="border">
+            <%= form.date_field :start_date, required: true, autofocus: true,
+                  class: "block w-full p-4 focus:outline-none focus:bg-yellow-100" %>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row" class="border">
+            <%= form.label :end_date, "期末", class: "block w-full border-black bg-gray-100 p-4 text-center" %>
+          </th>
+          <td class="border">
+            <%= form.date_field :end_date, required: true,
+                  class: "block w-full p-4 focus:outline-none focus:bg-yellow-100" %>
+          </td>
+        </tr>
+      </table>
 
       <%= form.submit "決算を開始する",
         class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black text-xl tracking-widest cursor-pointer" %>
