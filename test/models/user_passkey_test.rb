@@ -29,7 +29,7 @@ class UserPasskeyTest < ActiveSupport::TestCase
 
   test "should be invalid wihtout id" do
     user = users(:one)
-    user_passkey = UserPasskey.new(user: user, display_name: "Chrome on Mac",public_key: "public_key", sign_count: 0)
+    user_passkey = UserPasskey.new(user: user, display_name: "Chrome on Mac", public_key: "public_key", sign_count: 0)
     error = assert_raises { user_passkey.save! }
     assert_equal ActiveRecord::NotNullViolation, error.class
   end

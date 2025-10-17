@@ -19,7 +19,7 @@ class PasskeysController < ApplicationController
   def destroy
     @passkey.destroy!
     sync_passkeys
-    redirect_to user_path(id: @user.id), notice: 'パスキーを削除しました。'
+    redirect_to user_path(id: @user.id), notice: "パスキーを削除しました。"
   end
 
   private
@@ -34,11 +34,11 @@ class PasskeysController < ApplicationController
 
   def init_registration
     options = WebAuthn::Credential.options_for_create(
+      exclude: @user.user_passkeys.pluck(:id),
       user: {
         id: @user.webauthn_user_handle,
         name: @user.email_address
       },
-      exclude: @user.user_passkeys.pluck(:id)
     )
 
     session[:creation_challenge] = options.challenge
