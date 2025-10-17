@@ -19,9 +19,11 @@ Rails.application.routes.draw do
     end
   end
   resources :invitations, only: [ :show, :update ]
+  resource :public_key_credential_request_options, only: [ :show ]
   resource :session, only: [ :new, :create, :update, :destroy ]
   get "signup", to: "users#new"
   resources :users, only: [ :show, :create, :destroy ] do
+    resource :public_key_credential_creation_options, only: [ :show ]
     resources :passkeys, only: [ :create, :destroy ]
   end
 

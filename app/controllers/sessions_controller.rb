@@ -62,26 +62,6 @@ class SessionsController < ApplicationController
   end
 
   def passkey_auth
-    phase = params[:phase]
-    raise "phase must be initiation or verification" unless phase == "initiation" || phase == "verification"
-
-    case phase
-    when "initiation"
-      passkey_auth_init
-    when "verification"
-      passkey_auth_verify
-    end
-  end
-
-  def passkey_auth_init
-    options = WebAuthn::Credential.options_for_get
-
-    session[:authentication_challenge] = options.challenge
-
-    render json: options
-  end
-
-  def passkey_auth_verify
     webauthn_credential = WebAuthn::Credential.from_get(params)
 
     passkey = UserPasskey.find_by(id: webauthn_credential.id)

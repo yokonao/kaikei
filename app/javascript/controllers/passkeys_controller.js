@@ -8,17 +8,15 @@ export default class extends Controller {
 
   async register() {
     try {
-      const initiationResponse = await fetch(`/users/${this.userIdValue}/passkeys`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')
-            .content,
-        },
-        body: JSON.stringify({
-          phase: "initiation",
-        }),
-      });
+      const initiationResponse = await fetch(
+        `/users/${this.userIdValue}/public_key_credential_creation_options`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const initiationResponseJSON = await initiationResponse.json();
       const createCredentialOptions =
         PublicKeyCredential.parseCreationOptionsFromJSON(
@@ -27,15 +25,18 @@ export default class extends Controller {
       const credential = await navigator.credentials.create({
         publicKey: createCredentialOptions,
       });
-      const verificationResponse = await fetch(`/users/${this.userIdValue}/passkeys`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')
-            .content,
-        },
-        body: JSON.stringify({ ...credential.toJSON(), phase: "verification" }),
-      });
+      const verificationResponse = await fetch(
+        `/users/${this.userIdValue}/passkeys`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')
+              .content,
+          },
+          body: JSON.stringify(credential.toJSON()),
+        }
+      );
       if (verificationResponse.ok) {
         window.location.reload();
       } else {

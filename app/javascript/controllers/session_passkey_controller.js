@@ -4,17 +4,11 @@ import { showErrorToast } from "utils/toast";
 export default class extends Controller {
   async connect() {
     try {
-      const initiationResponse = await fetch("/session", {
-        method: "POST",
+      const initiationResponse = await fetch("/public_key_credential_request_options", {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')
-            .content,
         },
-        body: JSON.stringify({
-          login_method: "passkey",
-          phase: "initiation",
-        }),
       });
       const initiationResponseJSON = await initiationResponse.json();
       const requestCredentialOptions =
@@ -36,7 +30,6 @@ export default class extends Controller {
         body: JSON.stringify({
           ...credential.toJSON(),
           login_method: "passkey",
-          phase: "verification",
         }),
       });
       if (verificationResponse.ok) {
