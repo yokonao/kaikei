@@ -54,6 +54,17 @@
             <%= form_with url: session_url do |form| %>
               <%= form.hidden_field :login_method, id: "dev-login-login-method", value: "dev" %>
 
+              <table class="w-full border-collapse border-2 mb-4">
+                  <th scope="row" class="border">
+                    <%= form.label :user_id, "ユーザー", class: "block w-full border-black bg-gray-100 py-2 text-center" %>
+                  </th>
+                  <td class="border">
+                    <%= form.select :user_id, User.all.map { |u| [ u.email_address, u.id ]}, {},
+                        { class: "block w-full px-2 py-2 focus:outline-none focus:bg-yellow-100 appearance-none" } %>
+                  </td>
+                </tr>
+              </table>
+
               <div class="flex justify-center">
                 <%= form.submit "ログイン",
                   class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black text-xl tracking-widest cursor-pointer" %>

@@ -110,9 +110,9 @@ class SessionsController < ApplicationController
   end
 
   def dev_auth
-    user = User.first
+    user = User.find(params[:user_id])
     company = user.companies.first
-    success_login User.first, company: company
+    success_login user, company: company
   end
 
   def success_login(user, company: nil)
