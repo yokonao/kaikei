@@ -4,12 +4,15 @@ import { showErrorToast } from "utils/toast";
 export default class extends Controller {
   async connect() {
     try {
-      const initiationResponse = await fetch("/public_key_credential_request_options", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const initiationResponse = await fetch(
+        "/public_key_credential_request_options",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const initiationResponseJSON = await initiationResponse.json();
       const requestCredentialOptions =
         PublicKeyCredential.parseRequestOptionsFromJSON(initiationResponseJSON);
@@ -33,7 +36,17 @@ export default class extends Controller {
         }),
       });
       if (verificationResponse.ok) {
-        window.location.reload();
+        try {
+          const verificationResponseJSON = await verificationResponse.json();
+          console.log(verificationResponseJSON);
+          if (verificationResponseJSON.redirect_url) {
+            window.location.href = verificationResponseJSON.redirect_url;
+          } else {
+            window.location.reload();
+          }
+        } catch {
+          window.location.reload();
+        }
       } else {
         if (verificationResponse.status == 404) {
           if (PublicKeyCredential.signalUnknownCredential) {
