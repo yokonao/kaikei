@@ -39,6 +39,8 @@
 
     <%= render 'shared/templates' %>
 
-    <%= render 'shared/journal_editor_dialog' %>
+    <% if authenticated? && company_selected? %>
+      <%= render 'shared/journal_editor_dialog' %>
+    <% end %>
   </body>
 </html>
