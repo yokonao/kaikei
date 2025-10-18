@@ -9,12 +9,12 @@
   <div class="bg-white border-4 border-black shadow-2xl">
     <div class="flex justify-between items-center bg-gray-100 px-8 py-6 border-b-4 border-black">
       <h1 class="text-3xl tracking-wide">仕訳入力</h1>
-      <a href="/journal_entries" aria-label="戻る">
+      <%= link_to company_journal_entries_path, "aria-label": "戻る" do %>
         <!-- https://heroicons.com/ -->
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
         </svg>
-      </a>
+      <% end %>
     </div>
 
     <%= form_with model: @journal_entry,
