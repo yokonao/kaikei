@@ -23,7 +23,7 @@
     <%= Sentry.get_trace_propagation_meta.html_safe %>
   </head>
 
-  <body class="flex font-mono bg-gray-50">
+  <body class="flex font-mono bg-gray-50" data-controller="hotkeys">
     <%= render 'shared/flash' %>
     <% if flash[:will_sync_passkeys] && authenticated? %>
       <%= render 'shared/passkey_signal' %>
@@ -38,5 +38,11 @@
     </main>
 
     <%= render 'shared/templates' %>
+
+    <dialog aria-labelledby="journal-editor-dialog" class="mx-auto my-auto" data-hotkeys-target="journalEditorDialog">
+      <div class="p-8 space-y-4 border-4">
+        <h1 id="journal-editor-dialog" class="text-3xl text-center tracking-wide">テスト用ダイアログ</h1>
+      </div>
+    </dialog>
   </body>
 </html>
