@@ -20,7 +20,11 @@ export default class extends Controller {
     const dotKey = event.key === ".";
 
     if (isModifierKeyPressed && dotKey) {
-      this.journalEditorDialogTarget.showModal();
+      // モーダルが重複しないように制御している
+      // TODO: もしかしたら同じ <dialog> でも showModal() で開いたか、show() で開いたかで処理を分けたほうがいいかもしれない？
+      if (!document.querySelector('dialog[open]')) {
+        this.journalEditorDialogTarget.showModal();
+      }
     }
   }
 }
