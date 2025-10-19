@@ -13,6 +13,10 @@ class EmailAddressVerificationsController < ApplicationController
 
   def create
     verification = EmailAddressVerification.new(email_address: params[:email_address])
+    unless verification.valid?
+      redirect_to "/signup", alert: "入力したメールアドレスが不正、または登録済みです" and return
+    end
+
     token = verification.generate_token
     # 生成したトークンから有効期限を取得する方法がわからないので推定値を利用する
     # TODO: よりよい方法がないか調査する
