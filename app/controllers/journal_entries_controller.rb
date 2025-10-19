@@ -19,10 +19,24 @@ class JournalEntriesController < ApplicationController
     @journal_entry = target_company.journal_entries.build(journal_entry_params)
 
     if @journal_entry.save
-      redirect_to edit_company_journal_entry_path(id: @journal_entry.id, company_id: @journal_entry.company_id), notice: "仕訳が正常に作成されました。"
+      respond_to do |format|
+        format.html do
+          redirect_to edit_company_journal_entry_path(id: @journal_entry.id, company_id: @journal_entry.company_id), notice: "仕訳が正常に作成されました。"
+        end
+        format.json do
+          render json: @journal_entry
+        end
+      end
     else
-      prepare_journal_entry_detail
-      render :new, status: :unprocessable_entity
+      respond_to do |format|
+        format.html do
+          prepare_journal_entry_detail
+          render :new, status: :unprocessable_entity
+        end
+        format.json do
+          render json: { errors: @journal_entry.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
     end
   end
 
