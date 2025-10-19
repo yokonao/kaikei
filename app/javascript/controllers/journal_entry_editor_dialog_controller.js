@@ -34,52 +34,18 @@ export default class extends Controller {
 
   async sendJSON(form) {
     try {
-      // フォームデータを手動で JSON オブジェクトに変換している
-      // この実装はオブジェクト構造の変化に弱い点に注意
-      // TODO: ライブラリを導入するなどして、オブジェクト変換のロジックを汎用的にして構造の変化に耐性を持たせる
-      const data = new FormData(form);
-      const json = { journal_entry: { journal_entry_lines_attributes: {} } };
-      for (const [key, value] of data.entries()) {
-        if (key === "journal_entry[entry_date]") {
-          json.journal_entry.entry_date = value;
-          continue;
-        } else if (key === "journal_entry[summary]") {
-          json.journal_entry.summary = value;
-          continue;
-        }
-        const regex =
-          /journal_entry\[journal_entry_lines_attributes\]\[(?<index>\d+)\]\[(?<attributeKey>[a-zA-Z_]+)\]/;
-        for (const [key, value] of data.entries()) {
-          const match = regex.exec(key);
-          if (match) {
-            const { index, attributeKey } = match.groups;
-            if (!json.journal_entry.journal_entry_lines_attributes[index]) {
-              json.journal_entry.journal_entry_lines_attributes[index] = {};
-            }
-            if (
-              !json.journal_entry.journal_entry_lines_attributes[index][
-                attributeKey
-              ]
-            ) {
-              json.journal_entry.journal_entry_lines_attributes[index][
-                attributeKey
-              ] = value;
-            }
-          }
-        }
-      }
-
-      const body = JSON.stringify(json);
+      const formData = new FormData(form);
+      const encodedData = new URLSearchParams(formData).toString();
 
       const response = await fetch("/companies/1/journal_entries", {
         method: "POST",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
           "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')
             .content,
         },
-        body: body,
+        body: encodedData,
       });
 
       const responseJSON = await response.json();
