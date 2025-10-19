@@ -3,8 +3,14 @@ class EmailAddressVerification
 
   include ActiveModel::Model
   include ActiveModel::Attributes
+  include ActiveModel::Validations
 
   attribute :email_address, :string
+
+  validates :email_address, presence: true,
+          length: { maximum: 254 }, # @see https://www.rfc-editor.org/errata/eid1690
+          format: { with: URI::MailTo::EMAIL_REGEXP, message: "の形式が正しくありません" }
+  validate :validate_email_address_not_registered
 
   delegate :message_verifier, :message_verifier_purpose, to: :class
 
@@ -27,5 +33,11 @@ class EmailAddressVerification
 
   def self.message_verifier_purpose
     self.name
+  end
+
+  def validate_email_address_not_registered
+    if User.where(email_address: self.email_address).exists?
+      errors.add(:base, "このメールアドレスは登録済みです")
+    end
   end
 end

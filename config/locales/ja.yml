@@ -9,6 +9,12 @@ ja:
       previous: "前"
       next: "次"
       truncate: "&hellip;"
+  activemodel:
+    models:
+      email_address_verification: メールアドレス認証
+    attributes:
+      email_address_verification:
+        email_address: メールアドレス
   activerecord:
     errors:
       models:

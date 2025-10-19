@@ -29,4 +29,29 @@ class EmailAddressVerificationTest < ActiveSupport::TestCase
       EmailAddressVerification.resolve_token("invalid_token")
     end
   end
+
+  # validation
+  test "should be valid with valid email_address" do
+    verification = EmailAddressVerification.new(email_address: "valid@example.com")
+    assert_nothing_raised { verification.validate! }
+  end
+
+  test "should be invalid without email_address" do
+    verification = EmailAddressVerification.new
+    assert_not verification.valid?
+    assert_includes verification.errors.full_messages, "メールアドレスを入力してください"
+  end
+
+  test "should be invalid with invalid format email_address" do
+    verification = EmailAddressVerification.new(email_address: "invalid")
+    assert_not verification.valid?
+    assert_includes verification.errors.full_messages, "メールアドレスの形式が正しくありません"
+  end
+
+  test "should be invalid when an existing user uses the email_address" do
+    User.create!(email_address: "test+already-existing@example.com")
+    verification = EmailAddressVerification.new(email_address: "test+already-existing@example.com")
+    assert_not verification.valid?
+    assert_includes verification.errors.full_messages, "このメールアドレスは登録済みです"
+  end
 end
