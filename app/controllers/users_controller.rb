@@ -4,18 +4,13 @@ class UsersController < ApplicationController
 
   before_action :set_user, only: %i[ show destroy ]
 
-  def new
-    @user = User.new
-  end
-
   def show
   end
 
   def create
-    user = User.find_or_create_by(user_params)
-    session[:otp_user_id] = user.id
-    user.create_otp!
-    redirect_to new_session_path(login_method: "otp"), notice: "ワンタイムパスワードを #{user.email_address} に送信しました。"
+    user = User.create!(user_params)
+    start_new_session_for user
+    redirect_to companies_path, notice: "アカウント登録が完了しました"
   end
 
   def destroy
