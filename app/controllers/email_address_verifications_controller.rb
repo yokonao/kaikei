@@ -14,7 +14,7 @@ class EmailAddressVerificationsController < ApplicationController
   def create
     verification = EmailAddressVerification.new(email_address: params[:email_address])
     unless verification.valid?
-      redirect_to "/signup", alert: "入力したメールアドレスが不正、または登録済みです" and return
+      redirect_to "/sign_up", alert: "入力したメールアドレスが不正、または登録済みです" and return
     end
 
     token = verification.generate_token
@@ -26,6 +26,6 @@ class EmailAddressVerificationsController < ApplicationController
 
     AccountMailer.sign_up(verification.email_address, dummy_id, token, token_expires_at).deliver_later
 
-    redirect_to "/signup", notice: "アカウント登録用のメールを送信しました"
+    redirect_to "/sign_up", notice: "アカウント登録用のメールを送信しました"
   end
 end

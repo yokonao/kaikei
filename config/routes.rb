@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   resources :one_time_passwords, only: [ :create ]
   resource :public_key_credential_request_options, only: [ :show ]
   resource :session, only: [ :new, :create, :update, :destroy ]
-  get "signup", to: "email_address_verifications#new"
+  get "sign_up", to: "email_address_verifications#new"
   resources :users, only: [ :show, :create, :destroy ] do
     resource :public_key_credential_creation_options, only: [ :show ]
     resources :passkeys, only: [ :create, :destroy ]
