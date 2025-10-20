@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
-import { showErrorToast } from "utils/toast";
+import { showInfoToast, showErrorToast } from "utils/toast";
 
 export default class extends Controller {
   static targets = ["form", "submit"];
@@ -48,8 +48,7 @@ export default class extends Controller {
       const responseJSON = await response.json();
 
       if (response.ok) {
-        // TODO: Toast UI を出す
-        console.log("仕訳を正常に作成しました");
+        showInfoToast("仕訳を正常に作成しました");
         this.element.close();
       } else {
         const message = responseJSON.errors
