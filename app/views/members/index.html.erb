@@ -3,7 +3,7 @@
     <div class="bg-gray-100 px-8 py-6 border-b-4 border-black flex justify-between items-center">
       <h1 class="text-3xl tracking-wide">メンバー管理</h1>
       <button
-        class="bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-2 px-4 border-2 border-black tracking-widest cursor-pointer",
+        class="<%= primary_button_classes %>",
         data-action="click->members#openMemberAdditionDialog">
         メンバー追加
       </button>
@@ -81,10 +81,10 @@
         </table>
         <div class="flex space-x-4 justify-center">
           <%= form.submit "追加",
-                class: "block py-4 px-12 bg-black focus:bg-gray-700 text-xl text-white tracking-widest cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
+                class: primary_button_classes(size: :lg),
                 data: { turbo_submits_with: "追加中" } %>
           <button type="button"
-            class="block py-4 px-12 bg-white focus:bg-black border-2 border-black text-xl text-black focus:text-white tracking-widest cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+            class="<%= secondary_button_classes(size: :lg) %>"
             data-action="click->members#closeMemberAdditionDialog">
             キャンセル
           </button>
