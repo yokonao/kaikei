@@ -16,7 +16,9 @@ class EmailAddressVerification
 
   def generate_token
     payload = [ self.email_address ]
-    self.message_verifier.generate(payload, expires_in: VERIFICATION_TOKEN_EXPIRES_IN, purpose: self.message_verifier_purpose)
+    expires_at = VERIFICATION_TOKEN_EXPIRES_IN.from_now
+    token = self.message_verifier.generate(payload, expires_at: expires_at, purpose: self.message_verifier_purpose)
+    [ token, expires_at ]
   end
 
   def self.resolve_token(token)

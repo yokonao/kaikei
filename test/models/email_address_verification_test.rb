@@ -4,7 +4,7 @@ class EmailAddressVerificationTest < ActiveSupport::TestCase
   test "should generate and resolve token" do
     email = "test@example.com"
     verification = EmailAddressVerification.new(email_address: email)
-    token = verification.generate_token
+    token, _ = verification.generate_token
 
     assert_not_nil token
 
@@ -15,7 +15,7 @@ class EmailAddressVerificationTest < ActiveSupport::TestCase
   test "should raise an error if the token is expired" do
     email = "test@example.com"
     verification = EmailAddressVerification.new(email_address: email)
-    token = verification.generate_token
+    token, _ = verification.generate_token
 
     travel_to(EmailAddressVerification::VERIFICATION_TOKEN_EXPIRES_IN.from_now + 1.second) do
       assert_raises(ActiveSupport::MessageVerifier::InvalidSignature) do

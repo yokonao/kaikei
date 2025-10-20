@@ -30,8 +30,7 @@ class Invitation < ApplicationRecord
 
   def send_mail
     token = self.generate_token_for(:invitation)
-    # 生成したトークンから有効期限を取得する方法がわからないので推定値を利用する
-    # TODO: よりよい方法がないか調査する
+    # 生成したトークンから有効期限を取得する安全な方法はないので推定値を利用する
     token_expires_at = Time.current + Invitation::INVITATION_TOKEN_EXPIRES_IN
     # NOTE: リソースの特定は token で行うので id はダミー値をセットする
     dummy_id = SecureRandom.uuid

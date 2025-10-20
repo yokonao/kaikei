@@ -17,12 +17,8 @@ class EmailAddressVerificationsController < ApplicationController
       redirect_to "/sign_up", alert: "入力したメールアドレスが不正、または登録済みです" and return
     end
 
-    token = verification.generate_token
-    # 生成したトークンから有効期限を取得する方法がわからないので推定値を利用する
-    # TODO: よりよい方法がないか調査する
-    token_expires_at = Time.current + EmailAddressVerification::VERIFICATION_TOKEN_EXPIRES_IN
-    # NOTE: リソースの特定は token で行うので id はダミー値をセットする
-    dummy_id = SecureRandom.uuid
+    token, token_expires_at = verification.generate_token
+    dummy_id = SecureRandom.uuid # NOTE: リソースの特定は token で行うので id はダミー値をセットする
 
     AccountMailer.sign_up(verification.email_address, dummy_id, token, token_expires_at).deliver_later
 
