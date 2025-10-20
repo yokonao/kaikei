@@ -6,6 +6,8 @@ class EmailAddressVerificationsController < ApplicationController
     @dummy_id = params[:id]
     @verification = EmailAddressVerification.resolve_token(params[:token])
     @user = User.new(email_address: @verification.email_address)
+  rescue ActiveSupport::MessageVerifier::InvalidSignature
+    raise ActionController::BadRequest, "不正なアカウント登録リンクです"
   end
 
   def new
