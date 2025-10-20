@@ -2,6 +2,7 @@ module Authentication
   extend ActiveSupport::Concern
 
   included do
+    before_action :resume_session
     before_action :require_authentication
     before_action :require_company_selection
     helper_method :authenticated?, :company_selected?, :target_user, :target_company

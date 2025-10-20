@@ -3,8 +3,6 @@ class InvitationsController < ApplicationController
   before_action :set_invitation, only: %i[ show update ]
 
   def show
-    resume_session # TODO: ログイン状態かどうか確かめるために必要だが不要にしたい
-
     @current_user = Current.user
 
     @existing_user = User.find_by(email_address: @invitation.email_address)
