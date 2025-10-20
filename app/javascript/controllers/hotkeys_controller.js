@@ -20,7 +20,7 @@ export default class extends Controller {
     const dotKey = event.key === ".";
 
     if (isModifierKeyPressed && dotKey) {
-      // 既に開いているダイアログやモーダルがある場合はが重複して開かないように制御
+      // 既に開いているダイアログやモーダルがある場合は重複して開かないように制御
       if (!document.querySelector('dialog[open]')) {
         this.journalEditorDialogTarget.showModal();
       }
