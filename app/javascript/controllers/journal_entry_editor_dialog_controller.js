@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 import { showErrorToast } from "utils/toast";
 
 export default class extends Controller {
-  static targets = ["form"];
+  static targets = ["form", "submit"];
 
   connect() {
     const inputElements = this.element.querySelectorAll(
@@ -15,12 +15,7 @@ export default class extends Controller {
 
           const isModifierKeyPressed = event.metaKey || event.ctrlKey;
           if (isModifierKeyPressed) {
-            inputElement.form.dispatchEvent(
-              new Event("submit", {
-                bubbles: true,
-                cancelable: true,
-              })
-            );
+            this.submitTarget.click();
           }
         }
       });
@@ -33,6 +28,8 @@ export default class extends Controller {
   }
 
   async sendJSON(form) {
+    this.submitTarget.disabled = true;
+
     try {
       const formData = new FormData(form);
       const encodedData = new URLSearchParams(formData).toString();
@@ -61,6 +58,8 @@ export default class extends Controller {
       }
     } catch {
       showErrorToast("仕訳の保存に失敗しました");
+    } finally {
+      this.submitTarget.disabled = false;
     }
   }
 }
