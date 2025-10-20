@@ -140,8 +140,8 @@ end
 
 other_accounts = [
   # 集合勘定
-  { name: "損益", category: :collective, is_standard: true }
-  # TODO: 現金過不足を追加する
+  { name: "損益", category: :collective, is_standard: true },
+  { name: "現金過不足", category: :temporary, is_standard: true }
 ]
 other_accounts.each do |acc|
   Account.find_or_create_by!(name: acc[:name]) do |account|

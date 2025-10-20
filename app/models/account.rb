@@ -5,7 +5,8 @@ class Account < ApplicationRecord
     equity: 3, # 純資産
     revenue: 4, # 収益
     expense: 5, # 費用
-    collective: 6 # 集合勘定
+    collective: 6, # 集合勘定
+    temporary: 7 # 仮勘定（e.g. 現金過不足）
   }
 
   validates :name,
