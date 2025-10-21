@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  allow_unauthenticated_access only: %i[ new create ]
+  allow_unauthenticated_access only: %i[ create ]
   allow_no_company_access only: %i[ show destroy ]
 
   before_action :set_user, only: %i[ show destroy ]
