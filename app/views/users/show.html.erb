@@ -46,10 +46,8 @@
               <% end %>
             </ul>
           <% end %>
-          <div>
-            <button data-action="passkeys#register" class="bg-black text-white py-3 px-6 border-2 border-black hover:bg-gray-800 cursor-pointer">
-              新しいパスキーを登録
-            </button>
+          <div class="flex justify-center">
+            <%= button_tag "新しいパスキーを登録", class: designer.primary_button(size: :lg), data: { action: "passkeys#register" } %>
           </div>
         </div>
       </div>
