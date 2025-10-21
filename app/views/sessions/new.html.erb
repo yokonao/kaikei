@@ -23,7 +23,7 @@
           </table>
 
           <div class="flex justify-center">
-            <%= form.submit "ログイン", class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black text-xl tracking-widest cursor-pointer" %>
+            <%= form.submit "ログイン", class: designer.primary_button(size: :lg) %>
           </div>
         <% end %>
       <% else %>
@@ -42,8 +42,7 @@
             </table>
 
             <div class="flex justify-center">
-              <%= form.submit "ログイン",
-                class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black text-xl tracking-widest cursor-pointer" %>
+              <%= form.submit "ログイン", class: designer.primary_button(size: :lg) %>
             </div>
           <% end %>
 
@@ -64,8 +63,7 @@
               </table>
 
               <div class="flex justify-center">
-                <%= form.submit "ログイン",
-                  class: "bg-black hover:bg-gray-800 focus:bg-gray-700 focus:ring-2 focus:ring-gray-400 focus:outline-none text-white py-4 px-12 border-2 border-black text-xl tracking-widest cursor-pointer" %>
+                <%= form.submit "ログイン", class: designer.primary_button(size: :lg) %>
               </div>
             <% end %>
           <% end %>
