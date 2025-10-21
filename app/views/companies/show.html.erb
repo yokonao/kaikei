@@ -94,11 +94,7 @@
                   class: "block py-4 px-12 bg-white focus:bg-red-700 border-2 border-red-700 text-xl text-red-700 focus:text-white tracking-widest cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
                   data: { turbo_submits_with: "脱退中" } %>
           <% end %>
-          <button type="button"
-            class="block py-4 px-12 bg-white focus:bg-black border-2 border-black text-xl text-black focus:text-white tracking-widest cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
-            data-action="click->company-detail#closeCompanyExitDialog">
-            キャンセル
-          </button>
+          <%= button_tag "キャンセル", type: "button", class: designer.secondary_button(size: :lg), data: { action: "click->company-detail#closeCompanyExitDialog" } %>
         </div>
       <% end %>
     </dialog>
@@ -128,11 +124,7 @@
             <%= form.submit "削除",
                   class: "block py-4 px-12 bg-white focus:bg-red-700 border-2 border-red-700 text-xl text-red-700 focus:text-white tracking-widest cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
                   data: { turbo_submits_with: "削除中" } %>
-            <button type="button"
-              class="block py-4 px-12 bg-white focus:bg-black border-2 border-black text-xl text-black focus:text-white tracking-widest cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
-              data-action="click->company-detail#closeCompanyDestructionDialog">
-              キャンセル
-            </button>
+            <%= button_tag "キャンセル", type: "button", class: designer.secondary_button(size: :lg), data: { action: "click->company-detail#closeCompanyDestructionDialog" } %>
           </div>
       <% end %>
     </dialog>
