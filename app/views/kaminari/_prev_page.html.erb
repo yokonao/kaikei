@@ -7,4 +7,4 @@
     remote:        data-remote
 -%>
 <%= link_to t('views.pagination.previous').html_safe, url, {remote: remote, rel: "prev",
-  class: "px-3 py-2 border border-black text-black hover:text-white bg-white hover:bg-black transition duration-200"} %>
+  class: "px-3 py-2 #{designer.secondary_button(size: :no_padding)}"} %>

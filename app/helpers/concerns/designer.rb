@@ -5,6 +5,8 @@ class Designer
     case size
     when :lg
       cls += " py-4 px-12 text-xl tracking-widest"
+    when :no_padding
+      # do nothing
     else
       cls += " py-2 px-4"
     end
@@ -18,6 +20,8 @@ class Designer
     case size
     when :lg
       cls += " py-4 px-12 text-xl tracking-widest"
+    when :no_padding
+      # do nothing
     else
       cls += " py-2 px-6"
     end

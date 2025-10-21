@@ -13,5 +13,5 @@
   </span>
 <% else %>
   <%= link_to page, url, {remote: remote, rel: page.rel,
-    class: "px-3 py-2 border border-black text-black hover:text-white bg-white hover:bg-black transition duration-200"} %>
+    class: "px-3 py-2 #{designer.secondary_button(size: :no_padding)}"} %>
 <% end %>
