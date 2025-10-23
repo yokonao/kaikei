@@ -57,11 +57,9 @@
 
     <div class="p-8">
       <h2 class="text-2xl text-red-700 tracking-wide mb-4 text-center">アカウント削除</h2>
-      <button
-        class="block py-4 px-12 mx-auto bg-white hover:bg-red-700 focus:bg-red-700 border-2 border-red-700 text-xl text-red-700 hover:text-white focus:text-white tracking-widest cursor-pointer"
-        data-action="click->user-detail#confirmUserDestruction">
-        アカウントを削除する
-      </button>
+      <%= button_tag "アカウントを削除する",
+        class: "#{designer.destructive_button(size: :lg)} mx-auto",
+        data: { action: "click->user-detail#confirmUserDestruction" } %>
     </div>
     <dialog aria-labelledby="user-destruction-dialog-label" class="mx-auto my-auto" data-user-detail-target="userDstructionDialog">
       <% can_destroy = @user.incineratable? %>
@@ -98,7 +96,7 @@
         <div class="flex space-x-4 justify-center">
           <% if can_destroy %>
             <%= form.submit "削除",
-                  class: "block py-4 px-12 bg-white focus:bg-red-700 border-2 border-red-700 text-xl text-red-700 focus:text-white tracking-widest cursor-pointer disabled:cursor-not-allowed disabled:opacity-50",
+                  class: "#{designer.destructive_button(size: :lg)}",
                   data: { turbo_submits_with: "削除中" } %>
           <% end %>
           <%= button_tag "キャンセル", type: "button", class: designer.secondary_button(size: :lg), data: { action: "click->user-detail#closeUserDestructionDialog" } %>

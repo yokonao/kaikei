@@ -29,6 +29,20 @@ class Designer
     cls
   end
 
+  def destructive_button(size: :md)
+    cls = "#{self.button_base} bg-white hover:bg-red-700 focus:bg-red-700 border-2 border-red-700 text-red-700 hover:text-white focus:text-white"
+    case size
+    when :lg
+      cls += " py-4 px-12 text-xl tracking-widest"
+    when :no_padding
+      # do nothing
+    else
+      cls += " py-2 px-6"
+    end
+
+    cls
+  end
+
   private
 
   def button_base
